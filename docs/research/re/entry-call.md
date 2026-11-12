@@ -8,4 +8,4 @@ The start address is `0x8007faf8`. The tool followed 2 instructions and stopped 
 
 The `jal` at `0x8007fa24` reaches this block with `a0` equal to `0x1f800000` and `a1` equal to `0x1f800400`. Its delay slot is `nop`, so those registers are unchanged on entry. `0x1f800000` is less than `0x1f800400`, so `t0` is 1 and the branch is not taken. After the delay slot, that call continues at `0x8007fb04` with `a1` equal to `0x1f8003fc`.
 
-The body past this block is not traced. This note does not close the gap in `components/exe/load.cpp`.
+The fall-through at `0x8007fb04` is in [entry-loop.md](entry-loop.md). This note does not close the gap in `components/exe/load.cpp`.
