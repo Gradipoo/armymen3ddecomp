@@ -20,7 +20,8 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [entry-after-compare.md](entry-after-compare.md) | Block at `0x8007fa9c` after the byte compare. It copies `v0` to `t0` and calls `0x8007fb1c`. The return continues in [entry-after-second-compare.md](entry-after-second-compare.md). |
 | [entry-after-second-compare.md](entry-after-second-compare.md) | Block at `0x8007fab8` after the second byte compare. It ORs `v0` into `t0` and calls `0x8007fb1c`. The return continues in [entry-after-third-compare.md](entry-after-third-compare.md). |
 | [entry-after-third-compare.md](entry-after-third-compare.md) | Block at `0x8007fad4` after the third byte compare. It ORs `v0` into `t0`, stores that word, and calls `0x800251f8`. The callee is in [call-800251f8.md](call-800251f8.md). The return at `0x8007faec` is not traced. |
-| [call-800251f8.md](call-800251f8.md) | First block at `0x800251f8`. It saves `ra`, `fp`, and `s0` through `s7`, then calls `0x8007faf0`. The body there is not traced. |
+| [call-800251f8.md](call-800251f8.md) | First block at `0x800251f8`. It saves `ra`, `fp`, and `s0` through `s7`, then calls `0x8007faf0`. The callee is in [call-8007faf0.md](call-8007faf0.md). The return at `0x80025228` is not traced. |
+| [call-8007faf0.md](call-8007faf0.md) | Block at `0x8007faf0`. `jr ra` returns through `ra`. The delay slot at `0x8007faf4` is `nop`. Control does not fall into the fill at `0x8007faf8`. The return at `0x80025228` is not traced. |
 | game-functions.tsv | Function facts from the Ghidra export: address, size, name |
 
 The TSV appears here after Ghidra export. `python tools/gaps.py` compares `// gap:` comments and that TSV with these notes.
