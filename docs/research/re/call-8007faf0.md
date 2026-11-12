@@ -6,4 +6,4 @@ The start address is `0x8007faf0`. The `jal` at `0x80025220` set `ra` to `0x8002
 
 `jr` at `0x8007faf0` returns through `ra`. The delay slot at `0x8007faf4` is `nop`. Re-check it with `--start 0x8007faf4`. That run's first instruction is the `nop`. The same run then reaches the fill at `0x8007faf8` and stops at the branch at `0x8007fafc`. Those later instructions are already in [entry-call.md](entry-call.md). This jump does not enter them.
 
-After the delay slot, control goes to `0x80025228`. It does not fall into `0x8007faf8`. `0x8007faf0` is `0x8` bytes before that fill. The return at `0x80025228` is not traced. The caller return at `0x8007faec` is not traced. This note does not close the gap in `components/exe/load.cpp`.
+After the delay slot, control goes to `0x80025228`. It does not fall into `0x8007faf8`. `0x8007faf0` is `0x8` bytes before that fill. The return continues in [call-80025228.md](call-80025228.md). The caller return at `0x8007faec` is not traced. This note does not close the gap in `components/exe/load.cpp`.
