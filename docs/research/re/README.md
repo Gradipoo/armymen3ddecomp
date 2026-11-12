@@ -16,7 +16,8 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [entry-after-zero.md](entry-after-zero.md) | Block at `0x8007fa68` after the zero fill. It calls `0x8007faf8`. The return continues in [entry-after-ram.md](entry-after-ram.md). |
 | [entry-after-ram.md](entry-after-ram.md) | Block at `0x8007fa84` after the RAM fill. It calls `0x8007fb1c`. The callee is in [entry-bios-call.md](entry-bios-call.md). |
 | [entry-bios-call.md](entry-bios-call.md) | Block at `0x8007fb1c`. It loads bytes from `a0` and `a1`, then branches to `0x8007fb3c`. The two paths are in [entry-byte-compare.md](entry-byte-compare.md). |
-| [entry-byte-compare.md](entry-byte-compare.md) | Compare at `0x8007fb2c` and return at `0x8007fb3c`. Equal values loop to `0x8007fb1c`. The return goes to `0x8007fa9c`. |
+| [entry-byte-compare.md](entry-byte-compare.md) | Compare at `0x8007fb2c` and return at `0x8007fb3c`. Equal values loop to `0x8007fb1c`. The return continues in [entry-after-compare.md](entry-after-compare.md). |
+| [entry-after-compare.md](entry-after-compare.md) | Block at `0x8007fa9c` after the byte compare. It copies `v0` to `t0` and calls `0x8007fb1c`. The return at `0x8007fab8` is not traced. |
 | game-functions.tsv | Function facts from the Ghidra export: address, size, name |
 
 The TSV appears here after Ghidra export. `python tools/gaps.py` compares `// gap:` comments and that TSV with these notes.
