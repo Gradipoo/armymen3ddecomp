@@ -10,4 +10,4 @@ The start address is `0x8007fad4`. The `jal` at `0x8007facc` set `ra` to this ad
 
 `jal` at `0x8007fae4` targets `0x800251f8` and sets `ra` to `0x8007faec`. The delay slot at `0x8007fae8` is `nop`. Re-check it with `--start 0x8007fae8`. After the delay slot, control goes to `0x800251f8`. The `or` result does not change that target. The only branch or jump in this block is that `jal`.
 
-This block writes `t0`, `a0`, the word at `0x8007f9a8`, and `ra`. It reads `v0` and does not write it. `0x8007f9a8` sits `0x50` bytes before the entry at `0x8007f9f8`. The callee at `0x800251f8` is not traced. The body at `0x8007faec` is not traced. This note does not close the gap in `components/exe/load.cpp`.
+This block writes `t0`, `a0`, the word at `0x8007f9a8`, and `ra`. It reads `v0` and does not write it. `0x8007f9a8` sits `0x50` bytes before the entry at `0x8007f9f8`. The callee is the block in [call-800251f8.md](call-800251f8.md). The body at `0x8007faec` is not traced. This note does not close the gap in `components/exe/load.cpp`.
