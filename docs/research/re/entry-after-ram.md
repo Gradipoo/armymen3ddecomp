@@ -8,4 +8,4 @@ The start address is `0x8007fa84`. The `jal` at `0x8007fa7c` set `ra` to this ad
 
 `jal` at `0x8007fa94` targets `0x8007fb1c` and sets `ra` to `0x8007fa9c`. The delay slot at `0x8007fa98` is `nop`. Re-check it with `--start 0x8007fa98`. That run stops at the jump at `0x8007fab0`. After the delay slot, control goes to `0x8007fb1c`.
 
-This block writes `a0`, `a1`, and `ra`. The body past this jump is not traced. This note does not close the gap in `components/exe/load.cpp`.
+This block writes `a0`, `a1`, and `ra`. The callee is the block in [entry-bios-call.md](entry-bios-call.md). This note does not close the gap in `components/exe/load.cpp`.
