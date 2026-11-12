@@ -1,15 +1,17 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Disassemble the straight-line block at a PS-X EXE entry.
+"""Disassemble one straight-line block in a PS-X EXE.
 
 Reads the header the same way tools/exe_info.py does. Magic is the 8 bytes
 "PS-X EXE". PC, GP, load address, and text size are little-endian words at
-0x10, 0x14, 0x18, and 0x1C. The text starts at file offset 0x800. The entry
-file offset is 0x800 + (pc - load). Follows instructions from the entry
-until the first branch or jump, or until 64 instructions, whichever comes
-first. Writes one line per instruction to build/entry-disasm.txt under the
-repo root. That file stays in build/ and is not committed.
+0x10, 0x14, 0x18, and 0x1C. The text starts at file offset 0x800. A virtual
+address maps to file offset 0x800 + (address - load). Follows instructions
+from the header PC, or from --start when that is passed, until the first
+branch or jump, or until 64 instructions, whichever comes first. Writes one
+line per instruction to build/entry-disasm.txt under the repo root. That
+file stays in build/ and is not committed.
 
     python tools/entry_disasm.py path/to/SLUS
+    python tools/entry_disasm.py path/to/SLUS --start 0x8007faf8
 """
 
 from __future__ import annotations
@@ -104,11 +106,13 @@ def read_header(path: Path) -> tuple[int, int, int, int]:
 
 def entry_offset(pc: int, load: int, size: int) -> int:
     if pc < load:
-        raise ToolError("entry pc is below the load address")
+        raise ToolError("address is below the load address")
+    if (pc - load) % 4 != 0:
+        raise ToolError("address is not word-aligned")
     offset = TEXT_OFFSET + (pc - load)
     text_end = TEXT_OFFSET + size
     if offset + 4 > text_end:
-        raise ToolError("entry is outside the text section")
+        raise ToolError("address is outside the text section")
     return offset
 
 
@@ -264,21 +268,40 @@ def format_entry(pc: int, words: list[int]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def main(argv: list[str] | None = None) -> int:
+def _parse_start(text: str) -> int:
+    try:
+        value = int(text, 0)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(
+            "start address must be an integer"
+        ) from exc
+    if value < 0 or value > 0xFFFFFFFF:
+        raise argparse.ArgumentTypeError("start address is out of range")
+    return value
+
+
+def main(argv: list[str] | None = None, out_path: Path | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Disassemble a PS-X EXE entry until the first branch or jump."
+            "Disassemble a straight-line block until the first branch or jump."
         )
     )
     parser.add_argument("exe", help="Path to a PS-X EXE.")
+    parser.add_argument(
+        "--start",
+        type=_parse_start,
+        help="Virtual address to disassemble. Default: the EXE entry PC.",
+    )
     args = parser.parse_args(argv)
+    dest = OUT_PATH if out_path is None else out_path
     try:
         path = Path(args.exe)
         pc, _gp, load, size = read_header(path)
-        offset = entry_offset(pc, load, size)
-        text = format_entry(pc, read_entry(path, offset, size))
-        OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-        OUT_PATH.write_text(text, encoding="utf-8")
+        start = pc if args.start is None else args.start
+        offset = entry_offset(start, load, size)
+        text = format_entry(start, read_entry(path, offset, size))
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(text, encoding="utf-8")
     except ToolError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

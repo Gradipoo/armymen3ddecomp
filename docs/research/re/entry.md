@@ -12,6 +12,6 @@ The block sets `sp` and `fp`, then `gp`, then `a0`, `a1`, and `a2`, then calls `
 
 Five instructions from `0x8007fa10` through `0x8007fa20` set the argument registers. `a0` becomes `0x1f800000`. `a1` becomes `0x1f800400`. `a2` becomes `0x55555555`.
 
-`jal` at `0x8007fa24` targets `0x8007faf8` and sets `ra` to `0x8007fa2c`. The delay slot is the instruction at `0x8007fa28`. This note does not decode that word. After the delay slot, control goes to `0x8007faf8`.
+`jal` at `0x8007fa24` targets `0x8007faf8` and sets `ra` to `0x8007fa2c`. The delay slot at `0x8007fa28` is `nop`. After the delay slot, control goes to `0x8007faf8`.
 
 The function body is not traced past this block. This note does not close the gap in `components/exe/load.cpp`.

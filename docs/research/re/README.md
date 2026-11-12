@@ -9,6 +9,7 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [deviations.md](deviations.md) | Keyboard, server browser, and mods. Not started. |
 | [exe-header.md](exe-header.md) | PS-X EXE header at `0x8007f9f8`. |
 | [entry.md](entry.md) | First block at `0x8007f9f8`. The rest of the body is not traced. |
+| [entry-call.md](entry-call.md) | First block at `0x8007faf8`. The rest of that body is not traced. |
 | game-functions.tsv | Function facts from the Ghidra export: address, size, name |
 
 The TSV appears here after Ghidra export. `python tools/gaps.py` compares `// gap:` comments and that TSV with these notes.
