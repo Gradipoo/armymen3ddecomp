@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Disassemble the first four MIPS instructions at a PS-X EXE entry.
+"""Disassemble the straight-line block at a PS-X EXE entry.
 
 Reads the header the same way tools/exe_info.py does. Magic is the 8 bytes
 "PS-X EXE". PC, GP, load address, and text size are little-endian words at
 0x10, 0x14, 0x18, and 0x1C. The text starts at file offset 0x800. The entry
-file offset is 0x800 + (pc - load). For the recorded USA header that offset
-is 0x701f8. Writes four lines to build/entry-disasm.txt under the repo root.
-That file stays in build/ and is not committed.
+file offset is 0x800 + (pc - load). Follows instructions from the entry
+until the first branch or jump, or until 64 instructions, whichever comes
+first. Writes one line per instruction to build/entry-disasm.txt under the
+repo root. That file stays in build/ and is not committed.
 
     python tools/entry_disasm.py path/to/SLUS
 """
@@ -19,7 +20,9 @@ from pathlib import Path
 
 MAGIC = b"PS-X EXE"
 TEXT_OFFSET = 0x800
-ENTRY_COUNT = 4
+MAX_INSTRUCTIONS = 64
+# REGIMM rt values that are branches (bltz, bgez, bltzal, bgezal).
+REGIMM_BRANCH = {0x00, 0x01, 0x10, 0x11}
 ROOT = Path(__file__).resolve().parent.parent
 OUT_PATH = ROOT / "build" / "entry-disasm.txt"
 
@@ -103,11 +106,23 @@ def entry_offset(pc: int, load: int, size: int) -> int:
     if pc < load:
         raise ToolError("entry pc is below the load address")
     offset = TEXT_OFFSET + (pc - load)
-    end = offset + ENTRY_COUNT * 4
     text_end = TEXT_OFFSET + size
-    if end > text_end:
+    if offset + 4 > text_end:
         raise ToolError("entry is outside the text section")
     return offset
+
+
+def is_branch_or_jump(word: int) -> bool:
+    op = (word >> 26) & 0x3F
+    if op in (0x02, 0x03, 0x04, 0x05, 0x06, 0x07):
+        return True
+    if op == 0x01:
+        rt = (word >> 16) & 0x1F
+        return rt in REGIMM_BRANCH
+    if op == 0x00:
+        funct = word & 0x3F
+        return funct in (0x08, 0x09)
+    return False
 
 
 def _reg(number: int) -> str:
@@ -220,13 +235,25 @@ def _jump_target(addr: int, word: int) -> int:
     return ((addr + 4) & 0xF0000000) | ((word & 0x03FFFFFF) << 2)
 
 
-def read_entry(path: Path, offset: int) -> list[int]:
+def read_entry(path: Path, offset: int, size: int) -> list[int]:
+    text_end = TEXT_OFFSET + size
+    room = text_end - offset
+    if room < 4:
+        raise ToolError("entry is outside the text section")
+    count = min(MAX_INSTRUCTIONS, room // 4)
     with path.open("rb") as handle:
         handle.seek(offset)
-        blob = handle.read(ENTRY_COUNT * 4)
-    if len(blob) < ENTRY_COUNT * 4:
+        blob = handle.read(count * 4)
+    if len(blob) < count * 4:
         raise ToolError("PS-X EXE text is truncated")
-    return [int.from_bytes(blob[i:i + 4], "little") for i in range(0, ENTRY_COUNT * 4, 4)]
+    words: list[int] = []
+    for index in range(count):
+        start = index * 4
+        word = int.from_bytes(blob[start:start + 4], "little")
+        words.append(word)
+        if is_branch_or_jump(word):
+            break
+    return words
 
 
 def format_entry(pc: int, words: list[int]) -> str:
@@ -239,7 +266,9 @@ def format_entry(pc: int, words: list[int]) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Disassemble the first four MIPS instructions at a PS-X EXE entry."
+        description=(
+            "Disassemble a PS-X EXE entry until the first branch or jump."
+        )
     )
     parser.add_argument("exe", help="Path to a PS-X EXE.")
     args = parser.parse_args(argv)
@@ -247,7 +276,7 @@ def main(argv: list[str] | None = None) -> int:
         path = Path(args.exe)
         pc, _gp, load, size = read_header(path)
         offset = entry_offset(pc, load, size)
-        text = format_entry(pc, read_entry(path, offset))
+        text = format_entry(pc, read_entry(path, offset, size))
         OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
         OUT_PATH.write_text(text, encoding="utf-8")
     except ToolError as exc:
