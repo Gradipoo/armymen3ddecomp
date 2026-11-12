@@ -12,4 +12,4 @@ When `a0` equals `a1`, `t0` is 0 and the branch is not taken. The delay slot sti
 
 `jr` at `0x8007fb14` returns through `ra`. Its delay slot at `0x8007fb18` is `nop`. The `jal` at `0x8007fa24` set `ra` to `0x8007fa2c`, so control goes there. This call reaches `0x8007fb14` only after the loop. The `beq` at `0x8007fafc` names that same address and is not taken on this call.
 
-The caller body at `0x8007fa2c` is not traced. This note does not close the gap in `components/exe/load.cpp`.
+The caller body at `0x8007fa2c` is in [entry-return.md](entry-return.md). This note does not close the gap in `components/exe/load.cpp`.
