@@ -8,4 +8,4 @@ The start address is `0x8007fa4c`. The `jal` at `0x8007fa44` set `ra` to this ad
 
 `jal` at `0x8007fa60` targets `0x8007faf8` and sets `ra` to `0x8007fa68`. The delay slot at `0x8007fa64` is `nop`. Re-check it with `--start 0x8007fa64`. That run stops at the jump at `0x8007fa7c`. After the delay slot, control goes to `0x8007faf8`.
 
-This block writes `a0`, `a1`, `a2`, and `ra`. The callee is the block in [entry-call.md](entry-call.md). The body past this jump is not traced. This note does not close the gap in `components/exe/load.cpp`.
+This block writes `a0`, `a1`, `a2`, and `ra`. The callee is the block in [entry-call.md](entry-call.md). This jump fills `0x800c5458` through the last word before `0x800e44e0` with `0`, using the function in [entry-loop.md](entry-loop.md). The bytes at `0x8007fa60` are `jal`, so `ra` is set to `0x8007fa68`. The return continues in [entry-after-zero.md](entry-after-zero.md). This note does not close the gap in `components/exe/load.cpp`.
