@@ -18,7 +18,8 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [entry-bios-call.md](entry-bios-call.md) | Block at `0x8007fb1c`. It loads bytes from `a0` and `a1`, then branches to `0x8007fb3c`. The two paths are in [entry-byte-compare.md](entry-byte-compare.md). |
 | [entry-byte-compare.md](entry-byte-compare.md) | Compare at `0x8007fb2c` and return at `0x8007fb3c`. Equal values loop to `0x8007fb1c`. The return continues in [entry-after-compare.md](entry-after-compare.md). |
 | [entry-after-compare.md](entry-after-compare.md) | Block at `0x8007fa9c` after the byte compare. It copies `v0` to `t0` and calls `0x8007fb1c`. The return continues in [entry-after-second-compare.md](entry-after-second-compare.md). |
-| [entry-after-second-compare.md](entry-after-second-compare.md) | Block at `0x8007fab8` after the second byte compare. It ORs `v0` into `t0` and calls `0x8007fb1c`. The return at `0x8007fad4` is not traced. |
+| [entry-after-second-compare.md](entry-after-second-compare.md) | Block at `0x8007fab8` after the second byte compare. It ORs `v0` into `t0` and calls `0x8007fb1c`. The return continues in [entry-after-third-compare.md](entry-after-third-compare.md). |
+| [entry-after-third-compare.md](entry-after-third-compare.md) | Block at `0x8007fad4` after the third byte compare. It ORs `v0` into `t0`, stores that word, and calls `0x800251f8`. The return at `0x8007faec` is not traced. |
 | game-functions.tsv | Function facts from the Ghidra export: address, size, name |
 
 The TSV appears here after Ghidra export. `python tools/gaps.py` compares `// gap:` comments and that TSV with these notes.
