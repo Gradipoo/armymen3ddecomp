@@ -1,0 +1,10 @@
+Army Men 3D (USA)/
+*.bin
+*.cue
+*.iso
+build/
+tools/ghidra/project/
+*.c.ghidra
+*.decomp.c
+__pycache__/
+.DS_Store
