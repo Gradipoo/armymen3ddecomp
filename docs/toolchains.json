@@ -1,0 +1,33 @@
+{
+  "purpose": "Local synthetic toolchain smoke test. Not identified retail settings.",
+  "compiler": {
+    "repository": "https://github.com/decompals/old-gcc",
+    "release": "0.17",
+    "asset": "gcc-2.7.2-psx-macos.tar.gz",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.7.2-psx-macos.tar.gz",
+    "sha256": "4280894661c9792bc19f5c970c283d35381937fb44e479a91d0c044c95fcd208"
+  },
+  "adapter": {
+    "repository": "https://github.com/mkst/maspsx",
+    "commit": "4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "url": "https://github.com/mkst/maspsx/archive/4ffa8b5106f9780d5d4aa7609f184949433ddbbc.tar.gz",
+    "archive_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "aspsx_mode": "2.56"
+  },
+  "assembler": {
+    "implementation": "LLVM llvm-mc",
+    "tested_version": "23.1.5",
+    "triple": "mipsel-none-elf",
+    "cpu": "mips1"
+  },
+  "compiler_comparisons": [
+    {
+      "repository": "https://github.com/decompals/old-gcc",
+      "release": "0.17",
+      "asset": "gcc-2.8.1-psx-macos.tar.gz",
+      "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.8.1-psx-macos.tar.gz",
+      "sha256": "bab0c6ea1f394573d5aabbdd7b37e36aceeb83c522141d946a87a9f58c199ea0",
+      "purpose": "Third display-fill calibration attempt. No retail match."
+    }
+  ]
+}

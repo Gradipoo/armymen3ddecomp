@@ -105,6 +105,32 @@ class SdkMatchTests(unittest.TestCase):
         self.assertEqual(stderr.getvalue(), "")
         self.assertEqual(stdout.getvalue(), f"0x{load:08x} CdInit\n")
 
+    def test_scan_keeps_aligned_hits_in_table_order(self):
+        same = [
+            ("first", b"\x11\x22\x33\x44"),
+            ("second", b"\x11\x22\x33\x44"),
+        ]
+        hits = MATCH.scan(0x80000000, b"\x11\x22\x33\x44", same)
+        self.assertEqual(
+            hits,
+            [
+                (0x80000000, "first"),
+                (0x80000000, "second"),
+            ],
+        )
+        # The 11 22 33 44 copy is unaligned. The aa run hits at index 8 only.
+        text = b"\x00" + b"\x11\x22\x33\x44" + (b"\xaa" * 8)
+        hits = MATCH.scan(0x80000000, text, same + [("wide", b"\xaa\xaa\xaa\xaa")])
+        self.assertEqual(hits, [(0x80000008, "wide")])
+        hits = MATCH.scan(0x80000000, b"\xaa" * 8, [("wide", b"\xaa\xaa\xaa\xaa")])
+        self.assertEqual(
+            hits,
+            [
+                (0x80000000, "wide"),
+                (0x80000004, "wide"),
+            ],
+        )
+
     def test_missing_file_exits_nonzero(self):
         with tempfile.TemporaryDirectory() as tmp:
             missing = Path(tmp) / "missing"

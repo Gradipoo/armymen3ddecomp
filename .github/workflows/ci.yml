@@ -27,8 +27,34 @@ jobs:
       - name: PR guard
         run: python tools/pr_guard.py
 
+      - name: Function progress ledger
+        run: python tools/progress.py
+
       - name: Configure
         run: cmake -S . -B build
 
       - name: Build
-        run: cmake --build build
+        run: cmake --build build --config Release
+
+      - name: C++ behavior tests
+        run: ctest --test-dir build -C Release --output-on-failure
+
+  platform-linux:
+    name: SDL2 platform on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SDL2 development files
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsdl2-dev
+
+      - name: Configure
+        run: cmake -S . -B build/host-sdl -DAM3D_WITH_SDL2=ON -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build/host-sdl --config Release --parallel 2
+
+      - name: Synthetic display and controller tests
+        run: ctest --test-dir build/host-sdl -C Release --output-on-failure

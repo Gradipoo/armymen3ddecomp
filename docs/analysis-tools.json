@@ -1,0 +1,100 @@
+{
+  "purpose": "Optional local analysis tools. No runtime or baseline CI dependency.",
+  "tested_python": "3.12.16",
+  "tested_host": "macOS ARM64",
+  "m2c_source_commit": "c632946b8cfbe8fce442b522dba92dfa72f1f317",
+  "packages": [
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "source": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl",
+      "source_sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+    },
+    {
+      "name": "crunch64",
+      "version": "0.6.2",
+      "source": "https://files.pythonhosted.org/packages/8f/2a/6bee443367f05dbd26e1259b3627a7a694b972246fc23c606ffb46e0a507/crunch64-0.6.2-cp38-abi3-macosx_11_0_arm64.whl",
+      "source_sha256": "34f885870f921ed83d7a3e148ebd68ebe6fbada39c085adb68f489dcbb9874e7"
+    },
+    {
+      "name": "graphviz",
+      "version": "0.20.3",
+      "source": "https://files.pythonhosted.org/packages/00/be/d59db2d1d52697c6adc9eacaf50e8965b6345cc143f671e1ed068818d5cf/graphviz-0.20.3-py3-none-any.whl",
+      "source_sha256": "81f848f2904515d8cd359cc611faba817598d2feaac4027b266aa3eda7b3dde5"
+    },
+    {
+      "name": "intervaltree",
+      "version": "3.1.0",
+      "source": "https://files.pythonhosted.org/packages/50/fb/396d568039d21344639db96d940d40eb62befe704ef849b27949ded5c3bb/intervaltree-3.1.0.tar.gz",
+      "source_sha256": "902b1b88936918f9b2a19e0e5eb7ccb430ae45cde4f39ea4b36932920d33952d"
+    },
+    {
+      "name": "m2c",
+      "version": "0.1.0",
+      "source": "https://github.com/matt-kempster/m2c/archive/c632946b8cfbe8fce442b522dba92dfa72f1f317.tar.gz",
+      "commit": "c632946b8cfbe8fce442b522dba92dfa72f1f317",
+      "source_archive_sha256": "b95b6eabd4c879292b896120cbf8e2bb8aed9700cd83d45e964f145f99be47e2"
+    },
+    {
+      "name": "n64img",
+      "version": "0.3.3",
+      "source": "https://files.pythonhosted.org/packages/87/6d/9480bcb7a31d6e96a0a8923c9b64812db0e480921bc988fcbfbce3ddf7a4/n64img-0.3.3-py3-none-any.whl",
+      "source_sha256": "5db569e3300f3404b875a319822221704ffaf7c1d8f1db874b85702a16947921"
+    },
+    {
+      "name": "pygfxd",
+      "version": "1.0.5",
+      "source": "https://files.pythonhosted.org/packages/a2/11/2478b82ec6c417de67065ace06a866c3c869561eab273fbcbccb12ea49d2/pygfxd-1.0.5-cp312-cp312-macosx_11_0_arm64.whl",
+      "source_sha256": "9bcce06f4c479aa1168a2f869526a67f0fffbb6fa678ada9b2e9501488b10700"
+    },
+    {
+      "name": "pylibyaml",
+      "version": "0.1.0",
+      "source": "https://files.pythonhosted.org/packages/c9/1a/3ae773a0d4cc0b787d1b7307786c666de0729df2c4159ec964e8ba45d06d/pylibyaml-0.1.0.tar.gz",
+      "source_sha256": "3b58dea061903c04689e35fab63ec149f7cf5e82f0808bd3425fb3ab3950623e"
+    },
+    {
+      "name": "pypng",
+      "version": "0.20220715.0",
+      "source": "https://files.pythonhosted.org/packages/3e/b9/3766cc361d93edb2ce81e2e1f87dd98f314d7d513877a342d31b30741680/pypng-0.20220715.0-py3-none-any.whl",
+      "source_sha256": "4a43e969b8f5aaafb2a415536c1a8ec7e341cd6a3f957fd5b5f32a4cfeed902c"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3",
+      "source": "https://files.pythonhosted.org/packages/89/a0/6cf41a19a1f2f3feab0e9c0b74134aa2ce6849093d5517a0c550fe37a648/pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl",
+      "source_sha256": "fc09d0aa354569bc501d4e787133afc08552722d3ab34836a80547331bb5d4a0"
+    },
+    {
+      "name": "rabbitizer",
+      "version": "1.16.2",
+      "source": "https://files.pythonhosted.org/packages/3b/8e/ea4181bca02e34d04bd19875c4759ebb4f22c7ec5a97a105ecaa38885dac/rabbitizer-1.16.2-cp34-abi3-macosx_11_0_arm64.whl",
+      "source_sha256": "7b7a7f26b82317c57ab59895924bac66b33e0598e9f367eab6bf00909fdb6e22"
+    },
+    {
+      "name": "sortedcontainers",
+      "version": "2.4.0",
+      "source": "https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl",
+      "source_sha256": "a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0"
+    },
+    {
+      "name": "spimdisasm",
+      "version": "1.42.4",
+      "source": "https://files.pythonhosted.org/packages/3f/c4/20a1e2966a536c3ab3882acec2c42a08c0f8a06c5ec906c51c886363c0bc/spimdisasm-1.42.4-py3-none-any.whl",
+      "source_sha256": "816111a7d80a9037029a8fff0b12eec5a55358a52407f85498aa9b14e9e69a5f"
+    },
+    {
+      "name": "splat64",
+      "version": "0.50.1",
+      "source": "https://files.pythonhosted.org/packages/fc/45/c8a08b75dfaf7917ec861030233532126f9adfc60c16538c44f0b19c5c8c/splat64-0.50.1-py3-none-any.whl",
+      "source_sha256": "0d9694b3534f3b1bd6b335ca9f9f34d5abea47fca4e86020727b9b24ad6e9de4"
+    },
+    {
+      "name": "tqdm",
+      "version": "4.67.1",
+      "source": "https://files.pythonhosted.org/packages/d0/30/dc54f88dd4a2b5dc8a0279bdd7270e735851848b762aeb1c1184ed1f6b14/tqdm-4.67.1-py3-none-any.whl",
+      "source_sha256": "26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2"
+    }
+  ],
+  "limits": "Download hashes describe artifacts in this tested install. Other hosts may need different wheels. Build-system dependencies are not included in this record."
+}

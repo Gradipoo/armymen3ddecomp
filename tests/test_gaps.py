@@ -63,6 +63,25 @@ class GapTests(unittest.TestCase):
         self.assertIn("80020000 missing", uncited)
         self.assertNotIn("80010000", uncited)
 
+    def test_address_inside_longer_hex_is_cited(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            re_dir = root / "docs" / "research" / "re"
+            re_dir.mkdir(parents=True)
+            (re_dir / "game-functions.tsv").write_text(
+                "address\tsize\tname\n80010000\t16\tcited\n80020000\t32\tmissing\n",
+                encoding="utf-8",
+            )
+            (root / "docs" / "research" / "note.md").write_text(
+                "token 180010000 end\n",
+                encoding="utf-8",
+            )
+            rc, text = run(root)
+        self.assertEqual(rc, 0)
+        uncited = text.split("uncited:", 1)[1]
+        self.assertNotIn("80010000", uncited)
+        self.assertIn("80020000 missing", uncited)
+
     def test_limit_and_missing_tsv(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

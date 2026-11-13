@@ -13,11 +13,15 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MARKER = "// gap:"
+# A cited address is 8 hex digits. Overlaps count, so 80010000 inside
+# 180010000 is still a citation. One pass replaces a search per function.
+_ADDR_WINDOW = re.compile(r"(?=([0-9a-f]{8}))")
 SOURCE_SUFFIXES = {".c", ".h", ".cpp", ".hpp", ".cc", ".hh", ".cxx", ".hxx", ".md"}
 SKIP_NAMES = {"army men 3d (usa)", ".git", "__pycache__", "build"}
 TSV_REL = Path("docs") / "research" / "re" / "game-functions.tsv"
@@ -109,18 +113,22 @@ def _citation_text(root: Path, tsv: Path) -> str:
     return "\n".join(chunks).lower()
 
 
+def _cited_addresses(haystack: str) -> set[str]:
+    return set(_ADDR_WINDOW.findall(haystack))
+
+
 def _uncited(root: Path) -> list[str] | None:
     tsv = root / TSV_REL
     if not tsv.is_file():
         return None
-    haystack = _citation_text(root, tsv)
+    cited = _cited_addresses(_citation_text(root, tsv))
     missing: list[str] = []
     seen: set[str] = set()
     for addr, name in _load_functions(tsv):
         if addr in seen:
             continue
         seen.add(addr)
-        if addr not in haystack:
+        if addr not in cited:
             missing.append(f"{addr} {name}")
     return missing
 

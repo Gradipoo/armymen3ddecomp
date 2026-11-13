@@ -8,7 +8,8 @@
 - The USA disc is local only. It is the folder `Army Men 3D (USA)/`. It stays untracked.
 - Reference is the PS1 USA release, serial SLUS-00491. The project is not affiliated with 3DO.
 - Our code is GPL-3.0-or-later. Full terms are in `LICENSE`. Context is in `LEGAL.md`.
-- Tool interface, Python 3 standard library: `python3 tools/disc.py`, `python3 tools/exe_info.py`, `python3 tools/ghidra/import.py`, `python3 tools/gaps.py`, `python3 tools/pr_guard.py`.
+- Tool interface, Python 3 standard library: `python3 tools/disc.py`, `python3 tools/exe_info.py`, `python3 tools/ghidra/import.py`, `python3 tools/gaps.py`, `python3 tools/boot_slice.py`, `python3 tools/pr_guard.py`.
+- `python3 tools/boot_slice.py EXE --start ADDRESS` writes one boot slice to `build/boot-slice.txt`. It skips SDK, BIOS A/B/C, and addresses that already have a call note. A known branch is followed. A stored word can satisfy a later `lw` (`mem`). File bytes are not live memory. `word_fill` and `bzero` hide that range. `--max N` raises the 64-instruction cap for the local report only. `--ra VALUE` is kept across an `sw` and `lw` through `sp`. An unnamed target inside the executable is entered. `jr` back to the return address resumes the caller. A named call is not entered. An unknown branch stops.
 - Disc path comes from the argument or `AM3D_DISC`. Extracts go to `build/disc/`. Ghidra project goes to `tools/ghidra/project/`. One-function C goes under `build/ghidra/`. Function facts go in `docs/research/re/game-functions.tsv` (address, size, name).
 - Mixed-mode discs list CDDA files at LBAs past track 1. `disc.py` skips those extents and extracts the ISO files that fit in the data bin.
 - The program builds with CMake and no third-party libraries, on Linux, macOS, and Windows: `cmake -S . -B build && cmake --build build`.

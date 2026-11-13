@@ -1,0 +1,4 @@
+address	category	status	note	source	verification
+80076164	game	implemented	docs/research/re/display-environment-layout.md	components/exe/display_buffers.cpp	""
+80076274	game	implemented	docs/research/re/call-80076274.md	components/exe/display_fill.cpp	""
+800763e0	game	implemented	docs/research/re/call-8007641c-second.md	components/exe/display_clear.cpp	""

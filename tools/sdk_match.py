@@ -104,14 +104,25 @@ def names_in_text(load: int, text: bytes, rows: list[tuple[int, str]]) -> list[t
 
 
 def scan(load: int, text: bytes, patterns: list[tuple[str, bytes]]) -> list[tuple[int, str]]:
-    hits: list[tuple[int, str]] = []
-    for index in range(0, len(text), STEP):
-        for name, pat in patterns:
-            end = index + len(pat)
-            if end <= len(text) and text[index:end] == pat:
-                # file_off = 0x800 + (vaddr - load), so vaddr = load + index.
-                hits.append(((load + index) & 0xFFFFFFFF, name))
-    return hits
+    # Byte search, then keep the same 4-byte alignment as the word walk.
+    # Lower address first. Pattern-table order when two hits share an address.
+    found: list[tuple[int, int, str]] = []
+    limit = len(text)
+    for order, (name, pat) in enumerate(patterns):
+        start = 0
+        while True:
+            index = text.find(pat, start)
+            if index < 0 or index >= limit:
+                break
+            mis = index % STEP
+            if mis == 0:
+                found.append((index, order, name))
+                start = index + STEP
+            else:
+                start = index + (STEP - mis)
+    found.sort()
+    # file_off = 0x800 + (vaddr - load), so vaddr = load + index.
+    return [((load + index) & 0xFFFFFFFF, name) for index, _order, name in found]
 
 
 def main(argv: list[str] | None = None) -> int:
