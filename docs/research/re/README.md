@@ -9,6 +9,7 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [deviations.md](deviations.md) | Keyboard, server browser, and mods. Not started. |
 | [exe-header.md](exe-header.md) | PS-X EXE header at `0x8007f9f8`. |
 | [hardware.md](hardware.md) | Scratchpad `0x1f800000` through `0x1f8003ff`, BIOS `0x1fc00000`, RAM top `0x80200000`, GPU `0x1f801814`. |
+| [bios.md](bios.md) | A at `0xa0`, B at `0xb0`, C at `0xc0`. Offset `0x129` is unnamed. |
 | [sdk.md](sdk.md) | Named SDK hits: `word_fill` at `0x8007faf8`, `byte_compare` at `0x8007fb1c`, `gpu_store` at `0x8008824c`. |
 | [entry.md](entry.md) | First block at `0x8007f9f8`. The rest of the body is not traced. |
 | [entry-call.md](entry-call.md) | First block at `0x8007faf8`. The fall-through is in [entry-loop.md](entry-loop.md). |

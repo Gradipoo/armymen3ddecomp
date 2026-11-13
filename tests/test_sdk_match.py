@@ -84,6 +84,27 @@ class SdkMatchTests(unittest.TestCase):
         self.assertNotEqual(rc, 0)
         self.assertIn("truncated", stderr.getvalue())
 
+    def test_name_inside_text_is_printed(self):
+        load = 0x80030000
+        text = b"\x00" * 16
+        with tempfile.TemporaryDirectory() as tmp:
+            exe = Path(tmp) / "SLUS"
+            exe.write_bytes(make_exe(0x80012345, 0x8002ABCD, load, text))
+            names = Path(tmp) / "names.txt"
+            names.write_text(f"0x{load:08x} CdInit\n0x80010000 absent\n")
+            old = MATCH.NAME_TABLE
+            MATCH.NAME_TABLE = names
+            try:
+                stdout = io.StringIO()
+                stderr = io.StringIO()
+                with redirect_stdout(stdout), redirect_stderr(stderr):
+                    rc = MATCH.main([str(exe)])
+            finally:
+                MATCH.NAME_TABLE = old
+        self.assertEqual(rc, 0)
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertEqual(stdout.getvalue(), f"0x{load:08x} CdInit\n")
+
     def test_missing_file_exits_nonzero(self):
         with tempfile.TemporaryDirectory() as tmp:
             missing = Path(tmp) / "missing"
