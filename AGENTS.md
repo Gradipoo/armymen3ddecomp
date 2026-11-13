@@ -44,7 +44,7 @@ If `python3 tools/sdk_match.py` names the target of a jal or jalr, the next rese
 
 One note covers one function: from its entry along this boot until jr ra, the first unnamed jal or jalr, or 64 instructions, whichever comes first. If `python3 tools/sdk_match.py` or the BIOS table in `docs/research/re/bios.md` names the target, the note records the name, the arguments, and the return address, and does not enter that body. The next note is the callee when the call is unnamed, or the next instruction of the caller when the call is named. Existing block notes stay. Do not rewrite them.
 
-The last block note is `docs/research/re/call-80086e7c.md`. gpu_store returned v0 as 0x5. The bne at 0x80086e88 was taken. This boot next goes to 0x80086ef0. The first function-sized note is the function that contains 0x80086ef0.
+The last block note is `docs/research/re/call-800761dc.md`. PutDispEnv returned to 0x800761dc and that v0 was not read. jr ra at 0x8007622c returns through the saved ra. This boot next goes to 0x80076414.
 
 ## Checks
 
