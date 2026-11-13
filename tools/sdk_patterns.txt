@@ -1,0 +1,5 @@
+# Psy-Q style startup. Short unique prefixes.
+# name hex
+word_fill 2b40850005000810
+byte_compare 000082900000a390
+gpu_store 0b80023cd076428c00000000000044

@@ -38,6 +38,12 @@ List open gaps with `python tools/gaps.py`.
 
 Close a gap by writing our code and a research note that cites the address. Leave the raw Ghidra C under `build/ghidra/`.
 
+## Named calls
+
+If `python3 tools/sdk_match.py` names the target of a jal or jalr, the next research note records the name, the arguments, and the return address. It does not disassemble that body again.
+
+The next boot address after the current trace is the return at 0x80086e7c, which calls the already named function at 0x8008824c.
+
 ## Checks
 
 Run `python tools/pr_guard.py` before you call a change done. Do not weaken `pr_guard`.
