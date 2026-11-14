@@ -116,6 +116,10 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-800879e8.md](call-800879e8.md) | `a0` is not zero, so `bne` is taken. The four source bytes are 0. `jr` returns `0xe2000000` to `0x800876a4`. |
 | [call-800876a4.md](call-800876a4.md) | Stores `0xe2000000` and `0xe6000000`, takes the byte-0 branch, stores byte 6 at `0x800e160f`, and returns to `0x80086c88`. |
 | [call-80086c88.md](call-80086c88.md) | Stores `0x06ffffff` at `0x800e160c` and `jalr`s the word at `0x800b7588`. That target is unnamed. |
+| [call-80088360.md](call-80088360.md) | Saves the draw packet pointer and calls unnamed `0x80088afc`. `a1` stays `0x800e160c`. |
+| [call-80088afc.md](call-80088afc.md) | Calls `VSync` with `a0` `-1`. `ra` becomes `0x80088b0c`. The body is not entered. |
+| [call-80088b0c.md](call-80088b0c.md) | Stores the `VSync` result plus `0xf0` at `0x800b7704` and 0 at `0x800b7708`, then returns to `0x8008838c`. |
+| [call-8008838c.md](call-8008838c.md) | Jumps to `0x800883ac` and compares the words at `0x800b76f0` and `0x800b76f4`. The side is unknown. |
 | [call-800761dc.md](call-800761dc.md) | Block at `0x800761dc` after `PutDispEnv` returns. The instruction there does not read `v0`. It sets `a0` to `0x800e15f0` and calls `SetDefDrawEnv`. `a1` and `a2` are words this note does not quote. `a3` is `0x200` and the word at `0x10(sp)` is `0xf0`. `ra` becomes `0x80076218`. The body is not entered. It then calls `PutDrawEnv` with `a0` set from `s0` (`0x800e15f0`). `ra` becomes `0x80076220`. That body is not entered. `jr` returns through the saved `ra`. `v0` is unknown. Control goes to `0x80076414`. |
 | [call-80076414.md](call-80076414.md) | Next boot call. Argument zero, unnamed target, return address recorded. |
 | [call-80076274.md](call-80076274.md) | Display fill packet, named SDK calls, our implementation, and first compiler experiment. |
