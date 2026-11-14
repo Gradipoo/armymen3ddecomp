@@ -374,7 +374,19 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-8005c1c4-2.md](call-8005c1c4-2.md) | Second `CdControlB` with `a0` 2. The return is in [call-8005c1d4-2.md](call-8005c1d4-2.md). |
 | [call-8005c1d4-2.md](call-8005c1d4-2.md) | The second hit reads `v0` 1. `jal` calls `0x800818cc`. The return is in [call-8005c1e8-2.md](call-8005c1e8-2.md). |
 | [call-8005c1e8-2.md](call-8005c1e8-2.md) | The second hit reads `v0` `0xa0`. `bne` is taken. `jal` calls `CdRead` with `a0` 0. The return is in [call-8005c224-2.md](call-8005c224-2.md). |
-| [call-8005c224-2.md](call-8005c224-2.md) | The second `CdRead` returns 1. `jal` calls `CdReadSync` with `a0` 0 and `a1` 0. The return is not traced. |
+| [call-8005c224-2.md](call-8005c224-2.md) | The second `CdRead` returns 1. `jal` calls `CdReadSync` with `a0` 0 and `a1` 0. The return is in [call-8005c238-2.md](call-8005c238-2.md). |
+| [call-8005c238-2.md](call-8005c238-2.md) | The second `CdReadSync` returns 0. `v0` leaves as 1. `jr` returns to `0x8005c5e8`. |
+| [call-8005c5e8.md](call-8005c5e8.md) | The record at `0x800e54e0` has length `0x30` and flag 0. `s1` becomes `0x30`. Control returns to `0x8005c620`. |
+| [call-8005c620.md](call-8005c620.md) | The record at `0x800e5510` has length `0x30` and flag 1. `s1` becomes `0x60`. Control returns to `0x8005c620`. |
+| [call-8005c620-2.md](call-8005c620-2.md) | The record at `0x800e5540` has length `0x3e` and flag `0x43`. `jal` calls `0x8005c254`. The entry is in [call-8005c254-2.md](call-8005c254-2.md). |
+| [call-8005c254-2.md](call-8005c254-2.md) | The name is `COPYRITE.TXT;1`. Stops after 64 instructions at `0x8005c374`. The next store is in [call-8005c378.md](call-8005c378.md). |
+| [call-8005c378.md](call-8005c378.md) | Continues the name copy. The next compare is in [call-8005c364.md](call-8005c364.md). |
+| [call-8005c364.md](call-8005c364.md) | Continues the name copy. The next delay is in [call-8005c334.md](call-8005c334.md). |
+| [call-8005c334.md](call-8005c334.md) | Continues the name copy. The next compare is in [call-8005c330.md](call-8005c330.md). |
+| [call-8005c330.md](call-8005c330.md) | Continues the name copy. The next delay is in [call-8005c334-2.md](call-8005c334-2.md). |
+| [call-8005c334-2.md](call-8005c334-2.md) | Stores `COPYRITE.TXT` and calls `0x80076508`. The arrival is in [call-80076508-20.md](call-80076508-20.md). |
+| [call-80076508-20.md](call-80076508-20.md) | The first byte is `0x43`. `jal` calls `tolower`. The return is in [call-80076548-2.md](call-80076548-2.md). |
+| [call-80076548-2.md](call-80076548-2.md) | `tolower` returns `0x63`. The next byte is `0x4f`. `jal` calls `tolower` again. The return is not traced. |
 | [call-800252ac.md](call-800252ac.md) | Block at `0x800252ac` after the return from `0x8007a6dc`. The epilogue does not write `v0`. The fall-through compare left `v0` at 0. `lui` and the delay slot set `a0` to `0xdeadbeef`. `jal` calls `0x8007c334`. The callee's first block is in [call-8007c334.md](call-8007c334.md). |
 | [call-8007c334.md](call-8007c334.md) | Block at `0x8007c334` after the `jal` at `0x800252b0`. `a0` is `0xdeadbeef`. It stores that word at `0x34(gp)` and `0x38(gp)`, which are `0x800c5458` and `0x800c545c`. `jr` returns through `ra`. The delay slot is `nop`. Control goes to `0x800252b8`. That block is in [call-800252b8.md](call-800252b8.md). |
 | [call-800252b8.md](call-800252b8.md) | Block at `0x800252b8` after the return from `0x8007c334`. `v0` arrives as 0 and is not read. The block writes constants through `s1` (`0x8009f820`) and writes 3 at that base through `s0`. `jal` calls `0x80076254`. The delay slot stores the last `v0`, `0x800cf118`, at `0x998(s1)`. The callee's first block is in [call-80076254.md](call-80076254.md). |
