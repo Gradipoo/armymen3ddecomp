@@ -101,6 +101,10 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-80087078.md](call-80087078.md) | Width `0x200` selects table index 3. The halfwords at `0x800b76a8` and `0x800b76aa` are `0x0267` and `0x0c67`. The cap stops at `0x8008720c` with `v0` at 1. |
 | [call-80087210.md](call-80087210.md) | Builds GPU words `0x06c67267` and `0x07040810` and calls `gpu_store` for each. Then `jal` calls unnamed `0x8007f598` with length `0x14`. |
 | [call-8007f598.md](call-8007f598.md) | Copies 20 bytes from `0x800e15dc` to `0x800b7634`. The first word is the unquoted display x and y. The next word is `0x00f00200`. `jr` returns to `0x800872d4`. |
+| [call-800872d4.md](call-800872d4.md) | Epilogue of `PutDispEnv`. It replaces the copy's `v0` with `s1` (`0x800e15dc`), reloads the saved registers, and `jr` returns to `0x800761dc`. |
+| [call-8008aafc.md](call-8008aafc.md) | `SetDefDrawEnv` writes the draw environment at `0x800e15f0`. The first halfword is 0 and the next is `0xf0`. `jr` returns to `0x80076218` with `v0` as `0x800e15f0`. |
+| [call-80086c2c.md](call-80086c2c.md) | `PutDrawEnv` takes the byte-0 branch and calls unnamed `0x8008760c` with `a0` `0x800e160c` and `a1` `0x800e15f0`. |
+| [call-8008760c.md](call-8008760c.md) | Loads draw-env halfwords 0 and `0xf0` and calls unnamed `0x8008789c`. `ra` becomes `0x80087634`. |
 | [call-800761dc.md](call-800761dc.md) | Block at `0x800761dc` after `PutDispEnv` returns. The instruction there does not read `v0`. It sets `a0` to `0x800e15f0` and calls `SetDefDrawEnv`. `a1` and `a2` are words this note does not quote. `a3` is `0x200` and the word at `0x10(sp)` is `0xf0`. `ra` becomes `0x80076218`. The body is not entered. It then calls `PutDrawEnv` with `a0` set from `s0` (`0x800e15f0`). `ra` becomes `0x80076220`. That body is not entered. `jr` returns through the saved `ra`. `v0` is unknown. Control goes to `0x80076414`. |
 | [call-80076414.md](call-80076414.md) | Next boot call. Argument zero, unnamed target, return address recorded. |
 | [call-80076274.md](call-80076274.md) | Display fill packet, named SDK calls, our implementation, and first compiler experiment. |
