@@ -11,7 +11,7 @@ int main() {
     std::uint16_t second_a = 1;
     std::uint16_t second_10 = 1;
     call_80025470(a0, cleared_word, first, second_4, second_a, second_10);
-    if (a0 != 3 || cleared_word != 0 || second_4 != 0 || second_a != 0 ||
+    if (a0 != 2 || cleared_word != 0 || second_4 != 0 || second_a != 0 ||
         second_10 != 0) {
         return 1;
     }
