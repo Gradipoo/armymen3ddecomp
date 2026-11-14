@@ -9,7 +9,8 @@ void call_8002553c(std::uint32_t& a0, std::uint32_t& s0) {
     s0 = 0x8009f444u;
     a0 = s0;
     std::uint32_t a1 = 1;
-    call_80063668(a1, a0);
+    std::uint8_t copied[9];
+    call_80063668(copied, a1, a0);
 }
 
 }
