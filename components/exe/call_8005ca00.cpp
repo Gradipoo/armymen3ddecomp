@@ -5,6 +5,12 @@ std::uint32_t toupper(std::uint32_t byte) {
     if (byte == 'l') {
         return 'L';
     }
+    if (byte == 'e') {
+        return 'E';
+    }
+    if (byte == 'm') {
+        return 'M';
+    }
     return byte;
 }
 const std::uint8_t* call_8005ca00(const std::uint8_t* text) {
