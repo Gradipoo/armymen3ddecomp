@@ -3,7 +3,7 @@
 
 namespace am3d::exe {
 
-// Clear the listed words and return the first handler address.
+// Clear the listed words, call the second 0x80075198 entry, and return that address.
 unsigned call_80062474(unsigned* slot);
 
 }
