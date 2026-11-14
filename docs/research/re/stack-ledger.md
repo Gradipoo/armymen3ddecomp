@@ -56,3 +56,5 @@ The same `a1` computed from the still-open `0x80010b0c`, without the three pops,
 `call-80063ed8-17.md` subtracts `0x38` from that frame. `sp` is `0x80010bac`. That frame stays open at `call-80076508-17.md`. Its saved `ra` is `0x8006591c`.
 
 `call-80063f18-17.md` adds `0x38`. `sp` is `0x80010be4`. The frame at `0x80063ed8` closes. The frame at `0x80065894` stays open. Its saved `ra` stays `0x800255ec`.
+
+`call-80062e0c.md` subtracts `0x68` from the `0x80065894` frame. `sp` is `0x80010b7c`. That frame stays open. Its saved `ra` is `0x80065998`.
