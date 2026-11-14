@@ -14,4 +14,4 @@ After the delay slot, control goes to `0x800302a4`. The body at `0x800302a4` is 
 
 ## Our code
 
-`components/exe/call_8002fc2c.cpp` stores `0x800c005c` at offset `0x68` of the object. It does not enter `0x800302a4`. That call stays marked in the source. A host check covers the store and leaves the other object bytes unchanged. It does not execute the retail callee. No ledger row is added.
+`components/exe/call_8002fc2c.cpp` stores `0x800c005c` at offset `0x68` of the object. It then calls `call_800302a4`. The return at `0x8002fc54` is not traced. No ledger row is added.

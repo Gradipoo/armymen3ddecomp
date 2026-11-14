@@ -1,15 +1,22 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_80010cc4.hpp"
 
+#include "call_8002fc2c.hpp"
+
 #include <array>
 #include <cstdint>
 
 int main() {
-    std::array<std::uint8_t, 4> object{};
+    std::array<std::uint8_t, am3d::exe::kCall8002fc2cBytes> object{};
     object.fill(0x11);
     am3d::exe::call_80010cc4(object.data(), 0x22u);
-    for (std::uint8_t byte : object) {
-        if (byte != 0x11) return 1;
+    for (std::size_t i = 0; i < object.size(); ++i) {
+        std::uint8_t expect = 0x11;
+        if (i == 0x68) expect = 0x5c;
+        if (i == 0x69) expect = 0x00;
+        if (i == 0x6a) expect = 0x0c;
+        if (i == 0x6b) expect = 0x80;
+        if (object[i] != expect) return 1;
     }
     return 0;
 }
