@@ -23,7 +23,11 @@ void call_80062434(std::uint8_t* dest, std::uint32_t& a0, std::uint32_t source) 
     unsigned first = 1;
     unsigned second = 1;
     unsigned third = 0;
-    call_80061f80(parsed, &index, &first, &second, &third);
+    unsigned slot[15];
+    for (int i = 0; i < 15; ++i) {
+        slot[i] = 1;
+    }
+    call_80061f80(parsed, &index, &first, &second, &third, slot);
 }
 
 }

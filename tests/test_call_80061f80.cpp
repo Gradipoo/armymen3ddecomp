@@ -7,7 +7,8 @@ int main() {
     unsigned first = 1;
     unsigned second = 1;
     unsigned third = 0;
-    am3d::exe::call_80061f80(dest, &index, &first, &second, &third);
+    unsigned slot[15] = {};
+    am3d::exe::call_80061f80(dest, &index, &first, &second, &third, slot);
     unsigned char expect[9] = {0x6c, 0x65, 0x67, 0x61, 0x6c, 0x2e, 0x62, 0x67, 0x00};
     for (int i = 0; i < 9; ++i) {
         if (dest[i] != expect[i]) {
