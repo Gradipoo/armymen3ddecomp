@@ -58,7 +58,7 @@ The report names a target from `tools/sdk_names.txt`, a `tools/sdk_patterns.txt`
 
 A known `beq`, `bne`, `blez`, `bgtz`, `bltz`, or `bgez` is followed. An unknown branch stops. Do not guess the taken side. A word marked `mem` was stored earlier in the report. `word_fill` and `bzero` hide their range. Another skipped call may still have written that address. Check before you treat `mem` as live. Do not read a word from the executable file as the live value. A fill can leave 0 where the file still holds the original word. Measurements are in [docs/research/decomp-speed.md](docs/research/decomp-speed.md).
 
-The last block note is `docs/research/re/call-80022fd4.md`. `jal` at `0x80022fdc` targets `0x8007f920`. `a0` is `0x8009fd30`. `a1` is 0. `a2` is `0x28`. `ra` leaves as `0x80022fe4`. The next note is `call-8007f920-10.md`.
+The last block note is `docs/research/re/call-8007f920-10.md`. It stores 0 in ten words from `0x8009fd30` through `0x8009fd54` and returns to `0x80022fe4`. `v0` is `0x8009fd30`. `s0` is `0x8009f8c4`. `s1` is `0x8009fc44`. The frame at `0x80022f1c` stays open. Its saved `ra` stays `0x80023914`. The next note is `0x80022fe4`.
 
 ## Visible screen
 
