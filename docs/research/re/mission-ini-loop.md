@@ -9,3 +9,5 @@
 The loop leaves only if `s4` is 0 or `s1` is not 0 at `0x80023818`. `s4` changes only if a later path returns without restoring the saved 1. `s1` changes only if `0x80063b34` returns a value other than 0. That return is 0 while the word at `0x800e152c` stays 0. The epilogue at `0x80023828` is the exit address. This boot does not reach it. No exit note is written.
 
 The frames at `0x80023794`, `0x80023848`, and `0x800251f8` stay open. Their saved `ra` values stay `0x8002390c`, `0x800255d8`, and `0x8007faec`.
+
+`0x80063b34` opens by `0x88`. The traced returns pop that with `addiu sp, sp, 0x88` at `0x80063ed4` before `0x800237d0`. They do not pop it before `0x8002390c`, because this boot does not reach `0x8002390c`. `call-80063b34-3.md` opens a third frame of `0x88`. `call-80062434-4.md` is still inside it, with its own frame of `0x40` from `call-80062434.md`. That third `0x88` has no pop note. `0x80060aac` is the earlier frame of `0x18` closed by `call-80060b3c.md`. It is not this `0x88` frame.
