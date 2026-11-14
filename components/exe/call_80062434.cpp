@@ -18,7 +18,7 @@ void call_80062434(std::uint8_t* dest, std::uint32_t& a0, std::uint32_t source) 
     dest[7] = 0x67;
     dest[8] = 0;
     a0 = source;
-    unsigned char parsed[4];
+    unsigned char parsed[9];
     int index = 0;
     call_80061f80(parsed, &index);
 }

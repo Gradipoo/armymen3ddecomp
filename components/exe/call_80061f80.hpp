@@ -3,7 +3,7 @@
 
 namespace am3d::exe {
 
-// Copy the first four bytes of the source and leave the index at 3.
+// Copy the nine source bytes. call-80061ff0.md writes the last five.
 void call_80061f80(unsigned char* dest, int* index);
 
 }
