@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_80010c90.hpp"
 
+#include "call_80010cc4.hpp"
+
 namespace am3d::exe {
 namespace {
 
@@ -27,8 +29,9 @@ void call_80010c90(std::uint8_t* object, std::uint32_t second) {
     const std::uint32_t field = load_le(object + kCall80010c90WordOffset);
     if (field != 0) {
         // gap: call 0x8001b298. a0 is the word at offset 0x74. a1 is the second argument. The return address is 0x80010cc4.
+        return;
     }
-    // gap: the tail at 0x80010cc4 is not traced.
+    call_80010cc4(object, second);
 }
 
 }
