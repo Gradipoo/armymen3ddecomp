@@ -1,0 +1,9 @@
+# Fourth arrival at 0x8007a6bc
+
+Traced fact from the USA PS-X EXE. Re-check on a disc you own with `python3 tools/entry_disasm.py build/disc/SLUS_004.91 --start 0x8007a6bc`. The executable and the listing stay in `build/`.
+
+The start address is `0x8007a6bc`. The `jr` in [call-80064430.md](call-80064430.md) returns here. On arrival `s0` is `0x8001000c`, `s1` is 5, and `s2` is `0x8001007c`. `v0` is `0x80064420`. The frame at `0x800251f8` stays open. Its saved `ra` stays `0x8007faec`. The stores in [call-8007a688-3.md](call-8007a688-3.md) are still live.
+
+`addiu` at `0x8007a6bc` makes `s0` `0x80010010`. That value is below `s2`, so `bne` at `0x8007a6c4` is taken. The delay slot copies `s0` into `a0`. `a0` is `0x80010010`.
+
+`jal` at `0x8007a660` targets `0x8007a540`. `ra` becomes `0x8007a668`. The delay slot copies `s2` into `a1`, so `a1` is `0x8001007c`. `s1` stays 5. This note does not enter the body. The next note is this entry. The caller return at `0x8007faec` is not traced.
