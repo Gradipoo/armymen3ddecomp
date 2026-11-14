@@ -11,6 +11,12 @@ std::uint32_t call_8007a4e4(std::uint32_t a0) {
     if (a0 == 0x8005bf80u) {
         return 0x800b3b68u;
     }
+    if (a0 == 0x8007c2dcu) {
+        return 0x800b5d30u;
+    }
+    if (a0 == 0x8007cb9cu) {
+        return 0x800b5da0u;
+    }
     return 0;
 }
 
