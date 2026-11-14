@@ -58,7 +58,7 @@ The report names a target from `tools/sdk_names.txt`, a `tools/sdk_patterns.txt`
 
 A known `beq`, `bne`, `blez`, `bgtz`, `bltz`, or `bgez` is followed. An unknown branch stops. Do not guess the taken side. A word marked `mem` was stored earlier in the report. `word_fill` and `bzero` hide their range. Another skipped call may still have written that address. Check before you treat `mem` as live. Do not read a word from the executable file as the live value. A fill can leave 0 where the file still holds the original word. Measurements are in [docs/research/decomp-speed.md](docs/research/decomp-speed.md).
 
-The last block note is `docs/research/re/call-00000000.md`. The `jalr` in `call-80095744.md` targets address 0. `a0` is 0. `ra` on entry would be `0x800957c8`. `python3 tools/boot_slice.py` rejects that start because address 0 is outside the text image. The note has no instructions. It does not state a return. The caller at `0x800957c8` stays untraced. The frames at 0x80095744, 0x80094f54, 0x80064588, and 0x800251f8 stay open. Their saved return addresses stay `0x80094f64`, `0x80064598`, `0x80025490`, and `0x8007faec`. The next note cannot start at address 0.
+The last block note is `docs/research/re/call-800957c8.md`. It resumes after the `jalr` in `call-80095744.md`. It loads `0x800be6e4` into `a0` and `0x800be6b4` into `v0`. Both words are 0. `jalr` targets address 0 again. The delay slot writes `0xf0` into `a0`. `ra` leaves as `0x800957e4`. The body at address 0 is not entered. The frames at 0x80095744, 0x80094f54, 0x80064588, and 0x800251f8 stay open. Their saved return addresses stay `0x80094f64`, `0x80064598`, `0x80025490`, and `0x8007faec`. The next note is `0x800957e4`.
 
 ## Visible screen
 
