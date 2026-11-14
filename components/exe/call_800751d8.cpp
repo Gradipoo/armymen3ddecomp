@@ -9,8 +9,11 @@ std::uint32_t call_800751d8(std::uint32_t a0, std::uint32_t a1, std::uint32_t& s
     if (a0 >= 0x11u) {
         return 0;
     }
+    if (a0 == 4u) {
+        return 1;
+    }
     if (a0 != 0) {
-        // gap: table slots other than the word at 0x800c3f10.
+        // gap: table slots other than index 0 and index 4.
         return 0;
     }
     saved_word = a1;
