@@ -46,3 +46,5 @@ The same `a1` computed from the still-open `0x80010b0c`, without the three pops,
 `call-80023674.md` is the epilogue of that `0x80022f1c` frame on the stated `sp`. It adds `0xb8`. `sp` returns to `0x80010bfc`. The mission frames at `call-80062434-4.md` stay open. This return does not pop them.
 
 `call-80023914.md` adds `0x18`. `sp` is `0x80010c14`. The frame at `0x80023848` closes. The frame at `0x800251f8` stays open. Its saved `ra` stays `0x8007faec`.
+
+`call-800255d8.md` calls `0x80045374` at that `sp`. `call-80045374.md` subtracts `0xd0`. `sp` is `0x80010b44`. That frame stays open. Its saved `ra` is `0x800255e4`.
