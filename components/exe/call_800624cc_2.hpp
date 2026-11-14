@@ -1,0 +1,9 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+#pragma once
+
+namespace am3d::exe {
+
+// A zero result calls the first handler with argument 5.
+unsigned call_800624cc_2(int result, int* argument);
+
+}
