@@ -26,4 +26,4 @@ The traced boot at `0x800237d0` keeps `s4` at 1 and `s1` at 0, so it calls `0x80
 
 The `sp` from that start is untrusted. `0x80063b34` opens with `addiu sp, sp, -0x88`. The returns in `call-80063b78.md` and `call-80063b78-2.md` pop that frame with `addiu sp, sp, 0x88` at `0x80063ed4` and resume `0x800237d0`. `call-80063b34-3.md` opens a third frame of `0x88`. No note pops it. `call-80062434-4.md` is still inside that frame, and `call-80062434.md` opened its own frame by `0x40`. `call-80023828.md` reads `0x24(sp)` as the saved `ra` of `0x80023794`. That slot is the `0x80023794` slot only after the `0x88` pop. `0x80060aac` is a separate frame of `0x18`. `call-80060b3c.md` pops it and returns to `0x80025478`. It is not the `0x88` frame, and it does not return through `0x80063b34`.
 
-Status: the exit address stays. Sean reopened the stack. `sp` at `0x8002390c` is not a traced value.
+Status: the exit address stays. Sean reopened the stack. [stack-ledger.md](stack-ledger.md) states `sp` at `0x8002390c` as `0x80010bfc` after the inner pops. The third `0x88` frame has not reached that pop.

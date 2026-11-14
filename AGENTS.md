@@ -58,7 +58,7 @@ The report names a target from `tools/sdk_names.txt`, a `tools/sdk_patterns.txt`
 
 A known `beq`, `bne`, `blez`, `bgtz`, `bltz`, or `bgez` is followed. An unknown branch stops. Do not guess the taken side. A word marked `mem` was stored earlier in the report. `word_fill` and `bzero` hide their range. Another skipped call may still have written that address. Check before you treat `mem` as live. Do not read a word from the executable file as the live value. A fill can leave 0 where the file still holds the original word. Measurements are in [docs/research/decomp-speed.md](docs/research/decomp-speed.md).
 
-The last block note is `docs/research/re/call-80063ed4.md`. The delay at `0x80063ed4` is `addiu sp, sp, 0x88`. That pop is the return in `call-80063b78.md` and `call-80063b78-2.md`. The third frame from `call-80063b34-3.md` has not reached it. The fourth entry in `call-80062434-4.md` is still open by `0x40`. The deviation at `0x80023828` does not state `sp`. `sp` at `0x8002390c` is not stated. `a1` at `0x800235b0` is not stated. Do not write `call-80063ed8-12.md` until that `sp` is stated. The unfinished caller is `call-80062434-4.md`.
+The last block note is `docs/research/re/stack-ledger.md`. `sp` at `0x8007fa00` is `0x80010c64`. `sp` at the jal in `call-80062434-4.md` is `0x80010b0c`. `sp` at `0x8002390c`, after the traced `0x40`, `0x88`, and `0x28` pops, is `0x80010bfc`. This boot has not reached that jal. `a1` at `0x800235b0` is `0x80010bbc` once `0x80022f1c` subtracts `0xb8`. That value is not zero. `call-80063ed8-12.md` is still unwritten. The unfinished caller is `call-80062434-4.md`.
 
 ## Visible screen
 
