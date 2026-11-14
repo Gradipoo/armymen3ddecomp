@@ -315,7 +315,19 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-80064568-3.md](call-80064568-3.md) | `s0` becomes 3 and the loop calls `0x80065348` with `a0` 3. The body is in [call-80065348-4.md](call-80065348-4.md). |
 | [call-80065348-4.md](call-80065348-4.md) | Writes the record at `0x800dd8bc` and returns to `0x80064568`. The next pass is in [call-80064568-4.md](call-80064568-4.md). |
 | [call-80064568-4.md](call-80064568-4.md) | `s0` becomes 4 and the loop calls `0x80065348` with `a0` 4. The body is in [call-80065348-5.md](call-80065348-5.md). |
-| [call-80065348-5.md](call-80065348-5.md) | Writes the record at `0x800dd938` and returns to `0x80064568`. The next pass is not traced. |
+| [call-80065348-5.md](call-80065348-5.md) | Writes the record at `0x800dd938` and returns to `0x80064568`. The next pass is in [call-80064568-5.md](call-80064568-5.md). |
+| [call-80064568-5.md](call-80064568-5.md) | `s0` becomes 5 and the loop calls `0x80065348` with `a0` 5. The body is in [call-80065348-6.md](call-80065348-6.md). |
+| [call-80065348-6.md](call-80065348-6.md) | Writes the record at `0x800dd9b4` and returns to `0x80064568`. The next pass is in [call-80064568-6.md](call-80064568-6.md). |
+| [call-80064568-6.md](call-80064568-6.md) | `s0` becomes 6 and the loop calls `0x80065348` with `a0` 6. The body is in [call-80065348-7.md](call-80065348-7.md). |
+| [call-80065348-7.md](call-80065348-7.md) | Writes the record at `0x800dda30` and returns to `0x80064568`. The next pass is in [call-80064568-7.md](call-80064568-7.md). |
+| [call-80064568-7.md](call-80064568-7.md) | `s0` becomes 7 and the loop calls `0x80065348` with `a0` 7. The body is in [call-80065348-8.md](call-80065348-8.md). |
+| [call-80065348-8.md](call-80065348-8.md) | Writes the record at `0x800ddaac` and returns to `0x80064568`. The exit is in [call-80064578.md](call-80064578.md). |
+| [call-80064578.md](call-80064578.md) | `s0` becomes 8, so the loop ends. Restores `s0` `0x80010050` and returns to `0x8007a6bc`. That arrival is in [call-8007a6bc-21.md](call-8007a6bc-21.md). |
+| [call-8007a6bc-21.md](call-8007a6bc-21.md) | Twenty-first arrival. `s0` becomes `0x80010054`. `s1` is 22. `jal` calls `0x8007a540`. The entry is in [call-8007a540-22.md](call-8007a540-22.md). |
+| [call-8007a540-22.md](call-8007a540-22.md) | Twenty-second entry. The list head is `0x8005bf80`. `jal` calls `0x8007a4e4`. The return is in [call-8007a5a4-66.md](call-8007a5a4-66.md). |
+| [call-8007a5a4-66.md](call-8007a5a4-66.md) | Offset 8 is 0 and the next list word is `0x80076500`, so that word is skipped. `s2` becomes `0x80010058`. The next lap is in [call-8007a570-54.md](call-8007a570-54.md). |
+| [call-8007a570-54.md](call-8007a570-54.md) | Cursor `0x80010058` holds `0x800b3b68`. The list head is `0x8007c4a4`. The return is in [call-8007a5a4-67.md](call-8007a5a4-67.md). |
+| [call-8007a5a4-67.md](call-8007a5a4-67.md) | Offset 8 is 18 and the next list word is 0, so `s3` becomes `0x80010058`. `jr` returns that cursor. The compare is not traced. |
 | [call-800252ac.md](call-800252ac.md) | Block at `0x800252ac` after the return from `0x8007a6dc`. The epilogue does not write `v0`. The fall-through compare left `v0` at 0. `lui` and the delay slot set `a0` to `0xdeadbeef`. `jal` calls `0x8007c334`. The callee's first block is in [call-8007c334.md](call-8007c334.md). |
 | [call-8007c334.md](call-8007c334.md) | Block at `0x8007c334` after the `jal` at `0x800252b0`. `a0` is `0xdeadbeef`. It stores that word at `0x34(gp)` and `0x38(gp)`, which are `0x800c5458` and `0x800c545c`. `jr` returns through `ra`. The delay slot is `nop`. Control goes to `0x800252b8`. That block is in [call-800252b8.md](call-800252b8.md). |
 | [call-800252b8.md](call-800252b8.md) | Block at `0x800252b8` after the return from `0x8007c334`. `v0` arrives as 0 and is not read. The block writes constants through `s1` (`0x8009f820`) and writes 3 at that base through `s0`. `jal` calls `0x80076254`. The delay slot stores the last `v0`, `0x800cf118`, at `0x998(s1)`. The callee's first block is in [call-80076254.md](call-80076254.md). |
