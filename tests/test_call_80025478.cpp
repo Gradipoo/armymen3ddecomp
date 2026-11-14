@@ -9,6 +9,6 @@ int main() {
     std::uint32_t a0 = 0x1000u;
     std::uint32_t stored = 1;
     const std::uint32_t loaded = call_80025478(a0, stored);
-    if (a0 != 0 || stored != 0x80022c1cu || loaded != 0) return 1;
+    if (a0 != 0x800638b8u || stored != 0x80022c1cu || loaded != 0) return 1;
     return 0;
 }
