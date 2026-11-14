@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_800621dc_2.hpp"
 
+#include "call_8005b3d4.hpp"
+
 namespace am3d::exe {
 
 std::uint32_t call_800621dc_2(std::uint32_t& counter, std::uint32_t& slot,
@@ -10,8 +12,8 @@ std::uint32_t call_800621dc_2(std::uint32_t& counter, std::uint32_t& slot,
     slot = handler;
     a0 = 0;
     counter += 1;
-    // gap: jalr through handler. On this entry that value is 0x8005b3d4.
-    // a0 is 0. a1 is 1. The return address is 0x80062238.
+    std::uint32_t word = 0;
+    (void)call_8005b3d4(word, 1);
     return handler;
 }
 
