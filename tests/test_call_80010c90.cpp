@@ -24,7 +24,7 @@ int main() {
 
     object[0x74] = 1;
     am3d::exe::call_80010c90(object.data(), 0x33);
-    if (object[0x68] != 0x68 || object[0x69] != 0xe7 || object[0x6a] != 0x0b || object[0x6b] != 0x80) {
+    if (object[0x68] != 0x5c || object[0x69] != 0x00 || object[0x6a] != 0x0c || object[0x6b] != 0x80) {
         return 2;
     }
     if (object[0x74] != 1) return 3;
