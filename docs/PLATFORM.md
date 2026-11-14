@@ -28,8 +28,12 @@ On a single-configuration host build:
 ```
 
 On Windows with a multi-configuration generator, use the executable in
-the selected configuration folder. The test opens a window, presents
-synthetic color bars, and exits after the requested number of frames.
+the selected configuration folder. The test opens a window and exits
+after the requested number of frames. When `build/disc/DATA/FRONT.TIM`
+is present, the window draws that 44 by 128 picture. The file stays
+under `build/`. The layout is recorded in
+[front-tim.md](research/re/front-tim.md). When the file is absent, the
+window presents synthetic color bars.
 A controller's D-pad moves the marker, its cross/A button changes the
 marker color, and Start ends the test. Closing the window also ends it.
 There are no keyboard game bindings. Keyboard play remains a future lane.
