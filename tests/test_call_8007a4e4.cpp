@@ -8,6 +8,12 @@ int main() {
     if (am3d::exe::call_8007a4e4(0x8005bf80u) != 0x800b3b68u) {
         return 1;
     }
+    if (am3d::exe::call_8007a4e4(0x8007c2dcu) != 0x800b5d30u) {
+        return 1;
+    }
+    if (am3d::exe::call_8007a4e4(0x8007cb9cu) != 0x800b5da0u) {
+        return 1;
+    }
     if (am3d::exe::call_8007a4e4(0) != 0) {
         return 1;
     }
