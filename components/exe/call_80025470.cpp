@@ -15,8 +15,12 @@ void call_80025470(std::uint32_t& a0, std::uint32_t& cleared_word, std::uint16_t
     std::uint16_t slot2 = 0;
     std::uint16_t slot8 = 0;
     std::uint16_t slot14 = 0;
+    std::uint32_t a1 = 0;
+    std::uint32_t a2 = 0;
+    std::uint32_t a3 = 0;
+    std::uint32_t s0 = 0x8009f510u;
     call_80060aac(a0, cleared_word, first, second_4, second_a, second_10, slot0, slot6,
-        slot12, slot2, slot8, slot14);
+        slot12, slot2, slot8, slot14, a1, a2, a3, s0);
 }
 
 }
