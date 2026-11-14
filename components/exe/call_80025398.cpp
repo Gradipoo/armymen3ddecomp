@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_80025398.hpp"
 
+#include "call_800253a4.hpp"
 #include "call_8007c03c.hpp"
 
 namespace am3d::exe {
@@ -11,6 +12,7 @@ void call_80025398(std::uint32_t& a0, std::uint32_t& a1) {
     a0 = 0x800c8518u;
     a1 = 0x900u;
     call_8007c03c(a0, a1);
+    call_800253a4(a0, a1);
 }
 
 }
