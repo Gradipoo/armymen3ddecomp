@@ -8,4 +8,4 @@ The forward lane from `0x80045418` is parked at `beq` `0x80061fe4` in [call-8006
 
 The open frames stay the frames in `call-80061f80-6.md`. `sp` is `0x80010aec`. The saved `ra` values stay `0x80062474`, `0x80062e34`, `0x80065998`, `0x800255ec`, and `0x8007faec`.
 
-`docs/research/re/deviations.md` pauses this forward lane. A later note does not start past `0x80061fe4` until the byte at address 0 is stated from a traced store, or Sean opens a new lane.
+`docs/research/re/deviations.md` parks this forward lane until a fresh boot leaves the count words at 0, or a cited store writes the byte at address 0. The retail MEMCARD path in that file is a separate lane. A later note does not start past `0x80061fe4`.

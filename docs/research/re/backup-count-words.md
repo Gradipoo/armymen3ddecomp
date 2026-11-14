@@ -15,4 +15,4 @@ No instruction uses the offset `-0x2914`. Nothing else stores `0x800dd6ec`.
 
 [call-80063b78.md](call-80063b78.md) and [call-80063b78-2.md](call-80063b78-2.md) take `beq v0, zero, 0x80063ea4`. The body at `0x80063b80` is not those entries, so they do not reach `0x80063c5c` or `0x80063e20`. [mission-ini-loop.md](mission-ini-loop.md) and [difficulty-suffix-loop.md](difficulty-suffix-loop.md) record the same return of 0. The `Backup_*` calls enter `0x80063ed8` with `a1` 0, load the two words, and return 0. They do not store them.
 
-The count stays 0 on this static boot. `beq` at `0x80063f30` stays taken. That does not state the byte at address 0, so `beq` at `0x80061fe4` stays unknown.
+The count stays 0 on this static boot. `beq` at `0x80063f30` stays taken. That does not state the byte at address 0, so `beq` at `0x80061fe4` stays unknown. [deviations.md](deviations.md) records retail boots that leave `0x800dd6e8` nonzero and enter `0x80062e0c` with `a0` `0x800e6cfc`. That path does not state this branch.
