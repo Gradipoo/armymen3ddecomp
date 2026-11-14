@@ -33,6 +33,13 @@ void FillVram::draw_prim(const exe::FillPacket& packet) {
     }
 }
 
+void FillVram::write_pixel(unsigned x, unsigned y, std::uint16_t rgb555) {
+    if (x >= width || y >= height) {
+        throw std::out_of_range("VRAM coordinate out of range");
+    }
+    pixels_[y * width + x] = static_cast<std::uint16_t>(rgb555 & 0x7fff);
+}
+
 std::uint16_t FillVram::pixel(unsigned x, unsigned y) const {
     if (x >= width || y >= height) {
         throw std::out_of_range("VRAM coordinate out of range");

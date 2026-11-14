@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "sdl_platform.hpp"
 #include "display_clear.hpp"
+#include "front_tim.hpp"
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include <vector>
 
 int main(int argc, char** argv) {
     try {
@@ -28,6 +31,13 @@ int main(int argc, char** argv) {
         am3d::exe::clear_display_buffers(0, display, host, vram);
         int x = 240, y = 112;
         int completed = 0;
+        const std::filesystem::path front_path = "build/disc/DATA/FRONT.TIM";
+        std::vector<std::uint8_t> front_bytes;
+        if (std::filesystem::is_regular_file(front_path)) {
+            std::ifstream in(front_path, std::ios::binary);
+            front_bytes.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
+            if (!in) throw std::runtime_error("could not read build/disc/DATA/FRONT.TIM");
+        }
         for (int frame = 0; frame < frames; ++frame) {
             const auto pad = host.poll();
             if (pad.quit || !(pad.buttons & (1u << 3))) break;
@@ -36,13 +46,21 @@ int main(int argc, char** argv) {
             if (!(pad.buttons & (1u << 7)) && x > 0) --x;
             if (!(pad.buttons & (1u << 5)) && x < 496) ++x;
             const auto drawing = am3d::exe::drawing_fill_state(display);
-            // gap: synthetic bars stand in for the first retail picture.
-            for (unsigned stripe = 0; stripe < 8; ++stripe) {
-                const auto color = (stripe & 1 ? 0x0000ffu : 0u) |
-                    (stripe & 2 ? 0x00ff00u : 0u) | (stripe & 4 ? 0xff0000u : 0u);
-                am3d::exe::fill_display(color,
-                    {drawing.origin_x, drawing.origin_y, static_cast<std::uint16_t>(stripe * 64), 0,
-                     static_cast<std::uint16_t>((stripe + 1) * 64), 240}, vram);
+            if (front_bytes.empty()) {
+                for (unsigned stripe = 0; stripe < 8; ++stripe) {
+                    const auto color = (stripe & 1 ? 0x0000ffu : 0u) |
+                        (stripe & 2 ? 0x00ff00u : 0u) | (stripe & 4 ? 0xff0000u : 0u);
+                    am3d::exe::fill_display(color,
+                        {drawing.origin_x, drawing.origin_y, static_cast<std::uint16_t>(stripe * 64), 0,
+                         static_cast<std::uint16_t>((stripe + 1) * 64), 240}, vram);
+                }
+            } else {
+                am3d::exe::fill_display(0,
+                    {drawing.origin_x, drawing.origin_y, 0, 0, 512, 240}, vram);
+                if (!am3d::platform::paint_front_tim(front_bytes.data(), front_bytes.size(),
+                        drawing.origin_x + 234, drawing.origin_y + 56, vram, nullptr)) {
+                    throw std::runtime_error("DATA/FRONT.TIM is not the measured 4-bit picture");
+                }
             }
             am3d::exe::fill_display((pad.buttons & (1u << 14)) ? 0xffffffu : 0x0000ffu,
                 {drawing.origin_x, drawing.origin_y, static_cast<std::uint16_t>(x), static_cast<std::uint16_t>(y),
@@ -56,7 +74,8 @@ int main(int argc, char** argv) {
             }
             host.wait_next_frame(std::chrono::nanoseconds(16666667));
         }
-        std::cout << "Platform test presented " << completed << " synthetic frames.\n";
+        std::cout << "Platform test presented " << completed
+                  << (front_bytes.empty() ? " synthetic frames.\n" : " frames from DATA/FRONT.TIM.\n");
         return 0;
     } catch (const std::exception& e) {
         std::cerr << "error: " << e.what() << '\n';

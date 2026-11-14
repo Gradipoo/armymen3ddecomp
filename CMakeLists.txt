@@ -46,7 +46,9 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_8002fb9c.cpp)
 target_include_directories(am3d_exe PUBLIC components/exe)
 
-add_library(am3d_platform_core STATIC components/platform/fill_vram.cpp)
+add_library(am3d_platform_core STATIC
+    components/platform/fill_vram.cpp
+    components/platform/front_tim.cpp)
 target_include_directories(am3d_platform_core PUBLIC components/platform)
 target_link_libraries(am3d_platform_core PUBLIC am3d_exe)
 
@@ -206,6 +208,9 @@ if(BUILD_TESTING)
     add_executable(test_fill_vram tests/test_fill_vram.cpp)
     target_link_libraries(test_fill_vram PRIVATE am3d_platform_core)
     add_test(NAME fill_vram COMMAND test_fill_vram)
+    add_executable(test_front_tim tests/test_front_tim.cpp)
+    target_link_libraries(test_front_tim PRIVATE am3d_platform_core)
+    add_test(NAME front_tim COMMAND test_front_tim)
     if(AM3D_WITH_SDL2)
         add_executable(test_sdl_platform tests/test_sdl_platform.cpp)
         target_link_libraries(test_sdl_platform PRIVATE am3d_platform_sdl2)
