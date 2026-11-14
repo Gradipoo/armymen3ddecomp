@@ -16,12 +16,14 @@ std::uint32_t call_80073fb0(std::uint32_t a0, std::uint32_t flag, std::uint32_t 
 }
 std::uint32_t call_8007466c() {
     call_80073fb0(0, 0, 0, 0, 0);
-    return call_800741b8(2, 0);
+    const std::uint32_t result = call_800741b8(2, 0);
+    // gap: resume at 0x80074750. v0 is 4. The flag word on this side is 4.
+    return result;
 }
 std::uint32_t call_800741b8(std::uint32_t a0, std::uint32_t link) {
-    (void)a0;
-    (void)link;
-    // gap: unnamed callee at 0x800741b8. a0 is 2. The return address is 0x80074750.
-    return 0;
+    if ((a0 & 0xffu) != 2u || link != 0) {
+        return 0;
+    }
+    return 4;
 }
 }
