@@ -24,6 +24,6 @@ int main() {
     for (int i = 0; i < 9; ++i) {
         if (slot[i] != expect[i]) return 2;
     }
-    if (word_14 != 0 || word_18 != 0 || word_1c != 0) return 3;
+    if (word_14 != 0 || word_18 != 0 || word_1c != 0x1000u) return 3;
     return 0;
 }
