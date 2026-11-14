@@ -19,5 +19,9 @@ int main() {
     object[am3d::exe::kCall800302a4ByteOffset] = 1;
     am3d::exe::call_800302a4(object.data(), 0x33u);
     if (object[am3d::exe::kCall800302a4ByteOffset] != 1) return 2;
+
+    object[am3d::exe::kCall800302a4ByteOffset] = 0xff;
+    am3d::exe::call_800302a4(object.data(), 0x44u);
+    if (object[am3d::exe::kCall800302a4ByteOffset] != 0xff) return 3;
     return 0;
 }
