@@ -9,5 +9,6 @@ int main() {
     stack_word = 0x80010b10u;
     if (am3d::exe::call_800751d8(4, 0, stack_word, saved_word) != 1) return 3;
     if (stack_word != 0x80010b10u) return 4;
+    if (am3d::exe::call_800751d8(5, 0, stack_word, saved_word) != 0x80010b10u) return 5;
     return 0;
 }

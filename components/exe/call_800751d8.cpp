@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_800751d8.hpp"
 
+#include "call_800752d0.hpp"
+
 namespace am3d::exe {
 
 // Other side of beq at 0x800751d0 for the first entry. This boot does not run it.
@@ -12,8 +14,11 @@ std::uint32_t call_800751d8(std::uint32_t a0, std::uint32_t a1, std::uint32_t& s
     if (a0 == 4u) {
         return 1;
     }
+    if (a0 == 5u) {
+        return call_800752d0(stack_word);
+    }
     if (a0 != 0) {
-        // gap: table slots other than index 0 and index 4.
+        // gap: table slots other than index 0, index 4, and index 5.
         return 0;
     }
     saved_word = a1;
