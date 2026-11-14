@@ -5,7 +5,7 @@
 
 namespace am3d::exe {
 
-// Body at 0x8001b17c. The next note fills this in.
+// Body at 0x8001b17c. The cited entry passes the arriving a0 as a1.
 void call_8001b17c(std::uint32_t a0);
 
 }
