@@ -107,6 +107,7 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-8008760c.md](call-8008760c.md) | Loads draw-env halfwords 0 and `0xf0` and calls unnamed `0x8008789c`. `ra` becomes `0x80087634`. |
 | [call-8008789c.md](call-8008789c.md) | Clamps draw x 0 and y `0xf0` and returns GPU word `0xe30fffff` to `0x80087634`. |
 | [call-80087634.md](call-80087634.md) | Stores `0xe30fffff` at `0x800e1610` and calls unnamed `0x80087934` with `a0` `0x1ff` and `a1` `0x1df`. |
+| [call-80087934.md](call-80087934.md) | Same clamp with top byte `0xe4`. Returns `0xe40fffff` to `0x8008766c`. |
 | [call-800761dc.md](call-800761dc.md) | Block at `0x800761dc` after `PutDispEnv` returns. The instruction there does not read `v0`. It sets `a0` to `0x800e15f0` and calls `SetDefDrawEnv`. `a1` and `a2` are words this note does not quote. `a3` is `0x200` and the word at `0x10(sp)` is `0xf0`. `ra` becomes `0x80076218`. The body is not entered. It then calls `PutDrawEnv` with `a0` set from `s0` (`0x800e15f0`). `ra` becomes `0x80076220`. That body is not entered. `jr` returns through the saved `ra`. `v0` is unknown. Control goes to `0x80076414`. |
 | [call-80076414.md](call-80076414.md) | Next boot call. Argument zero, unnamed target, return address recorded. |
 | [call-80076274.md](call-80076274.md) | Display fill packet, named SDK calls, our implementation, and first compiler experiment. |
