@@ -37,3 +37,11 @@ The only branch to `0x80045418` is `beq v0, zero` at `0x800453c4`. The first com
 [stack-ledger.md](stack-ledger.md) leaves `sp` at `0x80010b44` inside the open frame at `0x80045374`. Its saved `ra` stays `0x800255e4`. The frame at `0x800251f8` stays open. Its saved `ra` stays `0x8007faec`.
 
 Status: Sean said go. The forward trace starts at `0x80045418`.
+
+## Forward lane at 0x80061fe4
+
+The forward notes from `0x80045418` reach `beq` at `0x80061fe4`. [call-80061f80-6.md](call-80061f80-6.md) does not take a side. The compared byte is at address 0. That address is outside the text image. No traced store writes it.
+
+[backup-count-words.md](backup-count-words.md) lists the stores of `0x800dd6e8` and `0x800dd6ec`. The store that adds 1 is `0x80063e20`. The traced entries do not reach it. Both words stay 0, so the `Backup_*` lookups return 0. [backup-static-boot.md](backup-static-boot.md) parks the spine here.
+
+Status: paused. This is not a new go lane. A later note does not start past `0x80061fe4`.
