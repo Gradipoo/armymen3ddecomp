@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_80062434.hpp"
 
+#include "call_80061f80.hpp"
+
 namespace am3d::exe {
 
 void call_80062434(std::uint8_t* dest, std::uint32_t& a0, std::uint32_t source) {
@@ -16,8 +18,9 @@ void call_80062434(std::uint8_t* dest, std::uint32_t& a0, std::uint32_t source) 
     dest[7] = 0x67;
     dest[8] = 0;
     a0 = source;
-    // gap: unnamed call at 0x80061f80. a0 is the source address.
-    // The return address is 0x80062474.
+    unsigned char parsed[4];
+    int index = 0;
+    call_80061f80(parsed, &index);
 }
 
 }
