@@ -52,3 +52,5 @@ The same `a1` computed from the still-open `0x80010b0c`, without the three pops,
 `call-80045570.md` is the epilogue of that frame on the forward lane from `0x80045418`. It adds `0xd0`. `sp` is `0x80010c14`. The frame at `0x80045374` closes. The frame at `0x800251f8` stays open. Its saved `ra` stays `0x8007faec`. The static boot does not take `beq` at `0x800453c4`. This close is the forward lane.
 
 `call-80065894.md` subtracts `0x30` at that `sp`. `sp` is `0x80010be4`. That frame stays open. Its saved `ra` is `0x800255ec`.
+
+`call-80063ed8-17.md` subtracts `0x38` from that frame. `sp` is `0x80010bac`. That frame stays open at `call-80076508-17.md`. Its saved `ra` is `0x8006591c`.
