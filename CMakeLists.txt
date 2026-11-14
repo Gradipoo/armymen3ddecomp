@@ -35,6 +35,7 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_8007e118.cpp
     components/exe/call_8002541c.cpp
     components/exe/call_8002542c.cpp
+    components/exe/call_8007d52c.cpp
     components/exe/call_80025470.cpp
     components/exe/call_80060aac.cpp
     components/exe/call_80060b58.cpp
@@ -449,6 +450,9 @@ if(BUILD_TESTING)
     add_executable(test_call_8002542c tests/test_call_8002542c.cpp)
     target_link_libraries(test_call_8002542c PRIVATE am3d_exe)
     add_test(NAME call_8002542c COMMAND test_call_8002542c)
+    add_executable(test_call_8007d52c tests/test_call_8007d52c.cpp)
+    target_link_libraries(test_call_8007d52c PRIVATE am3d_exe)
+    add_test(NAME call_8007d52c COMMAND test_call_8007d52c)
     add_executable(test_call_80025470 tests/test_call_80025470.cpp)
     target_link_libraries(test_call_80025470 PRIVATE am3d_exe)
     add_test(NAME call_80025470 COMMAND test_call_80025470)
