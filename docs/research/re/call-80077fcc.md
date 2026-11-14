@@ -1,0 +1,9 @@
+# Block at 0x80077fcc
+
+Traced fact from the USA PS-X EXE. Re-check on a disc you own with `python3 tools/entry_disasm.py build/disc/SLUS_004.91 --start 0x80077fcc`. The executable and the listing stay in `build/`.
+
+The start address is `0x80077fcc`. It is the return address of the `jal` in [call-80077fb0.md](call-80077fb0.md). This note does not use the `v0` from `0x8007f920`. The saved `ra` at `0x10(sp)` is `0x8007a6bc`. The frame at `0x800251f8` stays open. Its saved `ra` stays `0x8007faec`.
+
+`lw` at `0x80077fcc` restores `ra`. `jr` at `0x80077fd4` returns through that `ra`. The delay slot adds `0x18` to `sp` and undoes the subtract at `0x80077fb0`. The load uses `sp` before that add.
+
+`ra` leaves as `0x8007a6bc`. This note does not state `v0`. The caller `s0` is `0x8001001c`, the caller `s1` is 9, and the caller `s2` is `0x8001007c`. Control goes to `0x8007a6bc`. That arrival is the next note. The caller return at `0x8007faec` is not traced.
