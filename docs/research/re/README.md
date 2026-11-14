@@ -103,7 +103,7 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-8007641c.md](call-8007641c.md) | Reloaded display-buffer count and the loop back edge to the next advance. |
 | [call-80076164-second.md](call-80076164-second.md) | Second buffer advance, list wrap, named SDK calls, and our native implementation. |
 | [display-environment-layout.md](display-environment-layout.md) | Corrects the mode-controlled RGB24 flag label using compatible SDK layouts. |
-| [gpu-display-area-after-fill.md](gpu-display-area-after-fill.md) | Next GPU command after the three-word fill: display-area top byte 0x05. |
+| [gpu-display-area-after-fill.md](gpu-display-area-after-fill.md) | Display-area top byte 0x05 after the fill. The next instruction is an unnamed jal. No later GPU command is stated. |
 | [call-80076414-second.md](call-80076414-second.md) | Second call to the display fill with the original color. |
 | [call-80076274-second.md](call-80076274-second.md) | The second fill, with named SDK calls and the first node as drawing target. |
 | [call-8007641c-second.md](call-8007641c-second.md) | Display-clear loop exit, return to its caller, and our implementation. |

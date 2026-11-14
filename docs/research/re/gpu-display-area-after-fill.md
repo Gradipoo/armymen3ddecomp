@@ -6,4 +6,8 @@ The fill in [call-80076274.md](call-80076274.md) builds one packet on the stack.
 
 The first GPU store in that submit is built at `0x80086e48`. The instruction is `lui v0, 0x500`. The instruction word is `0x3c020500`. It writes `0x05000000`. The top byte is `0x05`. [call-80086e48.md](call-80086e48.md) joins the low 10 bits of the display x and y halfwords into that word. This note does not quote those halfwords, so it does not state the full GPU word. `gpu_store` writes the joined word to `0x1f801814`. That body is already traced. This note does not enter it.
 
-This command is not a `DrawPrim` packet. `components/platform/fill_vram.cpp` still applies only the three-word fill. The display-area word stays a gap there.
+No note quotes the display x and y halfwords. This note still does not state the full display-area word.
+
+[call-80086e7c.md](call-80086e7c.md) takes the branch to `0x80086ef0` after that store. The instruction there is `jal 0x80086230`. The instruction word is `0x0c02188c`. The delay slot at `0x80086ef4` is `nop`, word `0x00000000`. `python3 tools/sdk_match.py` does not name `0x80086230`. This note stops at that call. It does not state a GPU command after the `0x05` byte.
+
+This command is not a `DrawPrim` packet. `components/platform/fill_vram.cpp` still applies only the three-word fill.
