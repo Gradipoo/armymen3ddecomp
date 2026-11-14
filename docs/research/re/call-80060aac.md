@@ -52,8 +52,8 @@ The 100 bytes from 0x80060aac through 0x80060b0c occur once in the executable.
 
 ## Our code
 
-`components/exe/call_80060aac.cpp` writes `0x1000` into `a0` and stores the word and halfwords above. The nine halfwords are the ones from `0x800dd2f8`. The three later halfwords are `0x800dd2bc`, `0x800dd2c2`, and `0x800dd2c8`. It then calls `call_80060b58`, which stores `0x1000` in the six halfwords from that note. The return is `call_80060b10`. That call writes `0x800dd2d8` into `s0` and `a0`, `0x1000` into `a1` and `a3`, and `0xa00` into `a2`. The unnamed call at `0x8007abf8` stays a gap in that file. The file does not name those addresses.
+`components/exe/call_80060aac.cpp` writes `0x1000` into `a0` and stores the word and halfwords above. The nine halfwords are the ones from `0x800dd2f8`. The three later halfwords are `0x800dd2bc`, `0x800dd2c2`, and `0x800dd2c8`. It then calls `call_80060b58`, which stores `0x1000` in the six halfwords from that note. The return is `call_80060b10`. That call writes `0x800dd2d8` into `s0` and `a0`, `0x1000` into `a1` and `a3`, and `0xa00` into `a2`. `call_80060b10` calls `call_8007abf8`. The return at `0x80060b2c` stays open. The file does not name those addresses.
 
 ## Gap
 
-The unnamed call at `0x8007abf8` stays open inside `call_80060b10`. `a0` is `0x800dd2d8`. `a1` is `0x1000`. `a2` is `0xa00`. `a3` is `0x1000`.
+The return at `0x80060b2c` stays open. `a0` is `0x800dd2d8`. `a1` is `0x1000`. `a2` is `0xa00`. `a3` is `0x1000`.

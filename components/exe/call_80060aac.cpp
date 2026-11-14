@@ -26,7 +26,11 @@ void call_80060aac(std::uint32_t& a0, std::uint32_t& cleared_word, std::uint16_t
     second_a = 0;
     second_10 = 0;
     call_80060b58(a0, slot0, slot6, slot12, slot2, slot8, slot14);
-    call_80060b10(a0, a1, a2, a3, s0);
+    std::uint16_t slot[9] = {};
+    std::uint32_t word_14 = 0;
+    std::uint32_t word_18 = 0;
+    std::uint32_t word_1c = 0;
+    call_80060b10(a0, a1, a2, a3, s0, slot, word_14, word_18, word_1c);
 }
 
 }
