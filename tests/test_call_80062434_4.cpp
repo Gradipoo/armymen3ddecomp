@@ -3,7 +3,12 @@
 
 int main() {
     unsigned char dest[13] = {};
-    dest[12] = 1;
+    unsigned char expect[] = {0x5c, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x69, 0x6e, 0x69, 0x00};
     am3d::exe::call_80062434_4(dest);
-    return dest[0] == 0x5c && dest[12] == 0 ? 0 : 1;
+    for (int i = 0; i < 13; ++i) {
+        if (dest[i] != expect[i]) {
+            return 1;
+        }
+    }
+    return 0;
 }
