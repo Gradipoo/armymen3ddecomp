@@ -5,6 +5,7 @@
 #include "call_8002552c.hpp"
 #include "call_80025534.hpp"
 #include "call_8002553c.hpp"
+#include "call_8002554c.hpp"
 #include "call_800621dc_2.hpp"
 
 namespace am3d::exe {
@@ -22,6 +23,8 @@ void call_800254fc(std::uint32_t& a0, std::uint32_t& s2, std::uint32_t& cleared)
     call_80025534(a0);
     std::uint32_t s0 = 0x8009f510u;
     call_8002553c(a0, s0);
+    int a2 = 1;
+    call_8002554c(&a0, &a2);
 }
 
 }
