@@ -7,6 +7,8 @@ std::uint32_t call_8007424c(std::uint32_t a0) {
     (void)a0;
     std::uint32_t word = 0;
     call_8005be28(0, word);
-    return call_8005be50(0, word);
+    call_8005be50(0, word);
+    // gap: resume at 0x80074270. v0 is 0.
+    return 0;
 }
 }
