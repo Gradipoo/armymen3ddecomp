@@ -214,9 +214,9 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-8007a6bc-12.md](call-8007a6bc-12.md) | Twelfth arrival. `s0` becomes `0x80010030`. `s1` is 13. `jal` calls `0x8007a540`. The entry is in [call-8007a540-13.md](call-8007a540-13.md). |
 | [call-8007a540-13.md](call-8007a540-13.md) | Thirteenth entry. The list head is `0x8007cb9c`. The live search returns in [call-8007a5a4-39.md](call-8007a5a4-39.md). |
 | [call-8007a5a4-39.md](call-8007a5a4-39.md) | Offset 8 is 12 and the next list word is 0, so `s3` becomes `0x80010030`. `jr` returns that cursor. The compare is in [call-8007a668-13.md](call-8007a668-13.md). |
-| [call-8007a668-13.md](call-8007a668-13.md) | The cursors match, so the swap is skipped. Stores 13 at `0x800b5bd8` and `jalr`s to `0x80075f3c`. `s1` becomes 14. The body is in [call-80075f3c.md](call-80075f3c.md). |
-| [call-80075f3c.md](call-80075f3c.md) | Calls `ResetGraph`, `SetGraphDebug`, and `InitGeom` with `a0` 0, then `jal`s to `0x8007f920`. The fill is in [call-8007f920-2.md](call-8007f920-2.md). |
-| [call-8007f920-2.md](call-8007f920-2.md) | Stores 0 across `0x9c` bytes at `0x800e15b0` and returns. The caller continues in [call-80075f80.md](call-80075f80.md). |
+| [call-8007a668-13.md](call-8007a668-13.md) | The cursors match, so the swap is skipped. Stores 13 at `0x800b5bd8` and `jalr`s to `0x80075f3c`. `s1` becomes 14. The body is in [call-80075f3c-2.md](call-80075f3c-2.md). |
+| [call-80075f3c-2.md](call-80075f3c-2.md) | Calls `ResetGraph`, `SetGraphDebug`, and `InitGeom` with `a0` 0, then `jal`s to `0x8007f920`. The fill is in [call-8007f920-15.md](call-8007f920-15.md). |
+| [call-8007f920-15.md](call-8007f920-15.md) | Stores 0 across `0x9c` bytes at `0x800e15b0` and returns. The caller continues in [call-80075f80.md](call-80075f80.md). |
 | [call-80075f80.md](call-80075f80.md) | The word at `0x8007f9ac` is `0x3c`, so `SetVideoMode` is not called. `jr` returns to `0x8007a6bc`. That arrival is in [call-8007a6bc-13.md](call-8007a6bc-13.md). |
 | [call-8007a6bc-13.md](call-8007a6bc-13.md) | Thirteenth arrival. `s0` becomes `0x80010034`. `s1` is 14. `jal` calls `0x8007a540`. The entry is in [call-8007a540-14.md](call-8007a540-14.md). |
 | [call-8007a540-14.md](call-8007a540-14.md) | Fourteenth entry. The list head is `0x8005bf80`. `jal` calls `0x8007a4e4`. The return is not traced. |
