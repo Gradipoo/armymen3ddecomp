@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_80010f5c.hpp"
 
+#include "call_8002fb9c.hpp"
+#include "table_8009f0b4.hpp"
+
 namespace am3d::exe {
 namespace {
 
@@ -17,7 +20,7 @@ void store_le(std::uint8_t* dest, std::uint32_t value) {
 void call_80010f5c(std::uint8_t* object, std::uint32_t second) {
     (void)second;
     store_le(object + kCall80010f5cStoreOffset, kCall80010f5cStored);
-    // gap: jal 0x8002fb9c. a0 is the object. a1 is the second argument. The return address is 0x80010f84.
+    call_8002fb9c(object, second, kTable8009f0b4.data());
 }
 
 }
