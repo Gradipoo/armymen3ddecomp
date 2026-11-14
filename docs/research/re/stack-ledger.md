@@ -42,3 +42,5 @@ The `jal` at `0x8002390c` is after `addiu sp, sp, 0x28` at `0x80023844`. Reachin
 `call-80022f1c.md` subtracts `0xb8` from the arrival `sp`. The arrival value is `0x80010bfc`, so `sp` inside that function is `0x80010b44`. `a1` at `0x800235b0` is that `sp` plus `0x78`, which is `0x80010bbc`. It is not zero.
 
 The same `a1` computed from the still-open `0x80010b0c`, without the three pops, is `0x80010acc`. That is also not zero. It is not the `sp` at `0x8002390c`.
+
+`call-80023674.md` is the epilogue of that `0x80022f1c` frame on the stated `sp`. It adds `0xb8`. `sp` returns to `0x80010bfc`. The mission frames at `call-80062434-4.md` stay open. This return does not pop them.
