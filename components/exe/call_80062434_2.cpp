@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_80062434_2.hpp"
 
+#include "call_80061f80_2.hpp"
+
 namespace am3d::exe {
 
 void call_80062434_2(unsigned char* dest) {
@@ -17,6 +19,9 @@ void call_80062434_2(unsigned char* dest) {
     dest[10] = 0x6e;
     dest[11] = 0x69;
     dest[12] = 0x00;
+    unsigned char parsed[4];
+    int index = 0;
+    call_80061f80_2(parsed, &index);
 }
 
 }
