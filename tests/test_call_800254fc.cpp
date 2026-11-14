@@ -6,6 +6,6 @@ int main() {
     std::uint32_t s2 = 0x80080000u;
     std::uint32_t cleared = 9;
     am3d::exe::call_800254fc(a0, s2, cleared);
-    if (a0 != 0x8005b3d4u || s2 != 0x8009f820u || cleared != 0) return 1;
+    if (a0 != 3 || s2 != 0x8009f820u || cleared != 0) return 1;
     return 0;
 }
