@@ -5,10 +5,14 @@
 
 namespace am3d::exe {
 
-// Behavior reference: docs/research/re/call-80079b24.md.
-void call_80079b24(std::uint32_t a0) {
+// Behavior reference: docs/research/re/call-80079b4c.md.
+std::uint32_t call_80079b24(std::uint32_t a0) {
+    const std::uint32_t v0 = call_80079270();
+    if (v0 == 0) {
+        return 0;
+    }
     (void)a0;
-    (void)call_80079270();
+    return v0;
 }
 
 }
