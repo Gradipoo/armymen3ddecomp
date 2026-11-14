@@ -123,6 +123,12 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-800883c4.md](call-800883c4.md) | Both words are 0, so `beq` falls through and calls `SetIntrMask` with `a0` 0. `ra` becomes `0x800883d4`. |
 | [call-800883d4.md](call-800883d4.md) | Stores the `SetIntrMask` result at `0x800b76f8` and 1 at `0x800b75d0`. The byte at `0x800b75c9` is uncited, so the `beq` side is unknown. |
 | [call-800883ec.md](call-800883ec.md) | The byte at `0x800b75c9` is 1, so `beq` falls through. The next unknown branch is `0x80088458`. |
+| [call-80088458.md](call-80088458.md) | `v0` is `0x4000000`, so `beq` falls through and `jalr`s `0x800882c4`. `a0` is `0x800e160c` and `a1` is 0. |
+| [call-800882c4.md](call-800882c4.md) | Stores `0x04000002` at `0x1f801814`, `0x800e160c` at `0x1f8010a0`, 0 at `0x1f8010a4`, and `0x01000401` at `0x1f8010a8`. Returns to `0x8008846c`. |
+| [call-8008846c.md](call-8008846c.md) | Calls `SetIntrMask` with `a0` `0xd`. `ra` becomes `0x8008847c`. The body is not entered. |
+| [call-8008847c.md](call-8008847c.md) | Jumps to the epilogue at `0x800885f4` and returns to `0x80086cc0` with `v0` 0. |
+| [call-80086cc0.md](call-80086cc0.md) | Calls `0x8007f598` with `a0` `0x800b75d8`, `a1` `0x800e15f0`, and `a2` `0x5c`. The body is already noted. |
+| [call-80086cd0.md](call-80086cd0.md) | Sets `v0` to `0x800e15f0` and returns to `0x80076220`. |
 | [call-800761dc.md](call-800761dc.md) | Block at `0x800761dc` after `PutDispEnv` returns. The instruction there does not read `v0`. It sets `a0` to `0x800e15f0` and calls `SetDefDrawEnv`. `a1` and `a2` are words this note does not quote. `a3` is `0x200` and the word at `0x10(sp)` is `0xf0`. `ra` becomes `0x80076218`. The body is not entered. It then calls `PutDrawEnv` with `a0` set from `s0` (`0x800e15f0`). `ra` becomes `0x80076220`. That body is not entered. `jr` returns through the saved `ra`. `v0` is unknown. Control goes to `0x80076414`. |
 | [call-80076414.md](call-80076414.md) | Next boot call. Argument zero, unnamed target, return address recorded. |
 | [call-80076274.md](call-80076274.md) | Display fill packet, named SDK calls, our implementation, and first compiler experiment. |
