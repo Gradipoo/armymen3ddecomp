@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_80025470.hpp"
 
+#include "call_80025478.hpp"
 #include "call_80060aac.hpp"
 
 namespace am3d::exe {
@@ -21,6 +22,8 @@ void call_80025470(std::uint32_t& a0, std::uint32_t& cleared_word, std::uint16_t
     std::uint32_t s0 = 0x8009f510u;
     call_80060aac(a0, cleared_word, first, second_4, second_a, second_10, slot0, slot6,
         slot12, slot2, slot8, slot14, a1, a2, a3, s0);
+    std::uint32_t stored = 1;
+    call_80025478(a0, stored);
 }
 
 }
