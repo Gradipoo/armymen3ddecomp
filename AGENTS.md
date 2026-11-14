@@ -58,7 +58,7 @@ The report names a target from `tools/sdk_names.txt`, a `tools/sdk_patterns.txt`
 
 A known `beq`, `bne`, `blez`, `bgtz`, `bltz`, or `bgez` is followed. An unknown branch stops. Do not guess the taken side. A word marked `mem` was stored earlier in the report. `word_fill` and `bzero` hide their range. Another skipped call may still have written that address. Check before you treat `mem` as live. Do not read a word from the executable file as the live value. A fill can leave 0 where the file still holds the original word. Measurements are in [docs/research/decomp-speed.md](docs/research/decomp-speed.md).
 
-The last block note is `docs/research/re/call-800636b8.md`. `strcpy` at `0x800800dc` copies the six bytes `64 61 74 61 5c 00` from `0x800bfe8c` to `0x800dd4c0`. `strlen` at `0x8008012c` returns 5. The block stores 5 at `0x800dd540`. `jr ra` returns to `0x800254fc`. `v0` leaves as 5. `s0` stays `0x8009f510`. `s1` stays `0x8009f820`. `s2` stays `0x80080000`. The frame at 0x800251f8 stays open. Its saved `ra` stays `0x8007faec`. The word at `0x800dd490` stays 1. The next note resumes that caller at `0x800254fc`.
+The last block note is `docs/research/re/call-800254fc.md`. `jal` at 0x8002550c targets `0x800621dc` again. That target is unnamed. `call-800621dc.md` is the first entry and stays as written. `a0` is `0x8005b3d4`. The delay slot stores 0 at `0x800a019c`. `s2` leaves as `0x8009f820`. `v0` stays 5. `ra` leaves as `0x80025514`. The word at `0x800dd490` stays 1. The frame at 0x800251f8 stays open. Its saved `ra` stays `0x8007faec`. The next note is this second entry of `0x800621dc`.
 
 ## Visible screen
 
