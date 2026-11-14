@@ -1,0 +1,3 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+#include "call_800235a4_2.hpp"
+int main() { return am3d::exe::call_800235a4_2() == 0x800bf458 ? 0 : 1; }

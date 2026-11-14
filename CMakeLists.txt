@@ -238,6 +238,14 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_800235a4.cpp
     components/exe/call_800235b0.cpp
     components/exe/call_80063ed4.cpp
+    components/exe/call_80063ed8_12.cpp
+    components/exe/call_80076508_12.cpp
+    components/exe/call_80063f18_12.cpp
+    components/exe/call_800235bc.cpp
+    components/exe/call_800235a4_2.cpp
+    components/exe/call_800235b0_2.cpp
+    components/exe/call_80063ed8_13.cpp
+    components/exe/call_80076508_13.cpp
     components/exe/call_8003852c.cpp
     components/exe/call_8007a250.cpp
     components/exe/call_8007a3b0.cpp
@@ -1158,6 +1166,31 @@ if(BUILD_TESTING)
     add_executable(test_call_80063ed4 tests/test_call_80063ed4.cpp)
     target_link_libraries(test_call_80063ed4 PRIVATE am3d_exe)
     add_test(NAME call_80063ed4 COMMAND test_call_80063ed4)
+
+    add_executable(test_call_80063ed8_12 tests/test_call_80063ed8_12.cpp)
+    target_link_libraries(test_call_80063ed8_12 PRIVATE am3d_exe)
+    add_test(NAME call_80063ed8_12 COMMAND test_call_80063ed8_12)
+    add_executable(test_call_80076508_12 tests/test_call_80076508_12.cpp)
+    target_link_libraries(test_call_80076508_12 PRIVATE am3d_exe)
+    add_test(NAME call_80076508_12 COMMAND test_call_80076508_12)
+    add_executable(test_call_80063f18_12 tests/test_call_80063f18_12.cpp)
+    target_link_libraries(test_call_80063f18_12 PRIVATE am3d_exe)
+    add_test(NAME call_80063f18_12 COMMAND test_call_80063f18_12)
+    add_executable(test_call_800235bc tests/test_call_800235bc.cpp)
+    target_link_libraries(test_call_800235bc PRIVATE am3d_exe)
+    add_test(NAME call_800235bc COMMAND test_call_800235bc)
+    add_executable(test_call_800235a4_2 tests/test_call_800235a4_2.cpp)
+    target_link_libraries(test_call_800235a4_2 PRIVATE am3d_exe)
+    add_test(NAME call_800235a4_2 COMMAND test_call_800235a4_2)
+    add_executable(test_call_800235b0_2 tests/test_call_800235b0_2.cpp)
+    target_link_libraries(test_call_800235b0_2 PRIVATE am3d_exe)
+    add_test(NAME call_800235b0_2 COMMAND test_call_800235b0_2)
+    add_executable(test_call_80063ed8_13 tests/test_call_80063ed8_13.cpp)
+    target_link_libraries(test_call_80063ed8_13 PRIVATE am3d_exe)
+    add_test(NAME call_80063ed8_13 COMMAND test_call_80063ed8_13)
+    add_executable(test_call_80076508_13 tests/test_call_80076508_13.cpp)
+    target_link_libraries(test_call_80076508_13 PRIVATE am3d_exe)
+    add_test(NAME call_80076508_13 COMMAND test_call_80076508_13)
     add_executable(test_call_8003852c tests/test_call_8003852c.cpp)
     target_link_libraries(test_call_8003852c PRIVATE am3d_exe)
     add_test(NAME call_8003852c COMMAND test_call_8003852c)
