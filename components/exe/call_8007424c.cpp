@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_8007424c.hpp"
+#include "call_8005be28.hpp"
+#include "call_8005be50.hpp"
 namespace am3d::exe {
 std::uint32_t call_8007424c(std::uint32_t a0) {
     (void)a0;
-    // gap: unnamed jal 0x8007424c body. a0 is 5. The return address is 0x800743f8.
-    return 0;
+    std::uint32_t word = 0;
+    call_8005be28(0, word);
+    return call_8005be50(0, word);
 }
 }
