@@ -18,4 +18,4 @@ After the delay slot, control goes to `0x8007f920`. The next address is `0x8007f
 
 ## Our code
 
-`components/exe/call_8002fb9c.cpp` stores `0xff` at offset `0x35` and `0x1` at offset `0x34`. It stores 0 at offsets `0x0`, `0x24`, `0x36`, and `0x37`. It copies eight words from the supplied table onto offsets `0x4` through `0x23`. That table is the bytes at `0x8009f0b4` in the retail image. Those words are not quoted. It does not enter `0x8007f920`. That call stays marked in the source. A host check covers the stores and the copy, and leaves offsets `0x28` through `0x33` unchanged. It does not execute the retail callee. No ledger row is added.
+`components/exe/call_8002fb9c.cpp` stores `0xff` at offset `0x35` and `0x1` at offset `0x34`. It stores 0 at offsets `0x0`, `0x24`, `0x36`, and `0x37`. It copies eight words from the supplied table onto offsets `0x4` through `0x23`. The table bytes are in [table-8009f0b4.md](table-8009f0b4.md). It calls `call_8007f920_14` with the object plus `0x28`. The object pointer is not stated, so that entry does not store. Offsets `0x28` through `0x33` stay as they arrived. No ledger row is added.

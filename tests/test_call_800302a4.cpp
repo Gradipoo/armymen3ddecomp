@@ -23,5 +23,13 @@ int main() {
     object[am3d::exe::kCall800302a4ByteOffset] = 0xff;
     am3d::exe::call_800302a4(object.data(), 0x44u);
     if (object[am3d::exe::kCall800302a4ByteOffset] != 0xff) return 3;
+
+    object[am3d::exe::kCall800302a4ByteOffset] = 1;
+    am3d::exe::call_800302a4(object.data(), 0x55u);
+    if (object[am3d::exe::kCall800302a4ByteOffset] != 1) return 4;
+
+    object[am3d::exe::kCall800302a4ByteOffset] = 3;
+    am3d::exe::call_800302a4(object.data(), 0x66u);
+    if (object[am3d::exe::kCall800302a4ByteOffset] != 3) return 5;
     return 0;
 }

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_8002fb9c.hpp"
 
+#include "call_8007f920_14.hpp"
+
 namespace am3d::exe {
 namespace {
 
@@ -35,7 +37,7 @@ void call_8002fb9c(std::uint8_t* object, std::uint32_t second,
     }
     object[0x36] = 0;
     object[0x37] = 0;
-    // gap: jal 0x8007f920. a0 is the object plus 0x28. a1 is 0. a2 is 0xc. The return address is 0x8002fc1c.
+    call_8007f920_14(object + 0x28);
 }
 
 }
