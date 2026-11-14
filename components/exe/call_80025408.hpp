@@ -6,6 +6,6 @@
 namespace am3d::exe {
 
 // Behavior reference: docs/research/re/call-80025408.md.
-void call_80025408(std::uint32_t& a0);
+void call_80025408(std::uint32_t& a0, std::uint32_t& a1, std::uint32_t& stored);
 
 }
