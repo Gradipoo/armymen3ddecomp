@@ -95,6 +95,7 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_8007533c.cpp
     components/exe/call_80074da8.cpp
     components/exe/call_80073eec.cpp
+    components/exe/call_8007466c.cpp
     components/exe/call_80075404.cpp
     components/exe/call_80062238.cpp
     components/exe/call_800254f0.cpp
