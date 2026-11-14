@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_8002541c.hpp"
 
+#include "call_8002542c.hpp"
 #include "call_80025470.hpp"
 
 namespace am3d::exe {
@@ -20,7 +21,7 @@ void call_8002541c(std::uint32_t& a0, std::uint32_t word, std::uint32_t& v0) {
         call_80025470(a0, cleared_word, first, second_4, second_a, second_10);
         return;
     }
-    // gap: fall-through at 0x8002542c. This boot does not take it. The word at 0x8007f9a8 is 0.
+    call_8002542c(a0);
 }
 
 }
