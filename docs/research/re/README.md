@@ -352,8 +352,8 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-8005c7d8-2.md](call-8005c7d8-2.md) | Traced entry. `jal` calls `0x8005c1a0` with `a1` `0x10` and `a2` 1. The traced entry is in [call-8005c1a0-2.md](call-8005c1a0-2.md). |
 | [call-8005c1a0-2.md](call-8005c1a0-2.md) | Traced entry. `jal` calls `CdIntToPos` with `a0` `0x10`. `ra` is `0x8005c1c4`. The return is in [call-8005c1c4.md](call-8005c1c4.md). |
 | [call-8005c1c4.md](call-8005c1c4.md) | `jal` calls `CdControlB` with `a0` 2 and `a2` 0. The return is in [call-8005c1d4.md](call-8005c1d4.md). |
-| [call-8005c1d4.md](call-8005c1d4.md) | A capture reads `CdControlB` `v0` 1. `bne` is not taken. `jal` calls `0x800818cc`. The body is in [call-800818cc.md](call-800818cc.md). |
-| [call-800818cc.md](call-800818cc.md) | Loads the byte at `0x800b5fcc` and returns to `0x8005c1e8`. The cited byte is in [call-8005c1e8.md](call-8005c1e8.md). |
+| [call-8005c1d4.md](call-8005c1d4.md) | A capture reads `CdControlB` `v0` 1. `bne` is not taken. `jal` calls `0x800818cc`. The traced entry is in [call-800818cc-2.md](call-800818cc-2.md). |
+| [call-800818cc-2.md](call-800818cc-2.md) | Loads the byte at `0x800b5fcc` and returns to `0x8005c1e8`. The cited byte is in [call-8005c1e8.md](call-8005c1e8.md). |
 | [call-8005c1e8.md](call-8005c1e8.md) | The byte is 0. `jal` calls `VSync` with `a0` 0. The return is in [call-8005c1fc.md](call-8005c1fc.md). |
 | [call-8005c1fc.md](call-8005c1fc.md) | Second `VSync` with `a0` 0. The return is in [call-8005c204.md](call-8005c204.md). |
 | [call-8005c204.md](call-8005c204.md) | Third `VSync` with `a0` 0. The return is in [call-8005c20c.md](call-8005c20c.md). |
