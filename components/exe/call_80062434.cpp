@@ -20,7 +20,10 @@ void call_80062434(std::uint8_t* dest, std::uint32_t& a0, std::uint32_t source) 
     a0 = source;
     unsigned char parsed[9];
     int index = 0;
-    call_80061f80(parsed, &index);
+    unsigned first = 1;
+    unsigned second = 1;
+    unsigned third = 0;
+    call_80061f80(parsed, &index, &first, &second, &third);
 }
 
 }
