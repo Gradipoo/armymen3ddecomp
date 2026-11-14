@@ -2,6 +2,7 @@
 #include "call_800302a4.hpp"
 
 #include "call_8002fe4c.hpp"
+#include "call_80079b24.hpp"
 
 namespace am3d::exe {
 
@@ -12,8 +13,8 @@ void call_800302a4(std::uint8_t* object, std::uint32_t second) {
         return;
     }
     if (byte != 0) {
-        // gap: jal 0x80079b24. a0 is 0x8009f368 plus the byte shifted left by 5.
-        // a1 is the object. The return address is 0x800302f8.
+        const std::uint32_t a0 = 0x8009f368u + (static_cast<std::uint32_t>(byte) << 5);
+        (void)call_80079b24(a0);
         return;
     }
     (void)call_8002fe4c(object, second);
