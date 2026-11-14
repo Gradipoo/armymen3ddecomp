@@ -104,6 +104,7 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-800872d4.md](call-800872d4.md) | Epilogue of `PutDispEnv`. It replaces the copy's `v0` with `s1` (`0x800e15dc`), reloads the saved registers, and `jr` returns to `0x800761dc`. |
 | [call-8008aafc.md](call-8008aafc.md) | `SetDefDrawEnv` writes the draw environment at `0x800e15f0`. The first halfword is 0 and the next is `0xf0`. `jr` returns to `0x80076218` with `v0` as `0x800e15f0`. |
 | [call-80086c2c.md](call-80086c2c.md) | `PutDrawEnv` takes the byte-0 branch and calls unnamed `0x8008760c` with `a0` `0x800e160c` and `a1` `0x800e15f0`. |
+| [call-8008760c.md](call-8008760c.md) | Loads draw-env halfwords 0 and `0xf0` and calls unnamed `0x8008789c`. `ra` becomes `0x80087634`. |
 | [call-800761dc.md](call-800761dc.md) | Block at `0x800761dc` after `PutDispEnv` returns. The instruction there does not read `v0`. It sets `a0` to `0x800e15f0` and calls `SetDefDrawEnv`. `a1` and `a2` are words this note does not quote. `a3` is `0x200` and the word at `0x10(sp)` is `0xf0`. `ra` becomes `0x80076218`. The body is not entered. It then calls `PutDrawEnv` with `a0` set from `s0` (`0x800e15f0`). `ra` becomes `0x80076220`. That body is not entered. `jr` returns through the saved `ra`. `v0` is unknown. Control goes to `0x80076414`. |
 | [call-80076414.md](call-80076414.md) | Next boot call. Argument zero, unnamed target, return address recorded. |
 | [call-80076274.md](call-80076274.md) | Display fill packet, named SDK calls, our implementation, and first compiler experiment. |
