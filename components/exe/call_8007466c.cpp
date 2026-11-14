@@ -16,9 +16,12 @@ std::uint32_t call_80073fb0(std::uint32_t a0, std::uint32_t flag, std::uint32_t 
 }
 std::uint32_t call_8007466c() {
     call_80073fb0(0, 0, 0, 0, 0);
-    const std::uint32_t result = call_800741b8(2, 0);
-    // gap: resume at 0x80074750. v0 is 4. The flag word on this side is 4.
-    return result;
+    const std::uint32_t flag = call_800741b8(2, 0);
+    if ((flag & 0x10u) == 0) {
+        // gap: jr at 0x80074904. The saved ra is not stated.
+        return 0x800e0000u;
+    }
+    return flag;
 }
 std::uint32_t call_800741b8(std::uint32_t a0, std::uint32_t link) {
     if ((a0 & 0xffu) != 2u || link != 0) {
