@@ -14,7 +14,9 @@ void call_8007e1c8(std::uint32_t& a0, std::uint32_t& a1, std::uint32_t& stored) 
         (static_cast<std::uint64_t>(a1) * 0xaaaaaaabu) >> 32);
     a1 >>= 2;
     a0 = high >> 1;
-    call_8007fbbc(a0, a1);
+    std::uint32_t control_29 = 0;
+    std::uint32_t control_30 = 0;
+    call_8007fbbc(a0, a1, control_29, control_30);
 }
 
 }
