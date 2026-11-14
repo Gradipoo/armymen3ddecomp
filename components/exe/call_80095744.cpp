@@ -9,10 +9,15 @@ void EnterCriticalSection(std::uint32_t a0) {
     (void)a0;
 }
 
+void SysDeqIntRP(std::uint32_t a0, std::uint32_t a1) {
+    (void)a0;
+    (void)a1;
+}
+
 void call_80095744(std::uint32_t& cleared, std::uint32_t& status, std::uint32_t& mask) {
     cleared = 0;
     EnterCriticalSection(0x80022c1cu);
-    // gap: SysDeqIntRP at 0x8009065c. a0 is 2. a1 is 0x800e3ab8. The return address is 0x80095770.
+    SysDeqIntRP(2u, 0x800e3ab8u);
     // gap: SysEnqIntRP at 0x8009064c. a0 is 2. a1 is 0x800e3ab8. The return address is 0x8009577c.
     status = 0xfffffffeu;
     mask |= 1u;
