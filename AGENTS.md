@@ -58,7 +58,7 @@ The report names a target from `tools/sdk_names.txt`, a `tools/sdk_patterns.txt`
 
 A known `beq`, `bne`, `blez`, `bgtz`, `bltz`, or `bgez` is followed. An unknown branch stops. Do not guess the taken side. A word marked `mem` was stored earlier in the report. `word_fill` and `bzero` hide their range. Another skipped call may still have written that address. Check before you treat `mem` as live. Do not read a word from the executable file as the live value. A fill can leave 0 where the file still holds the original word. Measurements are in [docs/research/decomp-speed.md](docs/research/decomp-speed.md).
 
-The last block note is `docs/research/re/call-80076548.md`. `s0` is 1. `s2` is `0xbaea9903`. The next byte is `0x61`, so `bne` at `0x80076580` is taken. The next note is `0x80076540` again, a second `tolower` call. `a0` is `0x61`. The frame at `0x80076508` stays open. Its saved `ra` stays `0x80063f18`. The frame at `0x80063ed8` stays open. Its saved `ra` stays `0x8002303c`. The frame at `0x80022f1c` stays open. Its saved `ra` stays `0x80023914`. The frame at `0x80023848` stays open. Its saved `ra` stays `0x800255d8`. The frame at `0x800251f8` stays open. Its saved `ra` stays `0x8007faec`.
+The last block note is `docs/research/re/call-80076540.md`. The remaining bytes of `Campaign1_Name` leave `s2` as `0xe27edcb5`. The next byte is 0, so `jr ra` returns to `0x80063f18`. `v0` is `0xe27edcb5`. The frame at `0x80076508` is closed. The next note is `0x80063f18`.
 
 ## Visible screen
 
