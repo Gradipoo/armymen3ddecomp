@@ -14,4 +14,4 @@ After the delay slot, control goes to `0x8007e1f8`. `ra` is `0x8007e1f8`. `s0` i
 
 ## Our code
 
-`components/exe/call_8007fbbc.cpp` implements this site. The two words stay a gap in that file. On this boot the arriving `a0` is `0x55` and the arriving `a1` is `0x40`. The host check passes those arguments. It does not execute the two words. After them, this file calls `call_8007e1f8`. No ledger row is added.
+`components/exe/call_8007fbbc.cpp` implements this site. The two words stay a gap in that file. On this boot the arriving `a0` is `0x55` and the arriving `a1` is `0x40`. The host check passes those arguments. The two words are read in [call-8007fbbc-words.md](call-8007fbbc-words.md). After them, this file calls `call_8007e1f8`. No ledger row is added.
