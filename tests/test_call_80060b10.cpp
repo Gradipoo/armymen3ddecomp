@@ -16,7 +16,7 @@ int main() {
     std::uint32_t word_18 = 1;
     std::uint32_t word_1c = 1;
     call_80060b10(a0, a1, a2, a3, s0, slot, word_14, word_18, word_1c);
-    if (s0 != 0x800dd2d8u || a0 != 0x1000u || a1 != 0x1000u || a2 != 0xa00u ||
+    if (s0 != 0x8009f510u || a0 != 0x1000u || a1 != 0x1000u || a2 != 0xa00u ||
         a3 != 0x1000u) {
         return 1;
     }

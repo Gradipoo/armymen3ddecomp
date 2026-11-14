@@ -15,7 +15,7 @@ void call_80060b10(std::uint32_t& a0, std::uint32_t& a1, std::uint32_t& a2, std:
     a2 = 0xa00u;
     a3 = a1;
     call_8007abf8(a1, a2, a3, slot, word_14, word_18, word_1c);
-    call_80060b2c(a0, word_14, word_18, word_1c);
+    (void)call_80060b2c(a0, word_14, word_18, word_1c, s0);
 }
 
 }
