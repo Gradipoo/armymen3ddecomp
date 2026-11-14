@@ -350,7 +350,19 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-8007f920-20.md](call-8007f920-20.md) | Zeros `0x20` bytes from `0x800d89d0` through `0x800d89ef` and returns to `0x8005c8a0`. That arrival is in [call-8005c8a0.md](call-8005c8a0.md). |
 | [call-8005c8a0.md](call-8005c8a0.md) | A capture reads `0x8007f9d0` as `0x800e44e0` and `0x8007f9d4` as `0x80200000`. `jal` calls `0x8005c7d8` with `a0` `0x800e54e0` and `a1` 0. The traced entry is in [call-8005c7d8-2.md](call-8005c7d8-2.md). |
 | [call-8005c7d8-2.md](call-8005c7d8-2.md) | Traced entry. `jal` calls `0x8005c1a0` with `a1` `0x10` and `a2` 1. The traced entry is in [call-8005c1a0-2.md](call-8005c1a0-2.md). |
-| [call-8005c1a0-2.md](call-8005c1a0-2.md) | Traced entry. `jal` calls `CdIntToPos` with `a0` `0x10`. `ra` is `0x8005c1c4`. The return is not traced. |
+| [call-8005c1a0-2.md](call-8005c1a0-2.md) | Traced entry. `jal` calls `CdIntToPos` with `a0` `0x10`. `ra` is `0x8005c1c4`. The return is in [call-8005c1c4.md](call-8005c1c4.md). |
+| [call-8005c1c4.md](call-8005c1c4.md) | `jal` calls `CdControlB` with `a0` 2 and `a2` 0. The return is in [call-8005c1d4.md](call-8005c1d4.md). |
+| [call-8005c1d4.md](call-8005c1d4.md) | A capture reads `CdControlB` `v0` 1. `bne` is not taken. `jal` calls `0x800818cc`. The traced entry is in [call-800818cc-2.md](call-800818cc-2.md). |
+| [call-800818cc-2.md](call-800818cc-2.md) | Loads the byte at `0x800b5fcc` and returns to `0x8005c1e8`. The cited byte is in [call-8005c1e8.md](call-8005c1e8.md). |
+| [call-8005c1e8.md](call-8005c1e8.md) | The byte is 0. `jal` calls `VSync` with `a0` 0. The return is in [call-8005c1fc.md](call-8005c1fc.md). |
+| [call-8005c1fc.md](call-8005c1fc.md) | Second `VSync` with `a0` 0. The return is in [call-8005c204.md](call-8005c204.md). |
+| [call-8005c204.md](call-8005c204.md) | Third `VSync` with `a0` 0. The return is in [call-8005c20c.md](call-8005c20c.md). |
+| [call-8005c20c.md](call-8005c20c.md) | Fourth `VSync` with `a0` 0. The return is in [call-8005c214.md](call-8005c214.md). |
+| [call-8005c214.md](call-8005c214.md) | `jal` calls `CdRead` with `a0` 1, `a1` `0x800e54e0`, and `a2` `0x80`. The return is in [call-8005c224.md](call-8005c224.md). |
+| [call-8005c224.md](call-8005c224.md) | A capture reads `CdRead` `v0` 1. `jal` calls `CdReadSync` with `a0` 0 and `a1` 0. The return is in [call-8005c238.md](call-8005c238.md). |
+| [call-8005c238.md](call-8005c238.md) | A capture reads `CdReadSync` `v0` 0. `xori` leaves `v0` at 1. `jr` returns to `0x8005c804`. That arrival is in [call-8005c804.md](call-8005c804.md). |
+| [call-8005c804.md](call-8005c804.md) | `s0` becomes 1. `jal` calls `0x8007f598` with `a0` `0x800d89dc`, `a1` `0x800e580d`, and `a2` `0x11`. The arrival is in [call-8007f598-2.md](call-8007f598-2.md). |
+| [call-8007f598-2.md](call-8007f598-2.md) | Copies `0x11` bytes from `0x800e580d` to `0x800d89dc` and returns to `0x8005c824`. The return is not traced. |
 | [call-800252ac.md](call-800252ac.md) | Block at `0x800252ac` after the return from `0x8007a6dc`. The epilogue does not write `v0`. The fall-through compare left `v0` at 0. `lui` and the delay slot set `a0` to `0xdeadbeef`. `jal` calls `0x8007c334`. The callee's first block is in [call-8007c334.md](call-8007c334.md). |
 | [call-8007c334.md](call-8007c334.md) | Block at `0x8007c334` after the `jal` at `0x800252b0`. `a0` is `0xdeadbeef`. It stores that word at `0x34(gp)` and `0x38(gp)`, which are `0x800c5458` and `0x800c545c`. `jr` returns through `ra`. The delay slot is `nop`. Control goes to `0x800252b8`. That block is in [call-800252b8.md](call-800252b8.md). |
 | [call-800252b8.md](call-800252b8.md) | Block at `0x800252b8` after the return from `0x8007c334`. `v0` arrives as 0 and is not read. The block writes constants through `s1` (`0x8009f820`) and writes 3 at that base through `s0`. `jal` calls `0x80076254`. The delay slot stores the last `v0`, `0x800cf118`, at `0x998(s1)`. The callee's first block is in [call-80076254.md](call-80076254.md). |
