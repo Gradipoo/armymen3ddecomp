@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "call_80025398.hpp"
 
+#include "call_800253a4.hpp"
+#include "call_8007c03c.hpp"
+
 namespace am3d::exe {
 
 // Behavior reference: docs/research/re/call-80025398.md.
@@ -8,7 +11,8 @@ namespace am3d::exe {
 void call_80025398(std::uint32_t& a0, std::uint32_t& a1) {
     a0 = 0x800c8518u;
     a1 = 0x900u;
-    // gap: unnamed call at 0x8007c03c. The return address is 0x800253a4.
+    call_8007c03c(a0, a1);
+    call_800253a4(a0, a1);
 }
 
 }

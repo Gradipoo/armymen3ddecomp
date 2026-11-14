@@ -2,10 +2,16 @@
 #include "call_80061f80_2.hpp"
 
 int main() {
-    unsigned char dest[4] = {};
+    unsigned char dest[9] = {};
     int index = 0;
     am3d::exe::call_80061f80_2(dest, &index);
-    if (dest[0] != 0x5c || dest[1] != 0x6d || dest[2] != 0x69 || dest[3] != 0x73 || index != 3) {
+    unsigned char expect[9] = {0x5c, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x2e};
+    for (int i = 0; i < 9; ++i) {
+        if (dest[i] != expect[i]) {
+            return 1;
+        }
+    }
+    if (index != 9) {
         return 1;
     }
     return 0;

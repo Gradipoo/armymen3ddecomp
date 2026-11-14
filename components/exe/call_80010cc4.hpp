@@ -6,6 +6,6 @@
 namespace am3d::exe {
 
 // Block at 0x80010cc4. a0 becomes the object. a1 becomes the second argument.
-void call_80010cc4(const std::uint8_t* object, std::uint32_t second);
+void call_80010cc4(std::uint8_t* object, std::uint32_t second);
 
 }

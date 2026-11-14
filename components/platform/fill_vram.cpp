@@ -14,7 +14,10 @@ void FillVram::draw_sync(int mode) {
 }
 
 void FillVram::draw_prim(const exe::FillPacket& packet) {
-    // gap: add the other GPU commands required by the first retail scene.
+    // The three-word fill is tag high byte 3 and command byte 2.
+    // gap: display-area top byte 0x05. x and y are not quoted.
+    // The next instruction is jal 0x80086230 at 0x80086ef0 (0x0c02188c).
+    // No GPU command after that byte is stated. This sink does not apply 0x05.
     if ((packet[0] >> 24) != 3 || (packet[1] >> 24) != 2) {
         throw std::invalid_argument("unsupported GPU packet");
     }

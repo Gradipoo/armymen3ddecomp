@@ -8,7 +8,7 @@ using namespace am3d::exe;
 int main() {
     std::uint32_t a0 = 0x1000u;
     std::uint32_t stored = 1;
-    call_80025478(a0, stored);
-    if (a0 != 0x80022c1cu || stored != 0) return 1;
+    const std::uint32_t loaded = call_80025478(a0, stored);
+    if (a0 != 0x8009f444u || stored != 0x80022c1cu || loaded != 0) return 1;
     return 0;
 }

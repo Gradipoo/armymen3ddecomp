@@ -96,6 +96,39 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-80086df8.md](call-80086df8.md) | First block at `0x80086df8` after the `jal` from `0x800761c4`. It opens a `0x20` frame and copies `a0` (`0x800e15dc`) into `s1`. It loads the unsigned byte at `0x800b75ca`. That byte is 0, so `sltiu` against 2 makes `v0` 1 and the `bne` takes `0x80086e48`. The delay slot is `lui s0, 0x800`, so `s0` leaves as `0x08000000`. These bytes read `a0`. They do not read the arriving `v0` (0). There is no `jal` or `jalr`. `ra` stays `0x800761dc`. `a0` stays `0x800e15dc`. `v0` leaves as 1. `s1` leaves as `0x800e15dc`. `s2` leaves as `0x800b75ca`. The saved `ra` at `0x8007faec` stays on the frame from `0x800251f8`. Control goes to `0x80086e48`. That block is not traced. |
 | [call-80086e48.md](call-80086e48.md) | Block at `0x80086e48` after the taken `bne` from `0x80086df8`. It masks the halfwords at `0x800e15dc` and `0x800e15de` into `a0` with `0x05000000`. This note does not quote those halfwords. It loads the word at `0x800b75c0` (`0x800b7580`) and the word at `0x800b7590` (`0x8008824c`). `jalr` jumps to `0x8008824c` and sets `ra` to `0x80086e7c`. The delay slot ORs `v1` into `a0`. These bytes read `s1`. They do not read the arriving `a0`, the arriving `v0`, `s0`, or `s2`. There is no conditional branch. The saved `ra` at `0x8007faec` stays on the frame from `0x800251f8`. Control goes to `0x8008824c`. That block is already traced. |
 | [call-80086e7c.md](call-80086e7c.md) | Block at `0x80086e7c` after `gpu_store` returns. The call stored `a0` at `0x1f801814` and left `v0` as `0x5`. `a0` is not a number. The halfwords were not quoted. It loads the word at `0x800b7644` (`0xffffffff`) and the word at `0x800e15ec` (0). `bne` takes `0x80086ef0`. The delay slot sets `a0` to `0x800b7634`. These bytes read `s1` and `s2`. They do not read the arriving `a0` or the arriving `v0`. `ra` stays `0x80086e7c`. The saved `ra` at `0x8007faec` stays on the frame from `0x800251f8`. Control goes to `0x80086ef0`. That block is not traced. |
+| [call-80086230.md](call-80086230.md) | Callee of the `jal` at `0x80086ef0`. It loads the word at `0x800b7568` (0) into `v0` and returns through `ra`. `a0` stays `0x800b7634`. The display x and y halfwords are not quoted. `jr` returns to `0x80086ef8`. That block is not traced. |
+| [call-80086ef8.md](call-80086ef8.md) | Return at `0x80086ef8`. `v0` is 0, so `bne` takes `0x80086f10`. The path ORs `s0` to `0x08000002` and calls `gpu_store` with that word. A later noted call to `0x80086230` stores 0 back at `0x800e15ee`. The cap stops at `0x80087074`. `s0` leaves as `0x10`. |
+| [call-80087078.md](call-80087078.md) | Width `0x200` selects table index 3. The halfwords at `0x800b76a8` and `0x800b76aa` are `0x0267` and `0x0c67`. The cap stops at `0x8008720c` with `v0` at 1. |
+| [call-80087210.md](call-80087210.md) | Builds GPU words `0x06c67267` and `0x07040810` and calls `gpu_store` for each. Then `jal` calls unnamed `0x8007f598` with length `0x14`. |
+| [call-8007f598.md](call-8007f598.md) | Copies 20 bytes from `0x800e15dc` to `0x800b7634`. The first word is the unquoted display x and y. The next word is `0x00f00200`. `jr` returns to `0x800872d4`. |
+| [call-800872d4.md](call-800872d4.md) | Epilogue of `PutDispEnv`. It replaces the copy's `v0` with `s1` (`0x800e15dc`), reloads the saved registers, and `jr` returns to `0x800761dc`. |
+| [call-8008aafc.md](call-8008aafc.md) | `SetDefDrawEnv` writes the draw environment at `0x800e15f0`. The first halfword is 0 and the next is `0xf0`. `jr` returns to `0x80076218` with `v0` as `0x800e15f0`. |
+| [call-80086c2c.md](call-80086c2c.md) | `PutDrawEnv` takes the byte-0 branch and calls unnamed `0x8008760c` with `a0` `0x800e160c` and `a1` `0x800e15f0`. |
+| [call-8008760c.md](call-8008760c.md) | Loads draw-env halfwords 0 and `0xf0` and calls unnamed `0x8008789c`. `ra` becomes `0x80087634`. |
+| [call-8008789c.md](call-8008789c.md) | Clamps draw x 0 and y `0xf0` and returns GPU word `0xe30fffff` to `0x80087634`. |
+| [call-80087634.md](call-80087634.md) | Stores `0xe30fffff` at `0x800e1610` and calls unnamed `0x80087934` with `a0` `0x1ff` and `a1` `0x1df`. |
+| [call-80087934.md](call-80087934.md) | Same clamp with top byte `0xe4`. Returns `0xe40fffff` to `0x8008766c`. |
+| [call-8008766c.md](call-8008766c.md) | Stores `0xe40fffff` at `0x800e1614` and calls unnamed `0x800879cc` with `a0` 0 and `a1` `0xf0`. |
+| [call-800879cc.md](call-800879cc.md) | Packs x 0 and y `0xf0` into GPU word `0xe5078000` and returns to `0x80087680`. |
+| [call-80087680.md](call-80087680.md) | Stores `0xe5078000` at `0x800e1618` and calls unnamed `0x8008787c` with `a0` 1, `a1` 1, and `a2` `0xa`. |
+| [call-8008787c.md](call-8008787c.md) | Both flag tests are not taken. Returns GPU word `0xe100060a` to `0x80087698`. |
+| [call-80087698.md](call-80087698.md) | Stores `0xe100060a` at `0x800e161c` and calls unnamed `0x800879e8` with `a0` `0x800e15fc`. |
+| [call-800879e8.md](call-800879e8.md) | `a0` is not zero, so `bne` is taken. The four source bytes are 0. `jr` returns `0xe2000000` to `0x800876a4`. |
+| [call-800876a4.md](call-800876a4.md) | Stores `0xe2000000` and `0xe6000000`, takes the byte-0 branch, stores byte 6 at `0x800e160f`, and returns to `0x80086c88`. |
+| [call-80086c88.md](call-80086c88.md) | Stores `0x06ffffff` at `0x800e160c` and `jalr`s the word at `0x800b7588`. That target is unnamed. |
+| [call-80088360.md](call-80088360.md) | Saves the draw packet pointer and calls unnamed `0x80088afc`. `a1` stays `0x800e160c`. |
+| [call-80088afc.md](call-80088afc.md) | Calls `VSync` with `a0` `-1`. `ra` becomes `0x80088b0c`. The body is not entered. |
+| [call-80088b0c.md](call-80088b0c.md) | Stores the `VSync` result plus `0xf0` at `0x800b7704` and 0 at `0x800b7708`, then returns to `0x8008838c`. |
+| [call-8008838c.md](call-8008838c.md) | Jumps to `0x800883ac` and compares the words at `0x800b76f0` and `0x800b76f4`. The side is unknown. |
+| [call-800883c4.md](call-800883c4.md) | Both words are 0, so `beq` falls through and calls `SetIntrMask` with `a0` 0. `ra` becomes `0x800883d4`. |
+| [call-800883d4.md](call-800883d4.md) | Stores the `SetIntrMask` result at `0x800b76f8` and 1 at `0x800b75d0`. The byte at `0x800b75c9` is uncited, so the `beq` side is unknown. |
+| [call-800883ec.md](call-800883ec.md) | The byte at `0x800b75c9` is 1, so `beq` falls through. The next unknown branch is `0x80088458`. |
+| [call-80088458.md](call-80088458.md) | `v0` is `0x4000000`, so `beq` falls through and `jalr`s `0x800882c4`. `a0` is `0x800e160c` and `a1` is 0. |
+| [call-800882c4.md](call-800882c4.md) | Stores `0x04000002` at `0x1f801814`, `0x800e160c` at `0x1f8010a0`, 0 at `0x1f8010a4`, and `0x01000401` at `0x1f8010a8`. Returns to `0x8008846c`. |
+| [call-8008846c.md](call-8008846c.md) | Calls `SetIntrMask` with `a0` `0xd`. `ra` becomes `0x8008847c`. The body is not entered. |
+| [call-8008847c.md](call-8008847c.md) | Jumps to the epilogue at `0x800885f4` and returns to `0x80086cc0` with `v0` 0. |
+| [call-80086cc0.md](call-80086cc0.md) | Calls `0x8007f598` with `a0` `0x800b75d8`, `a1` `0x800e15f0`, and `a2` `0x5c`. The body is already noted. |
+| [call-80086cd0.md](call-80086cd0.md) | Sets `v0` to `0x800e15f0` and returns to `0x80076220`. |
 | [call-800761dc.md](call-800761dc.md) | Block at `0x800761dc` after `PutDispEnv` returns. The instruction there does not read `v0`. It sets `a0` to `0x800e15f0` and calls `SetDefDrawEnv`. `a1` and `a2` are words this note does not quote. `a3` is `0x200` and the word at `0x10(sp)` is `0xf0`. `ra` becomes `0x80076218`. The body is not entered. It then calls `PutDrawEnv` with `a0` set from `s0` (`0x800e15f0`). `ra` becomes `0x80076220`. That body is not entered. `jr` returns through the saved `ra`. `v0` is unknown. Control goes to `0x80076414`. |
 | [call-80076414.md](call-80076414.md) | Next boot call. Argument zero, unnamed target, return address recorded. |
 | [call-80076274.md](call-80076274.md) | Display fill packet, named SDK calls, our implementation, and first compiler experiment. |
@@ -103,6 +136,7 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-8007641c.md](call-8007641c.md) | Reloaded display-buffer count and the loop back edge to the next advance. |
 | [call-80076164-second.md](call-80076164-second.md) | Second buffer advance, list wrap, named SDK calls, and our native implementation. |
 | [display-environment-layout.md](display-environment-layout.md) | Corrects the mode-controlled RGB24 flag label using compatible SDK layouts. |
+| [gpu-display-area-after-fill.md](gpu-display-area-after-fill.md) | Display-area top byte 0x05 after the fill. The next instruction is an unnamed jal. No later GPU command is stated. |
 | [call-80076414-second.md](call-80076414-second.md) | Second call to the display fill with the original color. |
 | [call-80076274-second.md](call-80076274-second.md) | The second fill, with named SDK calls and the first node as drawing target. |
 | [call-8007641c-second.md](call-8007641c-second.md) | Display-clear loop exit, return to its caller, and our implementation. |

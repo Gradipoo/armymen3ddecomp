@@ -26,7 +26,7 @@ The traced boot at `0x800237d0` keeps `s4` at 1 and `s1` at 0, so it calls `0x80
 
 The `sp` from that start is untrusted. `0x80063b34` opens with `addiu sp, sp, -0x88`. The returns in `call-80063b78.md` and `call-80063b78-2.md` pop that frame with `addiu sp, sp, 0x88` at `0x80063ed4` and resume `0x800237d0`. `call-80063b34-3.md` opens a third frame of `0x88`. No note pops it. `call-80062434-4.md` is still inside that frame, and `call-80062434.md` opened its own frame by `0x40`. `call-80023828.md` reads `0x24(sp)` as the saved `ra` of `0x80023794`. That slot is the `0x80023794` slot only after the `0x88` pop. `0x80060aac` is a separate frame of `0x18`. `call-80060b3c.md` pops it and returns to `0x80025478`. It is not the `0x88` frame, and it does not return through `0x80063b34`.
 
-Status: the exit address stays. Sean reopened the stack. [stack-ledger.md](stack-ledger.md) states `sp` at `0x8002390c` as `0x80010bfc` after the inner pops. The third `0x88` frame has not reached that pop.
+Status: the exit address stays. Gradify reopened the stack. [stack-ledger.md](stack-ledger.md) states `sp` at `0x8002390c` as `0x80010bfc` after the inner pops. The third `0x88` frame has not reached that pop.
 
 ## VAB path loop
 
@@ -36,7 +36,7 @@ The only branch to `0x80045418` is `beq v0, zero` at `0x800453c4`. The first com
 
 [stack-ledger.md](stack-ledger.md) leaves `sp` at `0x80010b44` inside the open frame at `0x80045374`. Its saved `ra` stays `0x800255e4`. The frame at `0x800251f8` stays open. Its saved `ra` stays `0x8007faec`.
 
-Status: Sean said go. The forward trace starts at `0x80045418`.
+Status: Gradify said go. The forward trace starts at `0x80045418`.
 
 ## Forward lane at 0x80061fe4
 
@@ -44,4 +44,16 @@ The forward notes from `0x80045418` reach `beq` at `0x80061fe4`. [call-80061f80-
 
 [backup-count-words.md](backup-count-words.md) lists the stores of `0x800dd6e8` and `0x800dd6ec`. The store that adds 1 is `0x80063e20`. The traced entries do not reach it. Both words stay 0, so the `Backup_*` lookups return 0. [backup-static-boot.md](backup-static-boot.md) parks the spine here.
 
-Status: paused. This is not a new go lane. A later note does not start past `0x80061fe4`.
+Status: paused. This is not a new go lane. A later note does not start past `0x80061fe4`. Retail play takes a different path. See Retail MEMCARD backup path.
+
+## Retail MEMCARD backup path
+
+USA retail boot on this machine, with fast boot and without it, keeps the word at `0x800dd6e8` nonzero. `0x80062e0c` is entered once with `a0` `0x800e6cfc`. The bytes at that address begin `MEMCARD.TIM`. No logged call of `0x80061f80` has `a0` 0, so the `lb` of address 0 in [call-80061f80-6.md](call-80061f80-6.md) does not run. The static backup-count lane at `beq` `0x80061fe4` stays a separate research lane. This note does not take that branch.
+
+Behavior logs stay under `build/` and are not in git. Filenames only:
+
+- `addr0-beq-80061fe4.jsonl`. Fast boot. `a0` at `0x8006246c` was never 0.
+- `backup-path-80062e0c.jsonl`. Fast boot. `0x80062e0c` once, `a0` `0x800e6cfc`, count word `0x1ce`.
+- `retail-addr0-beq-80061fe4.jsonl`. Boot without fast boot. Same entry of `0x80062e0c` and the same count. No logged `a0` of 0 at `0x8006246c` or `0x80061f80`.
+
+Status: Gradify opened this lane. The forward lane at `0x80061fe4` stays deviation-parked until a fresh boot leaves the count words at 0, or a cited store writes the compared byte. Do not guess the side.

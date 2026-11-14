@@ -8,7 +8,7 @@ See the [result](results/behavior-evidence.md).
 
 Can an existing local debugger capture a small repeatable input/output
 observation with enough state to explain its limits? Evaluate the local
-[PCSX-Redux debugging tools](https://pcsx-redux.consoledev.net/). Do not
+[PCSX-Redux debugging tools](https://pcsx-redux.consoledev.net/). Retail PC capture scripts for that emulator are in [tools/pcsx/](../../tools/pcsx/README.md). Do not
 write a replacement emulator. This task prepares the method. A later
 one-gap assignment must choose the game function and claim.
 

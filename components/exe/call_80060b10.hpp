@@ -7,6 +7,7 @@ namespace am3d::exe {
 
 // Behavior reference: docs/research/re/call-80060b10.md.
 void call_80060b10(std::uint32_t& a0, std::uint32_t& a1, std::uint32_t& a2, std::uint32_t& a3,
-    std::uint32_t& s0);
+    std::uint32_t& s0, std::uint16_t slot[9], std::uint32_t& word_14, std::uint32_t& word_18,
+    std::uint32_t& word_1c);
 
 }
