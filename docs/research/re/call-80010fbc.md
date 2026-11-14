@@ -14,4 +14,4 @@ After the delay slot, control goes to `0x8002fb9c`. The body at `0x8002fb9c` is 
 
 ## Our code
 
-`components/exe/call_80010fbc.cpp` stores `0x800c005c` at offset `0x68` of the object. It does not enter `0x8002fb9c`. That call stays marked in the source. A host check covers the store and leaves the other object bytes unchanged. It does not execute the retail callee. This prefix is not the whole function. No ledger row is added.
+`components/exe/call_80010fbc.cpp` stores `0x800c005c` at offset `0x68`, then calls `call_8002fb9c` with the words from [table-8009f0b4.md](table-8009f0b4.md). The delay slot does not write `a1`. The callee does not read it. The return at `0x80010fdc` is not traced. No ledger row is added.
