@@ -58,7 +58,7 @@ The report names a target from `tools/sdk_names.txt`, a `tools/sdk_patterns.txt`
 
 A known `beq`, `bne`, `blez`, `bgtz`, `bltz`, or `bgez` is followed. An unknown branch stops. Do not guess the taken side. A word marked `mem` was stored earlier in the report. `word_fill` and `bzero` hide their range. Another skipped call may still have written that address. Check before you treat `mem` as live. Do not read a word from the executable file as the live value. A fill can leave 0 where the file still holds the original word. Measurements are in [docs/research/decomp-speed.md](docs/research/decomp-speed.md).
 
-The last block note is `docs/research/re/call-80063f18.md`. The words at `0x800dd6e8` and `0x800dd6ec` are 0, so `beq` at `0x80063f30` is taken. `v0` leaves as 0. `jr ra` returns to `0x8002303c`. `s0` and `s7` are `0x8009f820`. `s4` is 1. The frame at `0x80063ed8` is closed. The next note is `0x8002303c`.
+The last block note is `docs/research/re/call-8002303c.md`. `jal` at `0x8002304c` is `sprintf`. `a1` is `0x800bfa54`. `a2` is 1. The delay leaves `s0` as 0. `ra` leaves as `0x80023054`. The next note is `0x80023054`.
 
 ## Visible screen
 
