@@ -15,9 +15,9 @@ void FillVram::draw_sync(int mode) {
 
 void FillVram::draw_prim(const exe::FillPacket& packet) {
     // The three-word fill is tag high byte 3 and command byte 2.
-    // gap: display-area top byte 0x05. x and y are not quoted.
-    // The next instruction is jal 0x80086230 at 0x80086ef0 (0x0c02188c).
-    // No GPU command after that byte is stated. This sink does not apply 0x05.
+    // Display-area top byte 0x05 is built at 0x80086e48. x and y are not quoted.
+    // The next cited GPU word is 0x08000002, from the jalr at 0x80086fcc.
+    // This sink paints the fill. It does not paint that word.
     if ((packet[0] >> 24) != 3 || (packet[1] >> 24) != 2) {
         throw std::invalid_argument("unsupported GPU packet");
     }

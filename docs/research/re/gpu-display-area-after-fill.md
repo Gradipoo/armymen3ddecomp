@@ -10,4 +10,4 @@ No note quotes the display x and y halfwords. This note still does not state the
 
 [call-80086e7c.md](call-80086e7c.md) takes the branch to `0x80086ef0` after that store. The instruction there is `jal 0x80086230`. The instruction word is `0x0c02188c`. The delay slot at `0x80086ef4` is `nop`, word `0x00000000`. `python3 tools/sdk_match.py` does not name `0x80086230`. This note stops at that call. It does not state a GPU command after the `0x05` byte.
 
-This command is not a `DrawPrim` packet. `components/platform/fill_vram.cpp` still applies only the three-word fill.
+This command is not a `DrawPrim` packet. The next cited GPU word after it is in [gpu-word-after-display-area.md](gpu-word-after-display-area.md).

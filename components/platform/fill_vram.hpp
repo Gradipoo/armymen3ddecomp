@@ -12,6 +12,8 @@ class FillVram final : public exe::DisplayFillGpu {
 public:
     static constexpr unsigned width = 1024;
     static constexpr unsigned height = 512;
+    // jalr at 0x80086fcc. gpu_store writes this word to 0x1f801814.
+    static constexpr std::uint32_t next_gpu_word = 0x08000002u;
     FillVram();
     void draw_sync(int mode) override;
     void draw_prim(const exe::FillPacket& packet) override;

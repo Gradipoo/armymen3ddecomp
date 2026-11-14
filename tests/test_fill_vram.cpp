@@ -5,6 +5,7 @@
 using namespace am3d;
 
 int main() {
+    if (platform::FillVram::next_gpu_word != 0x08000002u) return 8;
     platform::FillVram vram;
     exe::DisplayFillState rect{0, 0, 17, 511, 18, 513};
     exe::fill_display(0x0000ffu, rect, vram);
