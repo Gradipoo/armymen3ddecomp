@@ -422,7 +422,19 @@ Notes in this folder describe the PlayStation USA executable, serial SLUS-00491.
 | [call-80076548-22.md](call-80076548-22.md) | `0x43` becomes `0x63`. `s2` becomes `0xddcfb971`. The next byte is `0x4b`. |
 | [call-80076548-23.md](call-80076548-23.md) | `0x4b` becomes `0x6b`. `s2` becomes `0xddd5d93e`. The next byte is `0x53`. |
 | [call-80076548-24.md](call-80076548-24.md) | The last byte becomes `0x73`. `v0` is `0xddd69adb`. `jr` returns to `0x8005c3c0`. |
-| [call-8005c3c0-4.md](call-8005c3c0-4.md) | Stores `0xddd69adb` at `0x800e450c` and `0x800e4510` at `0x800d89d4`. Returns to `0x8005c668`. |
+| [call-8005c3c0-4.md](call-8005c3c0-4.md) | Stores `0xddd69adb` at `0x800e450c` and `0x800e4510` at `0x800d89d4`. Returns to `0x8005c668`. That arrival is in [call-8005c668-3.md](call-8005c668-3.md). |
+| [call-8005c668-3.md](call-8005c668-3.md) | The gap is `0xfd0`. The next record is `MISSION.INI;1`. `jal` calls `0x8005c254`. |
+| [call-8005c254-5.md](call-8005c254-5.md) | The flag byte is 0, so the high bit is not set. Stops after 64 instructions at `0x8005c374`. |
+| [call-8005c378-2.md](call-8005c378-2.md) | Continues the name. The next compare is in [call-8005c364-2.md](call-8005c364-2.md). |
+| [call-8005c364-2.md](call-8005c364-2.md) | The dot is not seen yet. The next increment is in [call-8005c334-3.md](call-8005c334-3.md). |
+| [call-8005c334-3.md](call-8005c334-3.md) | Continues the name. The next compare is in [call-8005c338.md](call-8005c338.md). |
+| [call-8005c338.md](call-8005c338.md) | The semicolon ends the copy. The stored bytes are `MISSION.INI`. `jal` calls `0x80076508`. |
+| [call-80076508-23.md](call-80076508-23.md) | The first byte is `0x4d`. `jal` calls `tolower`. The return is in [call-80076548-25.md](call-80076548-25.md). |
+| [call-80076548-25.md](call-80076548-25.md) | `0x4d` becomes `0x6d`. `s2` becomes `0xcdcbfdcd`. The next byte is `0x49`. |
+| [call-80076548-26.md](call-80076548-26.md) | `0x49` becomes `0x69`. `s2` becomes `0xcf0b6b10`. The next byte is `0x53`. |
+| [call-80076548-27.md](call-80076548-27.md) | `0x53` becomes `0x73`. `s2` becomes `0xf23ca725`. The next byte is `0x53`. |
+| [call-80076548-28.md](call-80076548-28.md) | `0x53` becomes `0x73`. `s2` becomes `0xf50cc17e`. The next byte is `0x49`. |
+| [call-80076548-29.md](call-80076548-29.md) | `0x49` becomes `0x69`. `s2` becomes `0xf515e8b7`. The next byte is `0x4f`. |
 | [call-800252ac.md](call-800252ac.md) | Block at `0x800252ac` after the return from `0x8007a6dc`. The epilogue does not write `v0`. The fall-through compare left `v0` at 0. `lui` and the delay slot set `a0` to `0xdeadbeef`. `jal` calls `0x8007c334`. The callee's first block is in [call-8007c334.md](call-8007c334.md). |
 | [call-8007c334.md](call-8007c334.md) | Block at `0x8007c334` after the `jal` at `0x800252b0`. `a0` is `0xdeadbeef`. It stores that word at `0x34(gp)` and `0x38(gp)`, which are `0x800c5458` and `0x800c545c`. `jr` returns through `ra`. The delay slot is `nop`. Control goes to `0x800252b8`. That block is in [call-800252b8.md](call-800252b8.md). |
 | [call-800252b8.md](call-800252b8.md) | Block at `0x800252b8` after the return from `0x8007c334`. `v0` arrives as 0 and is not read. The block writes constants through `s1` (`0x8009f820`) and writes 3 at that base through `s0`. `jal` calls `0x80076254`. The delay slot stores the last `v0`, `0x800cf118`, at `0x998(s1)`. The callee's first block is in [call-80076254.md](call-80076254.md). |
