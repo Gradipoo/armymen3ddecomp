@@ -17,14 +17,16 @@ with 3DO. Follow [LEGAL.md](../LEGAL.md) and [AGENTS.md](../AGENTS.md).
 
 ## Current position
 
-Updated November 13, 2026. The scaffold, disc tools, first function
+Updated November 16, 2026. The scaffold, disc tools, first function
 inventory, progress ledger, and local compile-and-compare loop exist.
-The loop passes a synthetic test. A display-fill function has our own
-implementation and host tests. It is not connected to a GPU backend.
+The optional SDL2 window connects our fill, buffer advance, and startup
+clear implementations. It displays DATA/FRONT.TIM when that local file
+exists and synthetic bars otherwise. This is a platform test. The picture's
+placement is a stand-in, not evidence of the retail screen layout.
 The launcher checks the disc and executable. It does not run the game.
 
-The current export has 1,869 candidate functions. The ledger records one
-implemented function and no verified functions. These are a dated snapshot,
+The current export has 1,869 candidate functions. The ledger records three
+implemented functions and no verified functions. These are a dated snapshot,
 not a completion percentage. Automatic function boundaries need review.
 Use `python tools/progress.py` for current counts and evidence.
 See [PROGRESS.md](PROGRESS.md).
@@ -42,7 +44,7 @@ and assembler remain unconfirmed. See the
 | First inventory and progress tracking | Complete as a baseline | Address/size/name export exists. A separate evidence ledger distinguishes research, implementation, and verification. Missing evidence does not advance status. |
 | Local comparison loop | Complete for a synthetic case | Explicit local tools compile our fixture. Its expected bytes match. Commands, flags, and hashes are recorded locally. |
 | Retail compiler calibration | In progress | Reviewed functions provide reproducible evidence for a useful compiler configuration. Mismatches and limits are documented. |
-| PS1 platform layer | Not started | A selected backend supplies the display, input, disc, and timing interfaces needed by the first scene. |
+| PS1 platform layer | Partial foundation | SDL2 display and input work for the platform test. A selected backend must still supply the graphics, disc, and timing interfaces needed by the first scene. |
 | First running scene | Not started | A clean build reads the owner's disc, reaches the main loop, and displays one identified scene with documented retail comparisons. |
 | First playable slice | Not started | One defined play sequence supports movement and its required game behavior, with reproducible checks. |
 
@@ -50,7 +52,42 @@ A configured CI matrix is not evidence of a successful remote run. Record
 results when they are available. The optional research toolchain currently
 has a tested macOS ARM64 setup. Other host toolchains need their own checks.
 
-## 1. Calibrate against retail code
+## Prototype priorities
+
+The next priority is a running native screen. Compiler identification is
+useful research, but it is not a prerequisite for a portable prototype.
+Use [PROTOTYPE.md](PROTOTYPE.md) for the source review, ordered work, and
+acceptance checks behind this priority change.
+
+| Order | Work | Exit condition |
+| --- | --- | --- |
+| 1 | Observe one real front-end screen on the owner's USA disc. | A repeatable cold boot and controller sequence identify its assets, frame submission, callbacks, and live state. Local captures stay in build/. |
+| 2 | Trial a narrow PsyZ graphics adapter. Keep the existing SDL2 test building. | Original synthetic tests cover fill, texture upload, a textured rectangle, buffer changes, and controller input. Record host results, selected files, dependencies, and license scopes before adoption. |
+| 3 | Connect one observed file read and image upload. | The window uses the measured retail placement and palette when the local file exists. Disc-free tests keep a synthetic fallback. |
+| 4 | Connect that screen's update and input loop. | Reconstructed game code drives the identified screen and one observed controller transition, with retail comparison evidence. A still picture or captured packet replay alone does not pass. |
+| 5 | Extend to one mission and a bounded movement sequence. | Loading, camera, movement, and collision work for the declared sequence, with repeatable retail checks. Add sound or movie behavior when that sequence requires it. |
+
+The first screen is selected by observation. FRONT.TIM is a decoded asset,
+not proof of a complete front end. MEMCARD.TIM is a useful observed loading
+lead. Neither file name establishes the first screen's required behavior.
+
+The static lane at 0x80061fe4 stays parked under AGENTS.md. The recorded
+retail MEMCARD path is a separate lane with a nonzero backup count. Use
+that evidence to choose runtime work. Do not manufacture state to make
+the parked lane continue.
+
+PS1Recomp is a separate, bounded local feasibility trial if generated
+execution would help expose missing behavior. It is not an adopted backend
+or proof of a completed decomp. All generated game source stays in build/.
+Do not make a native screen wait for that trial.
+
+Keep each implementation change to one gap or one stand-in. Favor gaps
+that connect an observed dependency of the selected screen. Keep the
+existing note limits and named-call rules. Count working interfaces and
+retail checks alongside function status, rather than treating citations
+or source-file counts as runtime completion.
+
+## Compiler calibration
 
 Keep the current synthetic test as a basic toolchain check. It does not
 identify the retail toolchain. Continue with our own C for researched game
@@ -76,10 +113,11 @@ Matching is a research check. Portable code can differ in machine code.
 A behavior verification record must state its method, scope, and limits.
 A host unit test alone does not establish agreement with the retail game.
 
-## 2. Reuse shared PS1 infrastructure
+## Shared PS1 infrastructure
 
-The runtime currently has no third-party libraries. Our Python tools use
-the standard library. Optional local research tools are separate: Ghidra,
+The default build has no third-party runtime libraries. The optional
+platform test uses SDL2. Our Python tools use the standard library.
+Optional local research tools are separate: Ghidra,
 old GCC, maspsx, and an assembler are not shipped as runtime dependencies.
 They are not required by the disc-free CI tests. Keep local downloads,
 compiler output, and comparison reports under ignored build directories.
@@ -92,6 +130,8 @@ Evaluate shared tools and platform code before writing replacements:
 | [Spyro 1 decomp](https://github.com/TheMobyCollective/spyro-1) | PS1 build layout and overlay organization where our disc evidence supports it. |
 | [splat](https://github.com/ethteck/splat) | Local code/data splitting and symbol maps. |
 | [PsyCross](https://github.com/OpenDriver2/PsyCross) | A possible PS1 platform backend. Test the required interfaces and its dependencies first. |
+| [PsyZ](https://github.com/Xeeynamo/psyz) | First candidate for a narrow graphics trial. Check its host packet types, SDL3 dependency, raw-command limits, and mixed license scopes. |
+| [PS1Recomp](https://github.com/PS1Recomp/ps1-recomp) | A bounded local execution experiment or a separately tested GPU component. Army Men support is unproven. |
 | [ghidra_psx_ldr](https://github.com/lab313ru/ghidra_psx_ldr) | PS1 and GTE analysis support. |
 | [PCSX-Redux](https://github.com/pcsx-redux/pcsx-redux) | Local retail debugging and behavior observations. |
 
@@ -107,7 +147,7 @@ runtime dependencies and update the build instructions with that choice.
 First prove a small display and input example on the supported host systems.
 Check sound and movie needs against the actual disc before expanding scope.
 
-## 3. Reach the first scene
+## First running scene
 
 Follow the actual boot path. Reuse the named-call rule instead of tracing
 SDK bodies again. Grow shared types and prototypes from cited evidence.
@@ -124,7 +164,7 @@ reach the main loop, and produce a documented display result. Include a
 repeatable input sequence and comparisons with the retail game. Keep local
 captures and traces out of the public tree when they contain game data.
 
-## 4. Build one playable slice
+## First playable slice
 
 After the first scene works, choose one bounded play sequence. Implement
 its required movement, camera, collision, and game rules one gap at a time.
