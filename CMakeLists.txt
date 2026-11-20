@@ -206,6 +206,7 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_800651c8.cpp
     components/exe/menu_input_scan.cpp
     components/exe/menu_input_scan_loop.cpp
+    components/exe/mission_movement_slice.cpp
     components/exe/menu_table_sequence.cpp
     components/exe/call_80065304.cpp
     components/exe/call_800655e4.cpp
@@ -1366,6 +1367,13 @@ if(BUILD_TESTING)
     target_link_libraries(test_prototype_task_7_retail PRIVATE am3d_platform_core)
     add_test(NAME prototype_task_7_retail COMMAND test_prototype_task_7_retail)
     set_tests_properties(prototype_task_7_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_prototype_task_8 tests/test_prototype_task_8.cpp)
+    target_link_libraries(test_prototype_task_8 PRIVATE am3d_exe)
+    add_test(NAME prototype_task_8 COMMAND test_prototype_task_8)
+    add_executable(test_prototype_task_8_retail tests/test_prototype_task_8_retail.cpp)
+    target_link_libraries(test_prototype_task_8_retail PRIVATE am3d_exe)
+    add_test(NAME prototype_task_8_retail COMMAND test_prototype_task_8_retail)
+    set_tests_properties(prototype_task_8_retail PROPERTIES SKIP_RETURN_CODE 77)
     add_executable(test_menu_table_sequence tests/test_menu_table_sequence.cpp)
     target_link_libraries(test_menu_table_sequence PRIVATE am3d_exe)
     add_test(NAME menu_table_sequence COMMAND test_menu_table_sequence)
