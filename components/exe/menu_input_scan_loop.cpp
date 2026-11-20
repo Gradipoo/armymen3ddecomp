@@ -5,6 +5,13 @@
 
 namespace am3d::exe {
 
+void menu_input_scan_host_resume(MenuInputScanState& scan, MenuInputScanIndices& indices,
+                                 std::uint32_t& stack_word_1c, std::uint32_t loop_limit) {
+    scan.table_cursor = 0u;
+    indices.menu_table_index = 0u;
+    stack_word_1c = loop_limit;
+}
+
 MenuInputScanLoopResult run_menu_input_scan_frames(
     std::uint32_t count, std::uint32_t (*pad_get_state)(std::uint32_t port),
     std::uint8_t* table, MenuInputScanIndices& indices, std::uint32_t& sp20,

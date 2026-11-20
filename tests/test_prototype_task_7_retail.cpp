@@ -140,6 +140,7 @@ int main() {
     am3d::exe::PadStateDispatchInject pad_inject{};
     pad_inject.entry[3] = &kProvisionalDownDest;
 
+    am3d::exe::menu_input_scan_host_resume(scan, indices, stack_word_1c, scan.s7 + 1u);
     const std::uint32_t s7_before_transition = scan.s7;
     const am3d::exe::MenuInputScanLoopResult transition = am3d::exe::run_menu_input_scan_frames(
         1u, pad_get_state_retail, table.data(), indices, sp20, 0u, 0u, record, scan, stack_word_1c,
@@ -152,11 +153,10 @@ int main() {
         dispatch.word_address != 0x800c3ea4u) {
         return 31;
     }
-    // Fifth step after the cited four-frame budget: dispatch cites; tail/s7 stay at budget stop.
-    if (s7_before_transition >= stack_word_1c && transition.last_step.tail_ran) {
+    if (!transition.last_step.tail_ran) {
         return 32;
     }
-    if (s7_before_transition < stack_word_1c && !transition.last_step.tail_ran) {
+    if (scan.s7 != s7_before_transition + 1u) {
         return 33;
     }
 

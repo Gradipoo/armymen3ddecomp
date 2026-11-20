@@ -38,4 +38,10 @@ MenuInputScanLoopResult run_menu_input_scan_frames(
     std::uint32_t* stack_word_28 = nullptr,
     const PadStateDispatchInject* test_inject_pad_dispatch = nullptr);
 
+// Host resume after the cited s7 limit stop. Exit-chain tails can advance
+// scan.table_cursor to menu_table_bytes; rewind the synthetic table cursor so
+// another PadGetState step can reach call_80064f14. loop_limit restates sp+0x1c.
+void menu_input_scan_host_resume(MenuInputScanState& scan, MenuInputScanIndices& indices,
+                                 std::uint32_t& stack_word_1c, std::uint32_t loop_limit);
+
 }

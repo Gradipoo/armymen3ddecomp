@@ -94,12 +94,9 @@ paths when present under `build/coordination/retail-screen/`.
   tail bytes `0x0b`/`0x87`, `menu_submit_frame` with owner FRONT bytes, green
   marker at `200 + s7*12`, and a non-zero sample in the stand-in rect at
   origin `(0,0)` offset `(234,56)`.
-- Phase B: fifth scan step on the same host state with Down (`pad_get_state` 3
-  once `s7>=8`) and `PadStateDispatchInject` entry three `0x80064f14`; dispatch
-  word `0x800c3ea4` and second `menu_submit_frame`. After the cited four-frame
-  budget (`stack_word_1c` 4), `s7` stays 8 and `tail_ran` does not repeat on
-  that fifth step; marker x stays `200+s7*12`. Isolated Down in
-  `prototype_task_7` still shows `tail_ran` on a fresh scan.
+- Phase B: `menu_input_scan_host_resume` then one Down step (`s2=3`, inject).
+  Expect dispatch `0x800c3ea4`, `tail_ran`, `s7` bumps by one, and a second
+  `menu_submit_frame` with an advanced marker.
 
 Remaining honesty after this row:
 

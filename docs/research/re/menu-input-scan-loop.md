@@ -32,6 +32,14 @@ Optional `stack_word_28` hooks the compare-four tail at `0x80065168`; see
 [menu-scan-stack-hooks.md](menu-scan-stack-hooks.md). Default `stack_word_18`
 is zero per [call-80064e58.md](call-80064e58.md).
 
+## Host resume after limit stop
+
+`menu_input_scan_host_resume` rewinds `scan.table_cursor` and
+`indices.menu_table_index` to zero and restates `stack_word_1c`. Use when the
+synthetic four-frame budget and exit-chain tails advanced `table_cursor` to
+`menu_table_bytes`, so a later Down or SDL step still reaches
+`call_80064f14`. Retail table layout and live `sp+0x1c` on resume stay unstated.
+
 ## Gap
 
 Optional SDL wiring lives in

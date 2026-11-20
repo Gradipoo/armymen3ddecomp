@@ -181,6 +181,21 @@ int main(int argc, char** argv) {
                     break;
                 }
             }
+            if (inject_down && pad_dispatch_inject != nullptr) {
+                am3d::exe::menu_input_scan_host_resume(
+                    scan_host.scan, scan_host.indices, scan_host.stack_word_1c,
+                    scan_host.scan.s7 + 1u);
+                g_live_pad_buttons =
+                    static_cast<std::uint16_t>(~(1u << am3d::platform::kPadBitDpadDown));
+                const am3d::exe::MenuInputScanLoopResult down_step =
+                    am3d::exe::run_menu_input_scan_frames(
+                        1u, pad_get_state_from_poll, scan_host.table.data(),
+                        scan_host.indices, scan_host.sp20, 0u, 0u, scan_host.record,
+                        scan_host.scan, scan_host.stack_word_1c, nullptr,
+                        &scan_host.indices.stack_word_28, pad_dispatch_inject);
+                am3d::exe::log_menu_input_scan_step(std::cout, down_step.last_step);
+                batch_frames_run += down_step.frames_run;
+            }
             const std::uint32_t marker_x = 200u + scan_host.scan.s7 * 12u;
             present_scan_marker(marker_x, 0x00ff00u);
             completed = 1;
