@@ -80,3 +80,42 @@ retail, and the services that sequence reaches.
 | `prototype_task_8` | Disc-free synthetic gate |
 | `prototype_task_8_retail` | Skips with code 77 if ALP1.TXT missing |
 | `call_80063b34` | Path GPR cite used by handoff |
+
+## Full row 8 (disc-backed)
+
+When the owner extract includes `build/disc/DATA/ALP1.TXT` and companion Alpine
+files, the native path below extends synthetic row 8 with file inventory checks
+and an optional SDL diagnostic. It does not parse MAP, PAD, or MDL or compare
+retail mission physics.
+
+| Piece | Role |
+| --- | --- |
+| `ctest prototype_task_8_retail` | `tests/test_prototype_task_8_retail.cpp`; skips with code 77 if ALP1.TXT is missing |
+| `ctest prototype_task_8` | Unchanged disc-free gate |
+| `am3d_mission_slice_smoke --checkpoint` | Writes `build/platform/task8-checkpoint.txt` after the default 8-frame movement script |
+
+Smoke command (from repo root, SDL build):
+
+```text
+./build/am3d_mission_slice_smoke --hidden --checkpoint
+```
+
+Optional capture: `--capture` writes `build/platform/mission_slice_smoke.bmp`.
+
+`prototype_task_8_retail` checks:
+
+- Opens `ALP1.TXT`; first line contains `Alpine1`
+- `ALP1.MAP`, `ALP1.PAD`, and `ALP1.MDL` are regular files with non-zero size under `build/disc/DATA/` (or `disc/DATA/` when cwd is `build/`)
+- Same synthetic movement checks as `prototype_task_8` (no retail position compare)
+
+Checkpoint file columns (space-separated): mission id `Alp1`, final `x`, `z`,
+`heading`, `frames_run`.
+
+Remaining honesty after this row:
+
+| Limit | Note |
+| --- | --- |
+| ALP1.PAD spawn | Start state is still arbitrary host ints |
+| MAP / MDL use | Inventory only; no geometry load |
+| Retail movement compare | Deferred; synthetic z step only |
+| Mission gameplay observation | No in-mission retail screen record yet |

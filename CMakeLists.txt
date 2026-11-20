@@ -783,6 +783,8 @@ if(AM3D_WITH_SDL2)
     target_link_libraries(am3d_platform_smoke PRIVATE am3d_platform_sdl2)
     add_executable(am3d_menu_scan_smoke src/menu_scan_smoke.cpp)
     target_link_libraries(am3d_menu_scan_smoke PRIVATE am3d_platform_sdl2)
+    add_executable(am3d_mission_slice_smoke src/mission_slice_smoke.cpp)
+    target_link_libraries(am3d_mission_slice_smoke PRIVATE am3d_platform_sdl2)
 endif()
 
 add_library(am3d_input STATIC components/input/keyboard.cpp)

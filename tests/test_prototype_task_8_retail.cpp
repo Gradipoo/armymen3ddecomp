@@ -10,16 +10,25 @@ namespace {
 
 constexpr int kSkipNoDisc = 77;
 
-std::filesystem::path resolve_alp1_txt() {
-    const std::filesystem::path from_build = "disc/DATA/ALP1.TXT";
+std::filesystem::path resolve_disc_data(const char* name) {
+    const std::filesystem::path from_build = std::filesystem::path("disc/DATA") / name;
     if (std::filesystem::is_regular_file(from_build)) {
         return from_build;
     }
-    const std::filesystem::path from_root = "build/disc/DATA/ALP1.TXT";
+    const std::filesystem::path from_root = std::filesystem::path("build/disc/DATA") / name;
     if (std::filesystem::is_regular_file(from_root)) {
         return from_root;
     }
     return {};
+}
+
+bool regular_file_nonzero(const std::filesystem::path& path) {
+    if (path.empty()) {
+        return false;
+    }
+    std::error_code ec;
+    const auto size = std::filesystem::file_size(path, ec);
+    return !ec && size > 0u;
 }
 
 bool first_line_contains_alpine1(const std::filesystem::path& path) {
@@ -71,12 +80,21 @@ int run_movement_slice() {
 
 // PROTOTYPE.md row 8 disc-backed check when build/disc/DATA/ALP1.TXT exists.
 int main() {
-    const std::filesystem::path txt_path = resolve_alp1_txt();
+    const std::filesystem::path txt_path = resolve_disc_data("ALP1.TXT");
     if (txt_path.empty()) {
         return kSkipNoDisc;
     }
     if (!first_line_contains_alpine1(txt_path)) {
         return 5;
+    }
+    if (!regular_file_nonzero(resolve_disc_data("ALP1.MAP"))) {
+        return 6;
+    }
+    if (!regular_file_nonzero(resolve_disc_data("ALP1.PAD"))) {
+        return 7;
+    }
+    if (!regular_file_nonzero(resolve_disc_data("ALP1.MDL"))) {
+        return 8;
     }
     return run_movement_slice();
 }

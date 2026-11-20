@@ -107,3 +107,5 @@ Remaining honesty after this row:
 | `PadGetState` body | Host stub in ctest; SDL mapping in smoke |
 | Live `0x800c3ea4` | Provisional inject; no RAM dump of the dispatch table |
 | Full retail scene loop | Submission slice plus scan glue, not reconstructed retail menu main |
+
+Mission movement disc-backed row: [prototype-task-8.md](prototype-task-8.md) Full row 8.
