@@ -17,7 +17,6 @@ MenuLoopBody64dd8 call_80064dd8(std::uint32_t s1, const std::uint8_t* byte_at_s1
         result.branch_to_64dfc = true;
     } else {
         result.entered_64dec = true;
-        // gap: body at 0x80064dec is not entered.
     }
     return result;
 }

@@ -14,6 +14,7 @@
 #include "call_80064dc8.hpp"
 #include "call_80064dd8.hpp"
 #include "call_80064dfc.hpp"
+#include "call_80064dec.hpp"
 #include "call_80065194.hpp"
 #include "call_800651c8.hpp"
 
@@ -63,6 +64,10 @@ void record_loop_exit_when_stopped(MenuInputScanStep& step,
                             step.loop_body_64dc8.s1, step.loop_body_64dd8.t1,
                             &stack_word_1c);
                         step.loop_body_64dfc_recorded = true;
+                    } else if (step.loop_body_64dd8.entered_64dec) {
+                        step.loop_body_64dec = call_80064dec(
+                            step.loop_body_64dc8.s1, &stack_word_1c);
+                        step.loop_body_64dec_recorded = true;
                     }
                 }
             }
