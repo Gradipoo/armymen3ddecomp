@@ -19,7 +19,6 @@ MenuLoopTaken651c8 call_800651c8(std::uint32_t v0, std::uint32_t* stack_word_18)
     }
     if (below_two) {
         result.branch_to_64dc8 = true;
-        // gap: body at 0x80064dc8 is not entered.
     } else {
         result.entered_651e0 = true;
         // gap: instructions at 0x800651e0 are not traced.

@@ -67,6 +67,14 @@ int main() {
         indices.stack_word_18 != 1u) {
         return 6;
     }
+    constexpr std::uint32_t kS1After651c8 = 0x800e0000u + 0x18fau;
+    if (!result.last_step.loop_body_64dc8_recorded ||
+        result.last_step.loop_body_64dc8.branch_to_65194 ||
+        !result.last_step.loop_body_64dc8.entered_64dd8 ||
+        result.last_step.loop_body_64dc8.v0 != 0u ||
+        result.last_step.loop_body_64dc8.s1 != kS1After651c8 + 1u) {
+        return 8;
+    }
 
     g_pad_state = 3u;
     scan = {};

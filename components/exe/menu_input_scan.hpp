@@ -4,6 +4,7 @@
 #include "call_80064e40.hpp"
 #include "call_80064e68.hpp"
 #include "call_800650d0.hpp"
+#include "call_80064dc8.hpp"
 #include "call_80065194.hpp"
 #include "call_800651c8.hpp"
 
@@ -20,6 +21,8 @@ struct MenuInputScanStep {
     bool loop_exit_recorded;
     MenuLoopTaken651c8 loop_taken_651c8;
     bool loop_taken_651c8_recorded;
+    MenuLoopBody64dc8 loop_body_64dc8;
+    bool loop_body_64dc8_recorded;
     bool compare_four_ran;
     bool compare_four_to_65168;
     std::uint32_t compare_four_v0;
@@ -38,6 +41,7 @@ MenuInputScanStep menu_input_scan_step(
     std::uint32_t stack_word_1c,
     const std::uint32_t* test_inject_s6 = nullptr,
     std::uint32_t* stack_word_28 = nullptr,
-    const PadStateDispatchInject* test_inject_pad_dispatch = nullptr);
+    const PadStateDispatchInject* test_inject_pad_dispatch = nullptr,
+    const std::uint8_t* test_inject_s1_lbu = nullptr);
 
 }
