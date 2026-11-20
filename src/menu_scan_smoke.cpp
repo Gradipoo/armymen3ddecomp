@@ -3,7 +3,9 @@
 #include "display_clear.hpp"
 #include "front_tim.hpp"
 #include "menu_input_scan_loop.hpp"
+#include "menu_pad_get_state.hpp"
 #include "menu_submit_frame.hpp"
+#include "menu_table_sequence.hpp"
 
 #include <array>
 #include <chrono>
@@ -17,20 +19,10 @@
 
 namespace {
 
-std::uint32_t pad_get_state(std::uint32_t port) {
-    (void)port;
-    return 2u;
-}
+std::uint16_t g_live_pad_buttons = 0xffffu;
 
-constexpr std::array<std::uint8_t, 4u> kReleased{0u, 0x41u, 0xffu, 0xffu};
-
-void fill_released_slots(std::uint8_t* bytes, std::size_t slot_count) {
-    for (std::size_t slot = 0u; slot < slot_count; ++slot) {
-        const std::size_t base = slot * kReleased.size();
-        for (std::size_t i = 0u; i < kReleased.size(); ++i) {
-            bytes[base + i] = kReleased[i];
-        }
-    }
+std::uint32_t pad_get_state_from_poll(std::uint32_t port) {
+    return am3d::platform::menu_scan_pad_get_state(port, g_live_pad_buttons);
 }
 
 void draw_frame(const std::vector<std::uint8_t>& front_bytes,
@@ -63,7 +55,8 @@ void draw_frame(const std::vector<std::uint8_t>& front_bytes,
 
 struct ScanHostState {
     static constexpr std::size_t kSlots = 8u;
-    std::array<std::uint8_t, kSlots * kReleased.size()> table{};
+    std::array<std::uint8_t, kSlots * am3d::exe::kMenuInputScanSlotBytes> table{};
+    am3d::exe::MenuTableSequencer table_sequencer{};
     std::array<std::uint8_t, 0x400u> record_bytes{};
     std::uint8_t* record = record_bytes.data();
     am3d::exe::MenuInputScanState scan{};
@@ -74,7 +67,7 @@ struct ScanHostState {
 
 ScanHostState make_scan_host() {
     ScanHostState host{};
-    fill_released_slots(host.table.data(), ScanHostState::kSlots);
+    am3d::exe::menu_table_fill_released_slots(host.table.data(), ScanHostState::kSlots);
     host.indices.menu_table_bytes = static_cast<std::uint32_t>(host.table.size());
     return host;
 }
@@ -88,6 +81,7 @@ int main(int argc, char** argv) {
         bool capture = false;
         bool batch = false;
         bool submit = false;
+        bool scripted = false;
         for (int i = 1; i < argc; ++i) {
             const std::string arg = argv[i];
             if (arg == "--hidden") {
@@ -98,11 +92,13 @@ int main(int argc, char** argv) {
                 batch = true;
             } else if (arg == "--submit") {
                 submit = true;
+            } else if (arg == "--scripted") {
+                scripted = true;
             } else if (arg == "--frames" && i + 1 < argc) {
                 frames = std::stoi(argv[++i]);
             } else {
                 throw std::invalid_argument(
-                    "use --frames NUMBER, --hidden, --capture, --batch, or --submit");
+                    "use --frames NUMBER, --hidden, --capture, --batch, --submit, or --scripted");
             }
         }
         if (frames < 1 || frames > 36000) {
@@ -130,6 +126,9 @@ int main(int argc, char** argv) {
         }
 
         ScanHostState scan_host = make_scan_host();
+        const bool use_table_sequencer = scripted || frames > 1;
+        am3d::exe::MenuTableSequencer* const table_sequencer =
+            use_table_sequencer ? &scan_host.table_sequencer : nullptr;
         int completed = 0;
 
         auto present_scan_marker = [&](std::uint32_t marker_x, std::uint32_t marker_color) {
@@ -154,10 +153,11 @@ int main(int argc, char** argv) {
         };
 
         if (batch) {
+            g_live_pad_buttons = window.poll().buttons;
             const am3d::exe::MenuInputScanLoopResult result = am3d::exe::run_menu_input_scan_frames(
-                static_cast<std::uint32_t>(frames), pad_get_state, scan_host.table.data(),
+                static_cast<std::uint32_t>(frames), pad_get_state_from_poll, scan_host.table.data(),
                 scan_host.indices, scan_host.sp20, 0u, 0u, scan_host.record, scan_host.scan,
-                ScanHostState::kLoopLimit);
+                ScanHostState::kLoopLimit, table_sequencer);
             const std::uint32_t marker_x = 200u + scan_host.scan.s7 * 12u;
             present_scan_marker(marker_x, 0x00ff00u);
             completed = 1;
@@ -173,13 +173,16 @@ int main(int argc, char** argv) {
 
         for (int frame = 0; frame < frames; ++frame) {
             const auto pad = window.poll();
+            g_live_pad_buttons = pad.buttons;
             if (pad.quit || !(pad.buttons & (1u << 3))) {
                 break;
             }
             const am3d::exe::MenuInputScanLoopResult step =
                 am3d::exe::run_menu_input_scan_frames(
-                    1u, pad_get_state, scan_host.table.data(), scan_host.indices, scan_host.sp20,
-                    0u, 0u, scan_host.record, scan_host.scan, ScanHostState::kLoopLimit);
+                    1u, pad_get_state_from_poll, scan_host.table.data(), scan_host.indices,
+                    scan_host.sp20,
+                    0u, 0u, scan_host.record, scan_host.scan, ScanHostState::kLoopLimit,
+                    table_sequencer);
             const std::uint32_t marker_x = 200u + scan_host.scan.s7 * 12u;
             const std::uint32_t marker_color =
                 (pad.buttons & (1u << 14)) ? 0xffffffu : 0x0000ffu;

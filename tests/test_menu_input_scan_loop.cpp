@@ -53,5 +53,10 @@ int main() {
     if (!result.last_step.tail_ran) {
         return 4;
     }
+    if (!result.last_step.loop_exit_recorded ||
+        !result.last_step.loop_exit.branch_to_651c8 ||
+        result.last_step.loop_exit.entered_6519c) {
+        return 5;
+    }
     return 0;
 }

@@ -1,15 +1,20 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "menu_input_scan_loop.hpp"
 
+#include "menu_table_sequence.hpp"
+
 namespace am3d::exe {
 
 MenuInputScanLoopResult run_menu_input_scan_frames(
     std::uint32_t count, std::uint32_t (*pad_get_state)(std::uint32_t port),
-    const std::uint8_t* table, MenuInputScanIndices& indices,
-    std::uint32_t& sp20, std::uint32_t fp, std::uint32_t compare_word,
-    std::uint8_t*& record, MenuInputScanState& scan, std::uint32_t limit) {
+    std::uint8_t* table, MenuInputScanIndices& indices, std::uint32_t& sp20,
+    std::uint32_t fp, std::uint32_t compare_word, std::uint8_t*& record,
+    MenuInputScanState& scan, std::uint32_t limit, MenuTableSequencer* table_sequencer) {
     MenuInputScanLoopResult result{};
     while (count > 0u) {
+        if (table_sequencer != nullptr) {
+            table_sequencer->apply_frame(table, indices.menu_table_bytes, scan.table_cursor);
+        }
         indices.menu_table_index = scan.table_cursor;
         const std::uint32_t step_fp =
             (result.frames_run == 0u) ? fp : scan.fp;

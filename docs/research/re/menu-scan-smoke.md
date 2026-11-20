@@ -1,7 +1,7 @@
 # Menu scan SDL smoke integration
 
-This is an integration note. It does not claim PROTOTYPE task 7 pass, a
-retail menu transition, or live controller wiring into `PadGetState`.
+This is an integration note. It does not claim PROTOTYPE task 7 pass or a
+retail menu transition.
 
 ## Outcome
 
@@ -23,12 +23,19 @@ layout.
 budget, then presents a single diagnostic frame. It does not pace multiple
 SDL updates across scan steps.
 
-## Synthetic inputs
+## Pad input
 
 The released-slot table pattern matches
-`tests/test_menu_input_scan_loop.cpp`. `pad_get_state` always returns `2`.
-No retail table dump, stack words at `sp+0x1c` or `sp+0x28`, or SDL pad
-mapping is wired here.
+`tests/test_menu_input_scan_loop.cpp`. Live SDL poll feeds
+`menu_scan_pad_get_state` through `pad_get_state_from_poll`. Mapping and
+retail cites are in [menu-scan-pad-sdl.md](menu-scan-pad-sdl.md). Headless
+ctest keeps a fixed `2` stub.
+
+When `--scripted` is set or `--frames` is greater than 1,
+`run_menu_input_scan_frames` uses [menu-table-sequence](menu-table-sequence.md)
+to patch released and up slots per frame at `scan.table_cursor`.
+
+No retail table dump or stack words at `sp+0x1c` or `sp+0x28` are wired here.
 
 ## Checks
 
@@ -38,5 +45,6 @@ dummy-driver pass alone does not prove a visible window works.
 
 ## Gap
 
-Retail menu update, textured geometry from reconstructed submission, live
-pad bytes, and observed screen transition remain open for task 7.
+Retail menu update, textured geometry from reconstructed submission,
+dispatch words for `s2` other than two, and observed screen transition
+remain open for task 7.

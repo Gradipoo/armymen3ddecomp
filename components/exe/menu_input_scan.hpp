@@ -4,6 +4,7 @@
 #include "call_80064e40.hpp"
 #include "call_80064e68.hpp"
 #include "call_800650d0.hpp"
+#include "call_80065194.hpp"
 
 #include <cstdint>
 
@@ -14,6 +15,8 @@ struct MenuInputScanStep {
     PadStateDispatch dispatch;
     bool tail_ran;
     bool loop_again;
+    MenuLoopFallthrough loop_exit;
+    bool loop_exit_recorded;
 };
 
 // Integration of the reconstructed menu scan pieces.
@@ -26,6 +29,7 @@ MenuInputScanStep menu_input_scan_step(
     std::uint32_t menu_table_bytes, std::uint32_t& stack_word_20,
     std::uint32_t fp, std::uint32_t compare_word_dd730, std::uint8_t*& record,
     std::uint32_t stack_word_58, MenuInputScanState& scan,
-    std::uint32_t loop_limit);
+    std::uint32_t loop_limit,
+    const std::uint32_t* test_inject_s6 = nullptr);
 
 }

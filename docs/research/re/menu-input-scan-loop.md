@@ -24,9 +24,15 @@ without entering the taken re-entry body at `0x80064e40` from
 keeps `PadGetState` at `2`, and runs until `s7` meets a synthetic limit.
 That checks increment and stop only. It is not a retail capture.
 
+Optional per-frame table patching uses `MenuTableSequencer`; see
+[menu-table-sequence.md](menu-table-sequence.md). Headless smoke passes it for
+two frames.
+
 ## Gap
 
 Optional SDL wiring lives in
 [menu-scan-smoke.md](menu-scan-smoke.md). Live words at `sp+0x1c`,
 `sp+0x28`, and retail table layout beyond the repeated host pattern stay
-unstated. The fallthrough at `0x80065194` stays unentered.
+unstated. When the last step stops looping, [call-80065194](call-80065194.md)
+records the `bne` on post-tail `s5` (`scan.index`). The body at
+`0x800651c8` stays unentered.

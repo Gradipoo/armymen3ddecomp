@@ -187,13 +187,18 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_80064f14.cpp
     components/exe/call_80064f48.cpp
     components/exe/call_8006508c.cpp
+    components/exe/call_80065098.cpp
+    components/exe/call_800650a8.cpp
+    components/exe/call_800650b4.cpp
     components/exe/call_800650d0.cpp
     components/exe/call_800650e0.cpp
     components/exe/call_800650ec.cpp
     components/exe/call_800650f4.cpp
     components/exe/call_8006518c.cpp
+    components/exe/call_80065194.cpp
     components/exe/menu_input_scan.cpp
     components/exe/menu_input_scan_loop.cpp
+    components/exe/menu_table_sequence.cpp
     components/exe/call_80065304.cpp
     components/exe/call_800655e4.cpp
     components/exe/call_800655fc.cpp
@@ -754,6 +759,7 @@ target_include_directories(am3d_exe PUBLIC components/exe)
 add_library(am3d_platform_core STATIC
     components/platform/fill_vram.cpp
     components/platform/front_tim.cpp
+    components/platform/menu_pad_get_state.cpp
     components/platform/menu_submit_frame.cpp)
 target_include_directories(am3d_platform_core PUBLIC components/platform)
 target_link_libraries(am3d_platform_core PUBLIC am3d_exe)
@@ -1288,6 +1294,9 @@ if(BUILD_TESTING)
     add_executable(test_call_8006508c tests/test_call_8006508c.cpp)
     target_link_libraries(test_call_8006508c PRIVATE am3d_exe)
     add_test(NAME call_8006508c COMMAND test_call_8006508c)
+    add_executable(test_call_80065098 tests/test_call_80065098.cpp)
+    target_link_libraries(test_call_80065098 PRIVATE am3d_exe)
+    add_test(NAME call_80065098 COMMAND test_call_80065098)
     add_executable(test_call_80064758 tests/test_call_80064758.cpp)
     target_link_libraries(test_call_80064758 PRIVATE am3d_exe)
     add_test(NAME call_80064758 COMMAND test_call_80064758)
@@ -1306,6 +1315,9 @@ if(BUILD_TESTING)
     add_executable(test_call_8006518c tests/test_call_8006518c.cpp)
     target_link_libraries(test_call_8006518c PRIVATE am3d_exe)
     add_test(NAME call_8006518c COMMAND test_call_8006518c)
+    add_executable(test_call_80065194 tests/test_call_80065194.cpp)
+    target_link_libraries(test_call_80065194 PRIVATE am3d_exe)
+    add_test(NAME call_80065194 COMMAND test_call_80065194)
     add_executable(test_menu_input_scan tests/test_menu_input_scan.cpp)
     target_link_libraries(test_menu_input_scan PRIVATE am3d_exe)
     add_test(NAME menu_input_scan COMMAND test_menu_input_scan)
@@ -1315,6 +1327,12 @@ if(BUILD_TESTING)
     add_executable(test_menu_scan_smoke_headless tests/test_menu_scan_smoke_headless.cpp)
     target_link_libraries(test_menu_scan_smoke_headless PRIVATE am3d_exe)
     add_test(NAME menu_scan_smoke_headless COMMAND test_menu_scan_smoke_headless)
+    add_executable(test_menu_table_sequence tests/test_menu_table_sequence.cpp)
+    target_link_libraries(test_menu_table_sequence PRIVATE am3d_exe)
+    add_test(NAME menu_table_sequence COMMAND test_menu_table_sequence)
+    add_executable(test_menu_scan_pad_get_state tests/test_menu_scan_pad_get_state.cpp)
+    target_link_libraries(test_menu_scan_pad_get_state PRIVATE am3d_platform_core)
+    add_test(NAME menu_scan_pad_get_state COMMAND test_menu_scan_pad_get_state)
     add_executable(test_menu_submit_frame tests/test_menu_submit_frame.cpp)
     target_link_libraries(test_menu_submit_frame PRIVATE am3d_platform_core)
     add_test(NAME menu_submit_frame COMMAND test_menu_submit_frame)

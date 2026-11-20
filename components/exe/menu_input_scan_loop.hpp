@@ -7,6 +7,8 @@
 
 namespace am3d::exe {
 
+struct MenuTableSequencer;
+
 struct MenuInputScanIndices {
     std::uint32_t stack_word_18;
     std::uint32_t menu_table_index;
@@ -26,8 +28,9 @@ struct MenuInputScanLoopResult {
 // scan.fp so loop re-entry matches the cited tail updates.
 MenuInputScanLoopResult run_menu_input_scan_frames(
     std::uint32_t count, std::uint32_t (*pad_get_state)(std::uint32_t port),
-    const std::uint8_t* table, MenuInputScanIndices& indices,
-    std::uint32_t& sp20, std::uint32_t fp, std::uint32_t compare_word,
-    std::uint8_t*& record, MenuInputScanState& scan, std::uint32_t limit);
+    std::uint8_t* table, MenuInputScanIndices& indices, std::uint32_t& sp20,
+    std::uint32_t fp, std::uint32_t compare_word, std::uint8_t*& record,
+    MenuInputScanState& scan, std::uint32_t limit,
+    MenuTableSequencer* table_sequencer = nullptr);
 
 }

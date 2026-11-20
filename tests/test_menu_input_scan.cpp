@@ -65,5 +65,37 @@ int main() {
     if (high.tail_ran) {
         return 4;
     }
+
+    bytes.fill(0u);
+    record = bytes.data();
+    scan = {};
+    table_index = 0u;
+    sp20 = 0u;
+    g_state = 2u;
+    constexpr std::uint32_t kForceS6 = 1u;
+    constexpr std::array<std::uint8_t, 4u> kUpS6{0u, 0x41u, 0x6fu, 0xffu};
+    am3d::exe::MenuInputScanStep s6_up = am3d::exe::menu_input_scan_step(
+        1u, 2u, pad_get_state, kUpS6.data(), table_index, kUpS6.size(), sp20,
+        0u, 0u, record, 0u, scan, 4u, &kForceS6);
+    if (!s6_up.tail_ran || !s6_up.loop_again || bytes[0x0au] != 0x80u ||
+        bytes[0x0bu] != 0x80u) {
+        return 5;
+    }
+
+    bytes.fill(0u);
+    record = bytes.data();
+    scan = {};
+    table_index = 0u;
+    sp20 = 0u;
+    constexpr std::array<std::uint8_t, 4u> kS6Released{0u, 0x41u, 0xffu, 0xffu};
+    am3d::exe::MenuInputScanStep s6_clear = am3d::exe::menu_input_scan_step(
+        0u, 0u, pad_get_state, kS6Released.data(), table_index,
+        kS6Released.size(), sp20,
+        0u, 0u, record, 0u, scan, 8u, &kForceS6);
+    if (!s6_clear.tail_ran || !s6_clear.loop_again || bytes[0x0au] != 0u ||
+        bytes[0x0bu] != 0u) {
+        return 6;
+    }
+
     return 0;
 }
