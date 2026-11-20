@@ -110,4 +110,4 @@ Remaining honesty after this row:
 
 Mission movement disc-backed row: [prototype-task-8.md](prototype-task-8.md) Full row 8.
 
-Menu-to-mission host pipeline (tasks 7+8): [prototype-task-9.md](prototype-task-9.md).
+PROTOTYPE row 9 pipeline: [prototype-task-9.md](prototype-task-9.md).

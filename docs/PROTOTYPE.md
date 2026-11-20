@@ -165,9 +165,10 @@ and callbacks prevent a reliable date for the first playable mission.
 | 6 | Close one required file-read or callback gap per change. | Synthetic tests check bytes, bounds, callback order, and completion/error behavior. Local retail evidence checks actual names, sizes, and state. Preserve observed asynchronous behavior rather than inventing immediate success. |
 | 7 | Connect the selected screen's update loop and controller transition. | A fresh native run reconstructs the screen from the owner's files. Our update code produces multiple frames and the observed input transition. Compare against retail at named checkpoints. Captured packet replay alone does not pass. |
 | 8 | Load one mission and implement one movement sequence. | Declare start state and fixed input frames. Check movement, camera, collision, and the resulting state against retail. Add only the graphics, geometry, audio, or movie services this sequence reaches. |
+| 9 | Chain the menu transition into one mission movement run. | One host pipeline runs the row 7 menu scan and controller transition, records mission load intent, then executes the row 8 fixed movement script. `ctest prototype_task_9` passes disc-free; `prototype_task_9_retail` when ALP1.TXT is present. Checkpoint smoke writes stage counts and end state. Captured menu replay or mission frames alone do not pass. No retail in-mission boot required at this row. |
 
 Tasks 1 and 2 are observation work. Task 3 is a tooling/backend trial.
-Tasks 5 through 8 are milestones split into one-gap implementation changes,
+Tasks 5 through 9 are milestones split into one-gap implementation changes,
 each with its own required research note. The table is not permission to
 bundle several gaps into one change or bypass note boundaries.
 

@@ -81,7 +81,7 @@ retail, and the services that sequence reaches.
 | `prototype_task_8_retail` | Skips with code 77 if ALP1.TXT missing |
 | `call_80063b34` | Path GPR cite used by handoff |
 
-Composed menu-to-mission pipeline: [prototype-task-9.md](prototype-task-9.md).
+PROTOTYPE row 9 pipeline: [prototype-task-9.md](prototype-task-9.md).
 
 ## Full row 8 (disc-backed)
 

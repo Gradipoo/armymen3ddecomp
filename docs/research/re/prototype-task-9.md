@@ -1,11 +1,11 @@
 # PROTOTYPE task 9 synthetic acceptance (menu-to-mission pipeline)
 
-Status: **synthetic** met at this change; **disc-backed** when owner
+Status: **synthetic** met at `23b6014`; **disc-backed row 9** when owner
 `ALP1.TXT` is present (`ctest prototype_task_9_retail`). No retail
 in-mission boot or gameplay compare.
 
-Post–task-8 integration: one host **playable pipeline** composes PROTOTYPE
-rows 7 and 8 without widening physics or GPU scope.
+[PROTOTYPE.md](../../PROTOTYPE.md) row 9: one host **playable pipeline**
+composes rows 7 and 8 without widening physics or GPU scope.
 
 ## Composition
 
