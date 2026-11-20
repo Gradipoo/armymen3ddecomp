@@ -73,8 +73,15 @@ one status line for native vs retail coordination:
   --frames 4 --checkpoint --capture
 ```
 
-Output: `build/platform/task7-checkpoint.txt` with fields `s7`,
-`record[0x0b]`, `record[0x87]`, `frames`, `has_front_tim`, `submit` (0/1),
+With `--inject-down`, that command uses `run_prototype_task_7_menu_transition`
+and writes `build/platform/task7-checkpoint.txt` as
+`s7_a s7_b tail0b tail87 marker_a marker_b selection_b has_front`
+(disc-free golden `8 9 0 128 296 308 1 0`). The presented submit frame uses
+`selection_index_after_b` (OPTIONS stand-in). See
+[menu-selection-highlight.md](menu-selection-highlight.md).
+
+Without `--inject-down`, the checkpoint line stays `s7`, `record[0x0b]`,
+`record[0x87]`, `frames`, `has_front_tim`, `submit` (0/1),
 `batch_scan_frames_run`. With `--capture`, also writes `menu_scan_smoke.bmp`.
 Pair with [prototype-task-7-pixel-checkpoint.md](prototype-task-7-pixel-checkpoint.md)
 and `python3 tools/prototype_task7_compare.py`.

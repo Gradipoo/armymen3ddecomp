@@ -3,6 +3,7 @@
 #include "front_tim.hpp"
 #include "call_8007c11c.hpp"
 #include "display_fill.hpp"
+#include "menu_selection_highlight.hpp"
 
 #include <unordered_set>
 #include <vector>
@@ -343,6 +344,8 @@ MenuSubmitFrameTrace menu_submit_frame(const MenuSubmitFrameRequest& request, Fi
     trace.submit_return =
         exe::call_8007c11c(kRetailTable, kRetailCount, read_flag, bridge);
     draw_marker(request, vram);
+    draw_menu_selection_highlight(vram, request.origin_x, request.origin_y, request.quad_x,
+        request.quad_y, request.selection_highlight_index);
     return trace;
 }
 

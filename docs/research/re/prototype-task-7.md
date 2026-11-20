@@ -110,4 +110,44 @@ Remaining honesty after this row:
 
 Mission movement disc-backed row: [prototype-task-8.md](prototype-task-8.md) Full row 8.
 
+## Row 7 complete (retail checkpoint tier)
+
+Named gates, not a pixel-identical retail menu and not game main.
+
+| Gate | What it locks |
+| --- | --- |
+| Before (`s7` 8) | Four sequencer frames, tails `0x0b == 0` and `0x87 == 0x80`, selection stand-in index 0 (`NEW GAME`) |
+| After (`s7` 9) | One Down step, dispatch word `0x800c3ea4`, destination `0x80064f14`, `tail_ran`, selection stand-in index 1 (`OPTIONS`) |
+
+Shared runner: `run_prototype_task_7_menu_transition` in
+`components/exe/prototype_task_7_menu.cpp`. `prototype_task_7_retail` and
+`prototype_task_7_smoke_headless` both call it. The headless test is disc-free
+and does not link SDL. Its golden checkpoint line is:
+
+```text
+8 9 0 128 296 308 1 0
+```
+
+Columns: `s7_a s7_b tail0b tail87 marker_a marker_b selection_b has_front`.
+`prototype_task_7_smoke_headless_retail` is the same transition with owner
+`FRONT.TIM` bytes and skips 77 when that file is absent. With FRONT present the
+line ends in `1` instead of `0`.
+
+`menu_submit_frame` draws the selection highlight stand-in from
+[menu-selection-highlight.md](menu-selection-highlight.md). Index 0 then 1 is
+what `prototype_task_7_retail` submits. Batch smoke with `--inject-down` uses
+the runner and writes that checkpoint line to
+`build/platform/task7-checkpoint.txt`.
+
+Selection indices follow the observation story. They are not retail RAM.
+
+Remaining limits at this tier:
+
+| Limit | Note |
+| --- | --- |
+| `PadGetState` body | Host stub (`2` until `s7` reaches 8, then `3`). Not the retail pad driver |
+| Live word at `0x800c3ea4` | Provisional inject only. No retail RAM dump of the dispatch table |
+| Full scene loop | Scan glue plus one submission slice. Not reconstructed retail menu main |
+| Pixel match | Highlight bars are a stand-in. Mean absolute difference vs retail frames is not a pass |
+
 PROTOTYPE row 9 pipeline: [prototype-task-9.md](prototype-task-9.md).

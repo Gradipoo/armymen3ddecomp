@@ -765,14 +765,17 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_80010f5c.cpp
     components/exe/call_80010fbc.cpp
     components/exe/call_80010f00.cpp
-    components/exe/call_8002fb9c.cpp)
+    components/exe/call_8002fb9c.cpp
+    components/exe/prototype_task_7_menu.cpp
+    components/exe/menu_task7_checkpoint.cpp)
 target_include_directories(am3d_exe PUBLIC components/exe)
 
 add_library(am3d_platform_core STATIC
     components/platform/fill_vram.cpp
     components/platform/front_tim.cpp
     components/platform/menu_pad_get_state.cpp
-    components/platform/menu_submit_frame.cpp)
+    components/platform/menu_submit_frame.cpp
+    components/platform/menu_selection_highlight.cpp)
 target_include_directories(am3d_platform_core PUBLIC components/platform)
 target_link_libraries(am3d_platform_core PUBLIC am3d_exe)
 
@@ -1374,6 +1377,14 @@ if(BUILD_TESTING)
     target_link_libraries(test_prototype_task_7_retail PRIVATE am3d_platform_core)
     add_test(NAME prototype_task_7_retail COMMAND test_prototype_task_7_retail)
     set_tests_properties(prototype_task_7_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_prototype_task_7_smoke_headless tests/test_prototype_task_7_smoke_headless.cpp)
+    target_link_libraries(test_prototype_task_7_smoke_headless PRIVATE am3d_exe)
+    add_test(NAME prototype_task_7_smoke_headless COMMAND test_prototype_task_7_smoke_headless)
+    add_executable(test_prototype_task_7_smoke_headless_retail
+        tests/test_prototype_task_7_smoke_headless_retail.cpp)
+    target_link_libraries(test_prototype_task_7_smoke_headless_retail PRIVATE am3d_exe)
+    add_test(NAME prototype_task_7_smoke_headless_retail COMMAND test_prototype_task_7_smoke_headless_retail)
+    set_tests_properties(prototype_task_7_smoke_headless_retail PROPERTIES SKIP_RETURN_CODE 77)
     add_executable(test_alp1_pad_spawn tests/test_alp1_pad_spawn.cpp)
     target_link_libraries(test_alp1_pad_spawn PRIVATE am3d_exe)
     add_test(NAME alp1_pad_spawn COMMAND test_alp1_pad_spawn)

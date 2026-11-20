@@ -7,6 +7,8 @@
 #include "menu_pad_get_state.hpp"
 #include "menu_submit_frame.hpp"
 #include "menu_table_sequence.hpp"
+#include "menu_task7_checkpoint.hpp"
+#include "prototype_task_7_menu.hpp"
 
 #include <array>
 #include <chrono>
@@ -24,6 +26,10 @@ std::uint16_t g_live_pad_buttons = 0xffffu;
 
 std::uint32_t pad_get_state_from_poll(std::uint32_t port) {
     return am3d::platform::menu_scan_pad_get_state(port, g_live_pad_buttons);
+}
+
+std::uint32_t selection_index_for_s7(std::uint32_t s7) {
+    return s7 >= 9u ? 1u : 0u;
 }
 
 void draw_frame(const std::vector<std::uint8_t>& front_bytes,
@@ -144,7 +150,8 @@ int main(int argc, char** argv) {
             inject_down ? &am3d::exe::menu_scan_down_dispatch_inject() : nullptr;
         int completed = 0;
 
-        auto present_scan_marker = [&](std::uint32_t marker_x, std::uint32_t marker_color) {
+        auto present_scan_marker = [&](std::uint32_t marker_x, std::uint32_t marker_color,
+                                      std::uint32_t selection_index) {
             if (submit) {
                 const auto drawing = am3d::exe::drawing_fill_state(display);
                 am3d::platform::MenuSubmitFrameRequest request{};
@@ -153,6 +160,7 @@ int main(int argc, char** argv) {
                 request.marker_x = marker_x;
                 request.marker_y = 112u;
                 request.marker_color = marker_color;
+                request.selection_highlight_index = selection_index;
                 if (!front_bytes.empty()) {
                     request.front_bytes = front_bytes.data();
                     request.front_size = front_bytes.size();
@@ -164,6 +172,32 @@ int main(int argc, char** argv) {
             am3d::exe::advance_display_buffers(display, window);
             window.present(vram);
         };
+
+        if (batch && inject_down) {
+            const am3d::exe::PrototypeTask7MenuResult menu =
+                am3d::exe::run_prototype_task_7_menu_transition(
+                    am3d::exe::prototype_task_7_pad_get_state,
+                    front_bytes.empty() ? nullptr : front_bytes.data(), front_bytes.size());
+            std::cout << "scan_step task7 s7_a=" << menu.s7_after_a << " s7_b=" << menu.s7_after_b
+                      << " destination_stated=" << (menu.destination_stated ? 1 : 0)
+                      << " tail_ran=" << (menu.phase_b_tail_ran ? 1 : 0) << '\n';
+            present_scan_marker(menu.marker_x_b, 0x00ff00u, menu.selection_index_after_b);
+            completed = 1;
+            if (capture) {
+                std::filesystem::create_directories("build/platform");
+                window.save_frame("build/platform/menu_scan_smoke.bmp");
+            }
+            if (checkpoint) {
+                std::filesystem::create_directories("build/platform");
+                std::ofstream out("build/platform/task7-checkpoint.txt", std::ios::trunc);
+                out << am3d::exe::format_menu_task7_checkpoint(menu);
+            }
+            std::cout << "Menu scan batch ran " << (menu.frames_run + menu.frames_run_b)
+                      << " scan frames; presented 1 "
+                      << (submit ? "submission" : (front_bytes.empty() ? "synthetic" : "FRONT.TIM"))
+                      << " diagnostic frame (s7=" << menu.s7_after_b << ").\n";
+            return 0;
+        }
 
         if (batch) {
             g_live_pad_buttons = window.poll().buttons;
@@ -197,7 +231,7 @@ int main(int argc, char** argv) {
                 batch_frames_run += down_step.frames_run;
             }
             const std::uint32_t marker_x = 200u + scan_host.scan.s7 * 12u;
-            present_scan_marker(marker_x, 0x00ff00u);
+            present_scan_marker(marker_x, 0x00ff00u, selection_index_for_s7(scan_host.scan.s7));
             completed = 1;
             if (capture) {
                 std::filesystem::create_directories("build/platform");
@@ -234,7 +268,8 @@ int main(int argc, char** argv) {
             const std::uint32_t marker_x = 200u + scan_host.scan.s7 * 12u;
             const std::uint32_t marker_color =
                 (pad.buttons & (1u << 14)) ? 0xffffffu : 0x0000ffu;
-            present_scan_marker(marker_x, marker_color);
+            present_scan_marker(marker_x, marker_color,
+                                selection_index_for_s7(scan_host.scan.s7));
             ++completed;
             if (capture && frame == 0) {
                 std::filesystem::create_directories("build/platform");

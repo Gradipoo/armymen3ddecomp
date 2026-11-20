@@ -17,6 +17,8 @@ struct MenuSubmitFrameRequest {
     std::uint32_t marker_color = 0;
     const std::uint8_t* front_bytes = nullptr;
     std::size_t front_size = 0;
+    // 0 brightens the first stand-in row. 1 brightens the second. Other values skip it.
+    std::uint32_t selection_highlight_index = 0;
 };
 
 struct MenuSubmitFrameTrace {

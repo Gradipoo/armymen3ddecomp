@@ -16,8 +16,8 @@ From repo root after `cmake -S . -B build -DAM3D_WITH_SDL2=ON`:
 Outputs:
 
 - `build/platform/menu_scan_smoke.bmp` (diagnostic FRONT.TIM + submission marker)
-- `build/platform/task7-checkpoint.txt` fields: `s7`, tail `0x0b`, tail `0x87`,
-  `--frames`, `has_front_tim`, `submit`, `batch_scan_frames_run`
+- `build/platform/task7-checkpoint.txt` with `--inject-down`: `s7_a s7_b tail0b tail87 marker_a marker_b selection_b has_front`
+- The captured frame includes the selection highlight stand-in (bright bar on the OPTIONS row after Down). See [menu-selection-highlight.md](menu-selection-highlight.md).
 
 ## Retail anchors
 
