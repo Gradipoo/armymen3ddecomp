@@ -25,13 +25,15 @@ int main() {
     return 1;
   }
   if (body.head.s6 != 0u || body.head.s3 != 0x10u || body.head.s2 != g_pad_state ||
-      body.head.below_seven != 1u) {
+      body.head.below_seven != 1u || !body.head.entered_64e68 ||
+      body.head.branch_to_64f14) {
     return 2;
   }
   g_pad_state = 7u;
   const am3d::exe::MenuLoopReentry64e14 high =
       am3d::exe::call_80064e14(0u, 0u, 0u, nullptr, pad_get_state);
-  if (high.head.below_seven != 0u || high.head.s2 != 7u) {
+  if (high.head.below_seven != 0u || high.head.s2 != 7u ||
+      !high.head.branch_to_64f14 || high.head.entered_64e68) {
     return 3;
   }
   return 0;

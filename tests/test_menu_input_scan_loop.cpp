@@ -97,6 +97,8 @@ int main() {
         result.last_step.loop_body_64e14.head.s6 != 0u ||
         result.last_step.loop_body_64e14.head.s2 != 2u ||
         result.last_step.loop_body_64e14.head.below_seven != 1u ||
+        !result.last_step.loop_body_64e14.head.entered_64e68 ||
+        result.last_step.loop_body_64e14.head.branch_to_64f14 ||
         scan.index != kIndex) {
         return 11;
     }

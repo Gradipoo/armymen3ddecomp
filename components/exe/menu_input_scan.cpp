@@ -121,7 +121,7 @@ MenuInputScanStep menu_input_scan_step(
     if (test_inject_s6 != nullptr) {
         step.head.s6 = *test_inject_s6;
     }
-    if (step.head.below_seven == 0u) {
+    if (step.head.branch_to_64f14) {
         return step;
     }
     const std::uint32_t* injected =

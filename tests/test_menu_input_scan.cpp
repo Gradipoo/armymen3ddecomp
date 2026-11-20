@@ -68,7 +68,7 @@ int main() {
     am3d::exe::MenuInputScanStep high = am3d::exe::menu_input_scan_step(
         sp18, 0u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
         sp20, 0u, 0u, record, 0u, scan, stack_word_1c);
-    if (high.tail_ran) {
+    if (high.tail_ran || !high.head.branch_to_64f14 || high.head.entered_64e68) {
         return 4;
     }
 

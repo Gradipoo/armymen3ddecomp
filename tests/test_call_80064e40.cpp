@@ -23,12 +23,16 @@ int main() {
     if (g_port != 0x12u || head.s3 != 0x12u) {
         return 1;
     }
-    if (head.s6 != 0u || head.s2 != 2u || head.below_seven != 1u) {
+    if (head.s6 != 0u || head.s2 != 2u || head.below_seven != 1u ||
+        !head.entered_64e68 || head.branch_to_64f14 ||
+        head.branch_delay_v0 != 0x800c0000u) {
         return 2;
     }
     g_state = 7u;
     am3d::exe::call_80064e40(0u, 0u, pad_get_state, head);
-    if (g_port != 0u || head.s2 != 7u || head.below_seven != 0u) {
+    if (g_port != 0u || head.s2 != 7u || head.below_seven != 0u ||
+        !head.branch_to_64f14 || head.entered_64e68 ||
+        head.branch_delay_v0 != 0x800c0000u) {
         return 3;
     }
     return 0;
