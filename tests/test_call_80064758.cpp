@@ -69,5 +69,29 @@ int main() {
         return 14;
     }
 
+    outcome = {};
+    std::array<std::uint8_t, 0x5eu> record_wide{};
+    record_wide[0x1cu] = 3u;
+    record_wide[0x1du] = 0u;
+    record_wide[0x5cu] = 2u;
+    record_wide[0x5du] = 0u;
+    record_wide[0x6u] = 0x80u;
+    record_wide[0x7u] = 0u;
+    if (am3d::exe::call_80064758(1u, 1u, &outcome, record_wide.data(), 5u) != 1u) {
+        return 15;
+    }
+    if (outcome.masked_bits_zero || outcome.branch_to_647b8 || outcome.copied_3c_to_1c ||
+        outcome.branch_to_647b0 || outcome.stored_v1_at_1c ||
+        !outcome.followed_64778_fallthrough || !outcome.stored_1c_from_64798 ||
+        !outcome.or_sh_at_record_6 || !outcome.continues_at_647c4) {
+        return 16;
+    }
+    if (record_wide[0x1cu] != 1u || record_wide[0x1du] != 0u) {
+        return 17;
+    }
+    if (record_wide[0x6u] != 0x81u || record_wide[0x7u] != 0u) {
+        return 18;
+    }
+
     return 0;
 }

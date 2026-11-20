@@ -11,6 +11,9 @@ struct Call80064758Outcome {
     bool copied_3c_to_1c;
     bool branch_to_647b0;
     bool stored_v1_at_1c;
+    bool followed_64778_fallthrough;
+    bool stored_1c_from_64798;
+    bool or_sh_at_record_6;
     bool continues_at_647c4;
 };
 
