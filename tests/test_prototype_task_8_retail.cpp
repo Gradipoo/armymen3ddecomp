@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+#include "alp1_pad_spawn.hpp"
 #include "mission_movement_slice.hpp"
 
 #include <cstdint>
@@ -31,6 +32,16 @@ bool regular_file_nonzero(const std::filesystem::path& path) {
     return !ec && size > 0u;
 }
 
+std::filesystem::path resolve_disc_root() {
+    if (std::filesystem::is_directory("build/disc")) {
+        return "build/disc";
+    }
+    if (std::filesystem::is_directory("disc")) {
+        return "disc";
+    }
+    return {};
+}
+
 bool first_line_contains_alpine1(const std::filesystem::path& path) {
     std::ifstream in(path);
     if (!in) {
@@ -43,7 +54,7 @@ bool first_line_contains_alpine1(const std::filesystem::path& path) {
     return line.find("Alpine1") != std::string::npos;
 }
 
-int run_movement_slice() {
+int run_movement_slice(const am3d::exe::MissionMovementStartState& start) {
     am3d::exe::MissionPadScript script{};
     script.length = 8u;
     for (std::size_t i = 0u; i < 4u; ++i) {
@@ -53,10 +64,6 @@ int run_movement_slice() {
         script.s2[i] = am3d::exe::MissionPadScript::kPadCrossS2;
     }
 
-    am3d::exe::MissionMovementStartState start{};
-    start.x = 100;
-    start.z = 200;
-    start.heading = 0;
     am3d::exe::MissionMovementStartState state{};
 
     const am3d::exe::MissionMovementRunResult result =
@@ -96,5 +103,16 @@ int main() {
     if (!regular_file_nonzero(resolve_disc_data("ALP1.MDL"))) {
         return 8;
     }
-    return run_movement_slice();
+    am3d::exe::MissionMovementStartState start{100, 200, 0};
+    const std::filesystem::path disc_root = resolve_disc_root();
+    if (!disc_root.empty()) {
+        const am3d::exe::Alp1PadSpawnParseResult spawn =
+            am3d::exe::load_alp1_pad_spawn_from_disc_root(disc_root, 1u);
+        if (spawn.ok) {
+            start.x = spawn.x;
+            start.z = spawn.z;
+            start.heading = spawn.heading;
+        }
+    }
+    return run_movement_slice(start);
 }

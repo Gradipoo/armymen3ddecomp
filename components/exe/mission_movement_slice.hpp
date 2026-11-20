@@ -16,7 +16,7 @@ struct MissionSliceDeclaration {
     static constexpr const char kMdlPath[] = "DATA/ALP1.MDL";
 };
 
-// Host stand-in spawn. // gap: retail ALP1.PAD spawn and heading are not parsed.
+// Host movement start. Retail spawn may be filled from alp1_pad_spawn (pad index 1).
 struct MissionMovementStartState {
     std::int32_t x = 0;
     std::int32_t z = 0;

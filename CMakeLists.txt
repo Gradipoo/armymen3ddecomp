@@ -206,6 +206,7 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_800651c8.cpp
     components/exe/menu_input_scan.cpp
     components/exe/menu_input_scan_loop.cpp
+    components/exe/alp1_pad_spawn.cpp
     components/exe/mission_movement_slice.cpp
     components/exe/prototype_playable_pipeline.cpp
     components/exe/menu_table_sequence.cpp
@@ -1372,6 +1373,13 @@ if(BUILD_TESTING)
     target_link_libraries(test_prototype_task_7_retail PRIVATE am3d_platform_core)
     add_test(NAME prototype_task_7_retail COMMAND test_prototype_task_7_retail)
     set_tests_properties(prototype_task_7_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_alp1_pad_spawn tests/test_alp1_pad_spawn.cpp)
+    target_link_libraries(test_alp1_pad_spawn PRIVATE am3d_exe)
+    add_test(NAME alp1_pad_spawn COMMAND test_alp1_pad_spawn)
+    add_executable(test_alp1_pad_spawn_retail tests/test_alp1_pad_spawn_retail.cpp)
+    target_link_libraries(test_alp1_pad_spawn_retail PRIVATE am3d_exe)
+    add_test(NAME alp1_pad_spawn_retail COMMAND test_alp1_pad_spawn_retail)
+    set_tests_properties(alp1_pad_spawn_retail PROPERTIES SKIP_RETURN_CODE 77)
     add_executable(test_prototype_task_8 tests/test_prototype_task_8.cpp)
     target_link_libraries(test_prototype_task_8 PRIVATE am3d_exe)
     add_test(NAME prototype_task_8 COMMAND test_prototype_task_8)

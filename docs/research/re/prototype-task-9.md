@@ -16,8 +16,9 @@ composes rows 7 and 8 without widening physics or GPU scope.
 | Mission load intent | Row 8 handoff | `record_mission_load_intent()` |
 | ALP1 movement script | Row 8 slice | `prototype_playable_default_mission_script` + `run_mission_movement_frames` |
 
-Frame budgets (defaults): menu `4`, down `1`, mission `8`. Same synthetic
-pad and spawn values as `prototype_task_7` and `prototype_task_8`.
+Frame budgets (defaults): menu `4`, down `1`, mission `8`. Disc-free spawn
+stays `100`/`200`/`0`; `prototype_task_9_retail` fills movement start from
+`ALP1.PAD` pad index 1 when the owner extract is present.
 
 ## API
 

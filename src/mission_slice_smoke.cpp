@@ -4,6 +4,7 @@
 #include "display_clear.hpp"
 #include "display_fill.hpp"
 #include "mission_menu_handoff.hpp"
+#include "alp1_pad_spawn.hpp"
 #include "mission_movement_slice.hpp"
 
 #include <chrono>
@@ -39,6 +40,16 @@ void draw_mission_diagnostic(am3d::exe::DisplayBufferState& display, am3d::platf
         vram);
 }
 
+std::filesystem::path resolve_disc_root() {
+    if (std::filesystem::is_directory("build/disc")) {
+        return "build/disc";
+    }
+    if (std::filesystem::is_directory("disc")) {
+        return "disc";
+    }
+    return {};
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -65,10 +76,17 @@ int main(int argc, char** argv) {
         }
 
         const am3d::exe::MissionPadScript script = default_eight_frame_script();
-        am3d::exe::MissionMovementStartState start{};
-        start.x = 100;
-        start.z = 200;
-        start.heading = 0;
+        am3d::exe::MissionMovementStartState start{100, 200, 0};
+        const std::filesystem::path disc_root = resolve_disc_root();
+        if (!disc_root.empty()) {
+            const am3d::exe::Alp1PadSpawnParseResult spawn =
+                am3d::exe::load_alp1_pad_spawn_from_disc_root(disc_root, 1u);
+            if (spawn.ok) {
+                start.x = spawn.x;
+                start.z = spawn.z;
+                start.heading = spawn.heading;
+            }
+        }
         am3d::exe::MissionMovementStartState state{};
         const am3d::exe::MissionMovementRunResult result =
             am3d::exe::run_mission_movement_frames(script, start, state);

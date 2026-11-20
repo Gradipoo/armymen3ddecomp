@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+#include "alp1_pad_spawn.hpp"
 #include "prototype_playable_pipeline.hpp"
 
 #include <cstdint>
@@ -18,6 +19,16 @@ std::filesystem::path resolve_disc_data(const char* name) {
     const std::filesystem::path from_root = std::filesystem::path("build/disc/DATA") / name;
     if (std::filesystem::is_regular_file(from_root)) {
         return from_root;
+    }
+    return {};
+}
+
+std::filesystem::path resolve_disc_root() {
+    if (std::filesystem::is_directory("build/disc")) {
+        return "build/disc";
+    }
+    if (std::filesystem::is_directory("disc")) {
+        return "disc";
     }
     return {};
 }
@@ -52,6 +63,16 @@ int main() {
     }
 
     am3d::exe::PrototypePlayablePipelineConfig config{};
+    const std::filesystem::path disc_root = resolve_disc_root();
+    if (!disc_root.empty()) {
+        const am3d::exe::Alp1PadSpawnParseResult spawn =
+            am3d::exe::load_alp1_pad_spawn_from_disc_root(disc_root, 1u);
+        if (spawn.ok) {
+            config.movement_start.x = spawn.x;
+            config.movement_start.z = spawn.z;
+            config.movement_start.heading = spawn.heading;
+        }
+    }
     const am3d::exe::PrototypePlayablePipelineResult result =
         am3d::exe::run_prototype_playable_pipeline(config, pad_get_state_idle);
 

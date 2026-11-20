@@ -3,6 +3,7 @@
 #include "display_buffers.hpp"
 #include "display_clear.hpp"
 #include "display_fill.hpp"
+#include "alp1_pad_spawn.hpp"
 #include "prototype_playable_pipeline.hpp"
 
 #include <chrono>
@@ -18,6 +19,16 @@ namespace {
 std::uint32_t pad_get_state_idle(std::uint32_t port) {
     (void)port;
     return 2u;
+}
+
+std::filesystem::path resolve_disc_root() {
+    if (std::filesystem::is_directory("build/disc")) {
+        return "build/disc";
+    }
+    if (std::filesystem::is_directory("disc")) {
+        return "disc";
+    }
+    return {};
 }
 
 void draw_playable_diagnostic(am3d::exe::DisplayBufferState& display,
@@ -57,6 +68,16 @@ int main(int argc, char** argv) {
         }
 
         am3d::exe::PrototypePlayablePipelineConfig config{};
+        const std::filesystem::path disc_root = resolve_disc_root();
+        if (!disc_root.empty()) {
+            const am3d::exe::Alp1PadSpawnParseResult spawn =
+                am3d::exe::load_alp1_pad_spawn_from_disc_root(disc_root, 1u);
+            if (spawn.ok) {
+                config.movement_start.x = spawn.x;
+                config.movement_start.z = spawn.z;
+                config.movement_start.heading = spawn.heading;
+            }
+        }
         const am3d::exe::PrototypePlayablePipelineResult result =
             am3d::exe::run_prototype_playable_pipeline(config, pad_get_state_idle);
 
