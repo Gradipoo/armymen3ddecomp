@@ -8,6 +8,8 @@ namespace am3d::exe {
 struct Call8006471cOutcome {
     bool halfword_at_1c_stated;
     bool branch_to_647c4;
+    bool completed_647c4_loop;
+    bool returned_to_caller;
     bool fell_through_64758;
     std::uint32_t fallthrough_bits;
 };

@@ -33,6 +33,8 @@ std::uint32_t call_8006471c(std::uint32_t index, std::uint32_t bits, std::uint32
     if (outcome != nullptr) {
         outcome->halfword_at_1c_stated = false;
         outcome->branch_to_647c4 = false;
+        outcome->completed_647c4_loop = false;
+        outcome->returned_to_caller = false;
         outcome->fell_through_64758 = false;
         outcome->fallthrough_bits = 0u;
     }
@@ -54,30 +56,56 @@ std::uint32_t call_8006471c(std::uint32_t index, std::uint32_t bits, std::uint32
         outcome->halfword_at_1c_stated = true;
     }
 
+    auto fallthrough_64758 = [&](std::uint32_t a2_mask) -> std::uint32_t {
+        std::uint16_t halfword_at_4 = 0u;
+        if (record_bytes != nullptr) {
+            halfword_at_4 = load_halfword_at_4(record_bytes);
+        } else if (inject_halfword_4 != nullptr) {
+            halfword_at_4 = *inject_halfword_4;
+        } else {
+            // gap: lhu at record+4 unstated without record_bytes or inject.
+            return record;
+        }
+
+        const std::uint32_t masked_bits = call_80064758(halfword_at_4, a2_mask);
+        if (outcome != nullptr) {
+            outcome->fell_through_64758 = true;
+            outcome->fallthrough_bits = masked_bits;
+        }
+        return record;
+    };
+
     if (*halfword_1c_ptr == 0u) {
         if (outcome != nullptr) {
             outcome->branch_to_647c4 = true;
         }
-        // gap: 0x800647c4 loop back to 0x80064744 is not followed.
-        return record;
+
+        std::uint32_t t1 = 0u;
+        std::uint32_t a2_reg = 1u;
+        for (;;) {
+            t1 += 1u;
+            a2_reg <<= 1u;
+            if (t1 < 0x10u) {
+                std::uint16_t halfword_1c_loop = 0u;
+                if (record_bytes != nullptr) {
+                    halfword_1c_loop = load_halfword_at_1c(record_bytes);
+                } else if (inject_halfword_1c != nullptr) {
+                    halfword_1c_loop = *inject_halfword_1c;
+                }
+                if (halfword_1c_loop != 0u) {
+                    return fallthrough_64758(a2_reg);
+                }
+                continue;
+            }
+            if (outcome != nullptr) {
+                outcome->completed_647c4_loop = true;
+                outcome->returned_to_caller = true;
+            }
+            return record;
+        }
     }
 
-    std::uint16_t halfword_at_4 = 0u;
-    if (record_bytes != nullptr) {
-        halfword_at_4 = load_halfword_at_4(record_bytes);
-    } else if (inject_halfword_4 != nullptr) {
-        halfword_at_4 = *inject_halfword_4;
-    } else {
-        // gap: lhu at record+4 unstated without record_bytes or inject.
-        return record;
-    }
-
-    const std::uint32_t masked_bits = call_80064758(halfword_at_4, 1u);
-    if (outcome != nullptr) {
-        outcome->fell_through_64758 = true;
-        outcome->fallthrough_bits = masked_bits;
-    }
-    return record;
+    return fallthrough_64758(1u);
 }
 
 } // namespace am3d::exe

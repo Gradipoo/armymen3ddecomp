@@ -23,6 +23,7 @@ int main() {
         return 3;
     }
     if (!outcome.halfword_at_1c_stated || !outcome.branch_to_647c4 ||
+        !outcome.completed_647c4_loop || !outcome.returned_to_caller ||
         outcome.fell_through_64758) {
         return 4;
     }
