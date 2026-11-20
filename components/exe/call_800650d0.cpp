@@ -16,7 +16,7 @@ bool call_800650d0(std::uint8_t*& record, std::uint32_t complemented_input,
     record[0x13u] = 0u;
     record[0x14u] = 0u;
     std::uint32_t masked = 0u;
-    (void)call_8006471c(scan.index, stack_word_58, masked);
+    (void)call_8006471c(scan.index, stack_word_58, masked, nullptr, record);
     record += 0x7cu;
     scan.s4 += 4u;
     scan.index += 1u;

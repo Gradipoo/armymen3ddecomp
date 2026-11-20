@@ -36,5 +36,7 @@ asserts the word becomes four after one compare-four frame.
 
 ## Gap
 
-Retail words at `sp+0x1c` and `sp+0x28`, and the dword at `0x800dd764`, stay
-unstated outside synthetic limits. Task 7 transition replay is still open.
+Retail words at `sp+0x1c` and `sp+0x28` stay unstated outside synthetic limits.
+The halfword at `0x800dd764` is caller-supplied through `record_bytes` in
+[call-8006471c](call-8006471c.md), not read from live RAM. Task 7 transition
+replay is still open.
