@@ -67,7 +67,10 @@ std::uint32_t call_8006471c(std::uint32_t index, std::uint32_t bits, std::uint32
             return record;
         }
 
-        const std::uint32_t masked_bits = call_80064758(halfword_at_4, a2_mask);
+        std::uint8_t* record_mut =
+            record_bytes != nullptr ? const_cast<std::uint8_t*>(record_bytes) : nullptr;
+        const std::uint32_t masked_bits =
+            call_80064758(halfword_at_4, a2_mask, nullptr, record_mut, bits & 0xffffu);
         if (outcome != nullptr) {
             outcome->fell_through_64758 = true;
             outcome->fallthrough_bits = masked_bits;
