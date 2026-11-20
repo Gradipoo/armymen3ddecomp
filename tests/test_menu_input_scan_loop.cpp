@@ -46,11 +46,8 @@ int main() {
     if (result.frames_run < 3u) {
         return 1;
     }
-    if (result.frames_run != 4u || scan.s7 != 4u) {
+    if (result.frames_run != 4u || scan.s7 != 8u) {
         return 2;
-    }
-    if (result.last_step.loop_again) {
-        return 3;
     }
     if (!result.last_step.tail_ran) {
         return 4;
@@ -99,8 +96,15 @@ int main() {
         result.last_step.loop_body_64e14.head.below_seven != 1u ||
         !result.last_step.loop_body_64e14.head.entered_64e68 ||
         result.last_step.loop_body_64e14.head.branch_to_64f14 ||
-        scan.index != kIndex) {
+        scan.index != 8u) {
         return 11;
+    }
+    constexpr std::uint32_t kPadTailDest = 0x80064f14u;
+    if (!result.last_step.dispatch.destination_stated ||
+        result.last_step.dispatch.destination != kPadTailDest ||
+        result.last_step.dispatch.word_address != 0x800c3ea0u ||
+        !result.last_step.tail_ran) {
+        return 12;
     }
 
     g_pad_state = 3u;

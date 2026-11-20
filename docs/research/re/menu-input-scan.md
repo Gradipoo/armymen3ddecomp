@@ -13,7 +13,9 @@ when the loop compare stops the tail, then [call-800651c8](call-800651c8.md),
 [call-80064dc8](call-80064dc8.md), [call-80064dd8](call-80064dd8.md),
 [call-80064dfc](call-80064dfc.md) or [call-80064dec](call-80064dec.md), and
 [call-80064e14](call-80064e14.md) when the shared `sp+0x1c` compare falls
-through, and `record_65194_reentry_from_64e0c` when the compare branches to
+through, then the shared dispatch tail through `run_menu_scan_dispatch_tail`
+when the re-entry head records `entered_64e68`, and
+`record_65194_reentry_from_64e0c` when the compare branches to
 `0x80065194`.
 The table supplies the measured `0x41` byte and the following halfword.
 After the mask stores, glue enters `0x8006508c` with `s6` from the loop
@@ -31,4 +33,6 @@ Measured samples still had `s6` zero at the loop head. Optional
 `test_inject_s6` overrides `s6` in ctests only. Optional
 `test_inject_pad_dispatch` supplies per-`s2` dispatch table words in ctests
 and through `run_menu_input_scan_frames`. Index two stays cited from
-[call-80064e58.md](call-80064e58.md).
+[call-80064e58.md](call-80064e58.md). After the first loop stop in a step,
+`loop_exit_recorded` keeps the dec or dfc chain fields from being overwritten
+when the `0x80064e14` re-entry tail stops again on the same step.
