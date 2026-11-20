@@ -35,6 +35,9 @@ struct MenuInputScanStep {
     bool loop_body_64dec_recorded;
     MenuLoopReentry64e14 loop_body_64e14;
     bool loop_body_64e14_recorded;
+    bool reentered_65194;
+    MenuLoopFallthrough loop_reentry_65194;
+    bool loop_reentry_65194_recorded;
     bool compare_four_ran;
     bool compare_four_to_65168;
     std::uint32_t compare_four_v0;
@@ -55,5 +58,9 @@ MenuInputScanStep menu_input_scan_step(
     std::uint32_t* stack_word_28 = nullptr,
     const PadStateDispatchInject* test_inject_pad_dispatch = nullptr,
     const std::uint8_t* test_inject_s1_lbu = nullptr);
+
+// Shared beq at 0x80064e0c after 64dec/64dfc; stops before 651c8 re-chain.
+void record_65194_reentry_from_64e0c(MenuInputScanStep& step,
+                                      const MenuInputScanState& scan);
 
 }

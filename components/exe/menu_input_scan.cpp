@@ -21,6 +21,15 @@
 
 namespace am3d::exe {
 
+void record_65194_reentry_from_64e0c(MenuInputScanStep& step,
+                                      const MenuInputScanState& scan) {
+    step.reentered_65194 = true;
+    if (scan.index != 0u) {
+        step.loop_reentry_65194 = call_80065194(scan.index);
+        step.loop_reentry_65194_recorded = true;
+    }
+}
+
 namespace {
 
 constexpr std::uint32_t kPadStateTwoDestination = 0x80064f14u;
@@ -65,7 +74,9 @@ void record_loop_exit_when_stopped(
                             step.loop_body_64dc8.s1, step.loop_body_64dd8.t1,
                             &stack_word_1c);
                         step.loop_body_64dfc_recorded = true;
-                        if (step.loop_body_64dfc.entered_64e14) {
+                        if (step.loop_body_64dfc.branch_to_65194) {
+                            record_65194_reentry_from_64e0c(step, scan);
+                        } else if (step.loop_body_64dfc.entered_64e14) {
                             step.loop_body_64e14 = call_80064e14(
                                 scan.index, stack_word_18,
                                 step.loop_body_64dfc.s7, stack_word_28,
@@ -76,7 +87,9 @@ void record_loop_exit_when_stopped(
                         step.loop_body_64dec = call_80064dec(
                             step.loop_body_64dc8.s1, &stack_word_1c);
                         step.loop_body_64dec_recorded = true;
-                        if (step.loop_body_64dec.entered_64e14) {
+                        if (step.loop_body_64dec.branch_to_65194) {
+                            record_65194_reentry_from_64e0c(step, scan);
+                        } else if (step.loop_body_64dec.entered_64e14) {
                             step.loop_body_64e14 = call_80064e14(
                                 scan.index, stack_word_18,
                                 step.loop_body_64dec.s7, stack_word_28,

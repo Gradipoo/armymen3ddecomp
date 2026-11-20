@@ -154,5 +154,22 @@ int main() {
         return 9;
     }
 
+    am3d::exe::MenuInputScanStep step{};
+    am3d::exe::MenuInputScanState reentry_scan{};
+    reentry_scan.index = 4u;
+    am3d::exe::record_65194_reentry_from_64e0c(step, reentry_scan);
+    if (!step.reentered_65194 || !step.loop_reentry_65194_recorded ||
+        !step.loop_reentry_65194.branch_to_651c8 ||
+        step.loop_reentry_65194.v0 != 0x800e0000u) {
+        return 10;
+    }
+
+    am3d::exe::MenuInputScanState zero_index{};
+    step = {};
+    am3d::exe::record_65194_reentry_from_64e0c(step, zero_index);
+    if (!step.reentered_65194 || step.loop_reentry_65194_recorded) {
+        return 11;
+    }
+
     return 0;
 }

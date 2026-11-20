@@ -36,10 +36,13 @@ stack word into `t0`, applies the delay-slot `s7` clear, and records
 `menu_input_scan_step` calls this block after [call-80064dd8](call-80064dd8.md)
 when `loop_body_64dd8.entered_64dec` is true. Glue passes `s1` from the
 64dc8 delay-slot bump and the caller `stack_word_1c` reference for the
-store and load. When `entered_64e14` is true, glue calls
+store and load. When `branch_to_65194` is true, glue calls
+`record_65194_reentry_from_64e0c` in [menu-input-scan.md](menu-input-scan.md).
+That sets `reentered_65194` and, when `scan.index` is not zero, records a
+second [call_80065194](call-80065194.md) result without re-entering
+`0x800651c8`. When `entered_64e14` is true, glue calls
 [call-80064e14](call-80064e14.md).
 
 ## Gap
 
-Re-entry at `0x80065194` on the taken `beq` is not modeled. Live retail words
-at `sp+0x1c` on this path are not stated.
+Live retail words at `sp+0x1c` on this path are not stated.

@@ -17,7 +17,6 @@ MenuLoopBody64dec call_80064dec(std::uint32_t s1, std::uint32_t* stack_word_1c) 
     result.s7 = 0u;
     if (t0 == 0u) {
         result.branch_to_65194 = true;
-        // gap: re-entry at 0x80065194 is not modeled.
     } else {
         result.entered_64e14 = true;
     }

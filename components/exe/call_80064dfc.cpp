@@ -17,7 +17,6 @@ MenuLoopBody64dfc call_80064dfc(std::uint32_t s1, std::uint32_t t1,
     result.s7 = 0u;
     if (t0 == 0u) {
         result.branch_to_65194 = true;
-        // gap: re-entry at 0x80065194 is not modeled.
     } else {
         result.entered_64e14 = true;
     }
