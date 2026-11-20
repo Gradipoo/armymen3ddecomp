@@ -23,4 +23,7 @@ When `s6` is nonzero, glue runs [call-80065098](call-80065098.md), then
 [call-800650a8](call-800650a8.md) or [call-800650b4](call-800650b4.md) from
 the `0x80` test, then the same complemented bit tails as the `s6` zero path.
 Measured samples still had `s6` zero at the loop head. Optional
-`test_inject_s6` overrides `s6` in ctests only.
+`test_inject_s6` overrides `s6` in ctests only. Optional
+`test_inject_pad_dispatch` supplies per-`s2` dispatch table words in ctests
+and through `run_menu_input_scan_frames`. Index two stays cited from
+[call-80064e58.md](call-80064e58.md).

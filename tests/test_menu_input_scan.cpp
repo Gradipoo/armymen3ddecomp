@@ -122,5 +122,33 @@ int main() {
         return 7;
     }
 
+    bytes.fill(0u);
+    record = bytes.data();
+    scan = {};
+    table_index = 0u;
+    sp20 = 0u;
+    g_state = 3u;
+    constexpr std::uint32_t kProvisionalDownDest = 0x80064f14u;
+    am3d::exe::PadStateDispatchInject pad_inject{};
+    pad_inject.entry[3] = &kProvisionalDownDest;
+    sp18 = 0u;
+    am3d::exe::MenuInputScanStep down = am3d::exe::menu_input_scan_step(
+        sp18, 0u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
+        sp20, 0u, 0u, record, 0u, scan, 8u, nullptr, nullptr, &pad_inject);
+    if (!down.dispatch.destination_stated ||
+        down.dispatch.destination != kProvisionalDownDest ||
+        down.dispatch.word_address != 0x800c3ea4u || !down.tail_ran ||
+        !down.loop_again) {
+        return 8;
+    }
+
+    g_state = 3u;
+    am3d::exe::MenuInputScanStep down_no_inject = am3d::exe::menu_input_scan_step(
+        sp18, 0u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
+        sp20, 0u, 0u, record, 0u, scan, 8u);
+    if (down_no_inject.dispatch.destination_stated || down_no_inject.tail_ran) {
+        return 9;
+    }
+
     return 0;
 }

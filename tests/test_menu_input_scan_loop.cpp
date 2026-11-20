@@ -6,9 +6,11 @@
 
 namespace {
 
+std::uint32_t g_pad_state = 2u;
+
 std::uint32_t pad_get_state(std::uint32_t port) {
     (void)port;
-    return 2u;
+    return g_pad_state;
 }
 
 constexpr std::array<std::uint8_t, 4u> kReleased{0u, 0x41u, 0xffu, 0xffu};
@@ -65,5 +67,26 @@ int main() {
         indices.stack_word_18 != 1u) {
         return 6;
     }
+
+    g_pad_state = 3u;
+    scan = {};
+    indices = {};
+    indices.menu_table_bytes =
+        static_cast<std::uint32_t>(table.size());
+    record = bytes.data();
+    constexpr std::uint32_t kProvisionalDownDest = 0x80064f14u;
+    am3d::exe::PadStateDispatchInject pad_inject{};
+    pad_inject.entry[3] = &kProvisionalDownDest;
+    const am3d::exe::MenuInputScanLoopResult down =
+        am3d::exe::run_menu_input_scan_frames(
+            1u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record,
+            scan, kLimit, nullptr, nullptr, &pad_inject);
+    if (down.frames_run != 1u || !down.last_step.dispatch.destination_stated ||
+        down.last_step.dispatch.destination != kProvisionalDownDest ||
+        down.last_step.dispatch.word_address != 0x800c3ea4u ||
+        !down.last_step.tail_ran) {
+        return 7;
+    }
+
     return 0;
 }

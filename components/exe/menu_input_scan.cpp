@@ -20,6 +20,17 @@ namespace {
 
 constexpr std::uint32_t kPadStateTwoDestination = 0x80064f14u;
 
+const std::uint32_t* resolve_pad_dispatch_inject(
+    std::uint32_t s2, const PadStateDispatchInject* inject) {
+    if (s2 == 2u) {
+        return &kPadStateTwoDestination;
+    }
+    if (inject != nullptr && s2 < 7u) {
+        return inject->entry[s2];
+    }
+    return nullptr;
+}
+
 void record_loop_exit_when_stopped(MenuInputScanStep& step,
                                    const MenuInputScanState& scan,
                                    std::uint32_t& stack_word_18) {
@@ -44,7 +55,8 @@ MenuInputScanStep menu_input_scan_step(
     std::uint32_t fp, std::uint32_t compare_word_dd730, std::uint8_t*& record,
     std::uint32_t stack_word_58, MenuInputScanState& scan,
     std::uint32_t stack_word_1c, const std::uint32_t* test_inject_s6,
-    std::uint32_t* stack_word_28) {
+    std::uint32_t* stack_word_28,
+    const PadStateDispatchInject* test_inject_pad_dispatch) {
     MenuInputScanStep step{};
     call_80064e40(stack_word_18, loop_s7, pad_get_state, step.head);
     if (test_inject_s6 != nullptr) {
@@ -53,10 +65,8 @@ MenuInputScanStep menu_input_scan_step(
     if (step.head.below_seven == 0u) {
         return step;
     }
-    const std::uint32_t* injected = nullptr;
-    if (step.head.s2 == 2u) {
-        injected = &kPadStateTwoDestination;
-    }
+    const std::uint32_t* injected =
+        resolve_pad_dispatch_inject(step.head.s2, test_inject_pad_dispatch);
     call_80064e68(step.head.s2, injected, step.dispatch);
     if (!step.dispatch.destination_stated ||
         step.dispatch.destination != kPadStateTwoDestination) {

@@ -11,6 +11,11 @@ struct PadStateDispatch {
     bool destination_stated;
 };
 
+// Test-only per-index table words. Null hook or null entry leaves dispatch unstated.
+struct PadStateDispatchInject {
+    const std::uint32_t* entry[7]{};
+};
+
 // Behavior reference: docs/research/re/call-80064e68.md.
 // injected_word supplies the table load. A null pointer leaves it unstated.
 void call_80064e68(std::uint32_t s2, const std::uint32_t* injected_word,

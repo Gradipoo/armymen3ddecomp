@@ -39,10 +39,13 @@ and not only `s2`.
 
 ## Scan glue limit
 
-`menu_input_scan_step` injects dispatch `0x80064f14` only when `s2==2`.
-Other mapped returns change `s2` but do not yet inject fallthrough
-destinations. Gap 3 (scripted table sequence) and cited dispatch words for
-indices other than two remain open.
+`menu_input_scan_step` cites dispatch `0x80064f14` when `s2==2`
+([call-80064e58.md](call-80064e58.md)). Optional `test_inject_pad_dispatch`
+supplies per-index table words in ctests and through
+`run_menu_input_scan_frames`. Index three (Down) may inject a provisional
+`0x80064f14` for glue tests only; live RAM at `0x800c3ea4` is unstated.
+Indices 0, 1, 4, 5, and 6 still have no cited destination. Gap 3 (scripted
+table sequence) remains open.
 
 ## Smoke wiring
 

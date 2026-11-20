@@ -10,7 +10,8 @@ MenuInputScanLoopResult run_menu_input_scan_frames(
     std::uint8_t* table, MenuInputScanIndices& indices, std::uint32_t& sp20,
     std::uint32_t fp, std::uint32_t compare_word, std::uint8_t*& record,
     MenuInputScanState& scan, std::uint32_t stack_word_1c,
-    MenuTableSequencer* table_sequencer, std::uint32_t* stack_word_28) {
+    MenuTableSequencer* table_sequencer, std::uint32_t* stack_word_28,
+    const PadStateDispatchInject* test_inject_pad_dispatch) {
     MenuInputScanLoopResult result{};
     while (count > 0u) {
         if (table_sequencer != nullptr) {
@@ -23,7 +24,7 @@ MenuInputScanLoopResult run_menu_input_scan_frames(
             indices.stack_word_18, scan.s7, pad_get_state, table,
             indices.menu_table_index, indices.menu_table_bytes, sp20, step_fp,
             compare_word, record, indices.stack_word_58, scan, stack_word_1c, nullptr,
-            stack_word_28);
+            stack_word_28, test_inject_pad_dispatch);
         result.frames_run += 1u;
         count -= 1u;
         if (!result.last_step.loop_again) {

@@ -35,6 +35,7 @@ MenuInputScanLoopResult run_menu_input_scan_frames(
     std::uint32_t fp, std::uint32_t compare_word, std::uint8_t*& record,
     MenuInputScanState& scan, std::uint32_t stack_word_1c,
     MenuTableSequencer* table_sequencer = nullptr,
-    std::uint32_t* stack_word_28 = nullptr);
+    std::uint32_t* stack_word_28 = nullptr,
+    const PadStateDispatchInject* test_inject_pad_dispatch = nullptr);
 
 }

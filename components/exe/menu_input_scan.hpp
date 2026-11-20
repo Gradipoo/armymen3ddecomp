@@ -37,6 +37,7 @@ MenuInputScanStep menu_input_scan_step(
     std::uint32_t stack_word_58, MenuInputScanState& scan,
     std::uint32_t stack_word_1c,
     const std::uint32_t* test_inject_s6 = nullptr,
-    std::uint32_t* stack_word_28 = nullptr);
+    std::uint32_t* stack_word_28 = nullptr,
+    const PadStateDispatchInject* test_inject_pad_dispatch = nullptr);
 
 }
