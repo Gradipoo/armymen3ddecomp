@@ -38,6 +38,11 @@ struct PrototypePlayablePipelineResult {
     MissionMovementStartState movement_final_state{};
     PrototypePlayablePipelineStageFrames frames{};
     bool spawn_from_pad = false;
+    std::uint32_t menu_marker_x_a = 0u;
+    std::uint32_t menu_marker_x_b = 0u;
+    std::uint32_t menu_selection_after_a = 0u;
+    std::uint32_t menu_selection_after_b = 0u;
+    bool has_front = false;
 };
 
 // Composes run_prototype_task_7_menu_transition (4 scan frames, 1 Down frame)

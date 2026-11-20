@@ -4,15 +4,19 @@
 #include "display_clear.hpp"
 #include "display_fill.hpp"
 #include "alp1_pad_spawn.hpp"
+#include "menu_submit_frame.hpp"
 #include "prototype_playable_checkpoint.hpp"
 #include "prototype_playable_pipeline.hpp"
 
 #include <chrono>
 #include <cstdint>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
+#include <iterator>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace {
 
@@ -31,6 +35,23 @@ std::filesystem::path resolve_disc_root() {
     return {};
 }
 
+std::vector<std::uint8_t> load_front_tim(const std::filesystem::path& disc_root) {
+    std::vector<std::uint8_t> bytes;
+    if (disc_root.empty()) {
+        return bytes;
+    }
+    const std::filesystem::path front_path = disc_root / "DATA" / "FRONT.TIM";
+    if (!std::filesystem::is_regular_file(front_path)) {
+        return bytes;
+    }
+    std::ifstream in(front_path, std::ios::binary);
+    bytes.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
+    if (!in) {
+        throw std::runtime_error("could not read DATA/FRONT.TIM");
+    }
+    return bytes;
+}
+
 void draw_playable_diagnostic(am3d::exe::DisplayBufferState& display,
                               am3d::platform::FillVram& vram, std::uint32_t menu_marker_x,
                               std::uint32_t mission_marker_x) {
@@ -41,6 +62,36 @@ void draw_playable_diagnostic(am3d::exe::DisplayBufferState& display,
         {drawing.origin_x, drawing.origin_y, static_cast<std::uint16_t>(menu_marker_x), 96u,
          static_cast<std::uint16_t>(menu_marker_x + 16u), 112u},
         vram);
+    am3d::exe::fill_display(0x0080ffu,
+        {drawing.origin_x, drawing.origin_y, static_cast<std::uint16_t>(mission_marker_x), 128u,
+         static_cast<std::uint16_t>(mission_marker_x + 16u), 144u},
+        vram);
+}
+
+void present_menu_submit(am3d::exe::DisplayBufferState& display, am3d::platform::SdlPlatform& window,
+                         am3d::platform::FillVram& vram,
+                         const std::vector<std::uint8_t>& front_bytes,
+                         std::uint32_t marker_x, std::uint32_t selection_index) {
+    const auto drawing = am3d::exe::drawing_fill_state(display);
+    am3d::platform::MenuSubmitFrameRequest request{};
+    request.origin_x = drawing.origin_x;
+    request.origin_y = drawing.origin_y;
+    request.marker_x = marker_x;
+    request.marker_y = 112u;
+    request.marker_color = 0x00ff00u;
+    request.selection_highlight_index = selection_index;
+    if (!front_bytes.empty()) {
+        request.front_bytes = front_bytes.data();
+        request.front_size = front_bytes.size();
+    }
+    (void)am3d::platform::menu_submit_frame(request, vram);
+    am3d::exe::advance_display_buffers(display, window);
+    window.present(vram);
+}
+
+void draw_mission_marker(am3d::exe::DisplayBufferState& display, am3d::platform::FillVram& vram,
+                         std::uint32_t mission_marker_x) {
+    const auto drawing = am3d::exe::drawing_fill_state(display);
     am3d::exe::fill_display(0x0080ffu,
         {drawing.origin_x, drawing.origin_y, static_cast<std::uint16_t>(mission_marker_x), 128u,
          static_cast<std::uint16_t>(mission_marker_x + 16u), 144u},
@@ -84,7 +135,6 @@ int main(int argc, char** argv) {
         const am3d::exe::PrototypePlayablePipelineResult result =
             am3d::exe::run_prototype_playable_pipeline(config, pad_get_state_idle);
 
-        const std::uint32_t menu_marker_x = 200u + result.menu_s7 * 12u;
         const std::uint32_t mission_marker_x =
             260u + static_cast<std::uint32_t>(result.movement_final_state.z -
                                               config.movement_start.z);
@@ -99,14 +149,49 @@ int main(int argc, char** argv) {
         display.buffer_count = 2;
         am3d::exe::clear_display_buffers(0, display, window, vram);
 
-        draw_playable_diagnostic(display, vram, menu_marker_x, mission_marker_x);
-        am3d::exe::advance_display_buffers(display, window);
-        window.present(vram);
+        const std::vector<std::uint8_t> front_bytes = load_front_tim(disc_root);
+        const bool use_menu_submit = result.has_front && !front_bytes.empty();
+        unsigned frames_presented = 0u;
 
-        if (capture) {
-            std::filesystem::create_directories("build/platform");
-            window.save_frame("build/platform/prototype_playable_smoke.bmp");
+        if (use_menu_submit) {
+            present_menu_submit(display, window, vram, front_bytes, result.menu_marker_x_a,
+                                result.menu_selection_after_a);
+            ++frames_presented;
+            if (capture) {
+                std::filesystem::create_directories("build/platform");
+                window.save_frame("build/platform/prototype_playable_smoke-menu.bmp");
+            }
+
+            const auto drawing_b = am3d::exe::drawing_fill_state(display);
+            am3d::platform::MenuSubmitFrameRequest request_b{};
+            request_b.origin_x = drawing_b.origin_x;
+            request_b.origin_y = drawing_b.origin_y;
+            request_b.marker_x = result.menu_marker_x_b;
+            request_b.marker_y = 112u;
+            request_b.marker_color = 0x00ff00u;
+            request_b.selection_highlight_index = result.menu_selection_after_b;
+            request_b.front_bytes = front_bytes.data();
+            request_b.front_size = front_bytes.size();
+            (void)am3d::platform::menu_submit_frame(request_b, vram);
+            draw_mission_marker(display, vram, mission_marker_x);
+            am3d::exe::advance_display_buffers(display, window);
+            window.present(vram);
+            ++frames_presented;
+            if (capture) {
+                window.save_frame("build/platform/prototype_playable_smoke.bmp");
+            }
+        } else {
+            const std::uint32_t menu_marker_x = 200u + result.menu_s7 * 12u;
+            draw_playable_diagnostic(display, vram, menu_marker_x, mission_marker_x);
+            am3d::exe::advance_display_buffers(display, window);
+            window.present(vram);
+            frames_presented = 1u;
+            if (capture) {
+                std::filesystem::create_directories("build/platform");
+                window.save_frame("build/platform/prototype_playable_smoke.bmp");
+            }
         }
+
         if (checkpoint) {
             const am3d::exe::PrototypePlayableCheckpointLine line =
                 am3d::exe::make_prototype_playable_checkpoint_line(
@@ -126,8 +211,16 @@ int main(int argc, char** argv) {
             }
         }
 
-        std::cout << "Prototype playable pipeline presented 1 diagnostic frame (menu s7="
-                  << result.menu_s7 << ", mission z=" << result.movement_final_state.z << ").\n";
+        if (use_menu_submit) {
+            std::cout << "Prototype playable pipeline presented " << frames_presented
+                      << " FRONT menu frames (s7_a=" << result.menu_s7_after_menu_budget
+                      << ", s7_b=" << result.menu_s7
+                      << ", mission z=" << result.movement_final_state.z << ").\n";
+        } else {
+            std::cout << "Prototype playable pipeline presented 1 diagnostic frame (menu s7="
+                      << result.menu_s7 << ", mission z=" << result.movement_final_state.z
+                      << ").\n";
+        }
         return 0;
     } catch (const std::exception& e) {
         std::cerr << "error: " << e.what() << '\n';

@@ -5,7 +5,28 @@
 #include "prototype_task_7_menu.hpp"
 #include "prototype_task_8_mission.hpp"
 
+#include <fstream>
+#include <iterator>
+#include <vector>
+
 namespace am3d::exe {
+namespace {
+
+std::vector<std::uint8_t> load_front_tim_bytes(const std::filesystem::path& disc_root) {
+    std::vector<std::uint8_t> bytes;
+    if (disc_root.empty()) {
+        return bytes;
+    }
+    const std::filesystem::path front_path = disc_root / "DATA" / "FRONT.TIM";
+    if (!std::filesystem::is_regular_file(front_path)) {
+        return bytes;
+    }
+    std::ifstream in(front_path, std::ios::binary);
+    bytes.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
+    return bytes;
+}
+
+}  // namespace
 
 PrototypePlayablePipelineConfig::PrototypePlayablePipelineConfig() {
     movement_start = mission_start_from_alp1_pad_fixture();
@@ -19,10 +40,15 @@ PrototypePlayablePipelineResult run_prototype_playable_pipeline(
         return out;
     }
 
+      const std::vector<std::uint8_t> front_bytes = load_front_tim_bytes(config.disc_root);
+    const std::uint8_t* front_ptr =
+        front_bytes.empty() ? nullptr : front_bytes.data();
+    const std::size_t front_size = front_bytes.size();
+
     // Row 7 owns the scan. Its pad returns 2 until s7 reaches 8, then 3, so the
     // Down step still dispatches when callers pass an idle pad.
     const PrototypeTask7MenuResult menu = run_prototype_task_7_menu_transition(
-        prototype_task_7_pad_get_state, nullptr, 0u);
+        prototype_task_7_pad_get_state, front_ptr, front_size);
     out.frames.menu = menu.frames_run;
     out.frames.down = menu.frames_run_b;
     out.menu_s7_after_menu_budget = menu.s7_after_a;
@@ -31,6 +57,11 @@ PrototypePlayablePipelineResult run_prototype_playable_pipeline(
     out.dispatch_tail_ran = menu.phase_b_tail_ran;
     out.dispatch_destination = menu.destination;
     out.dispatch_word_address = menu.word_address;
+    out.menu_marker_x_a = menu.marker_x_a;
+    out.menu_marker_x_b = menu.marker_x_b;
+    out.menu_selection_after_a = menu.selection_index_after_a;
+    out.menu_selection_after_b = menu.selection_index_after_b;
+    out.has_front = menu.has_front;
 
     const PrototypeTask8MissionResult mission =
         run_prototype_task_8_mission_slice(config.disc_root);

@@ -51,7 +51,9 @@ SDL smoke (`am3d_prototype_playable_smoke --hidden --checkpoint`):
 
 - Writes `build/platform/task9-checkpoint.txt` through `format_prototype_playable_checkpoint_line`
 - Column order: `menu_s7_after_menu_budget`, `menu_s7`, mission `z`, `frames.menu`, `frames.down`, `frames.mission`, `mission_path_gpr` (`0x` hex), movement start `x`, `z`, `heading`, `spawn_from_pad` (`1` when pad index 1 loaded, else `0`)
-- Optional `--capture` → `build/platform/prototype_playable_smoke.bmp`
+- Disc-free: one fill diagnostic frame (green menu bar, blue mission bar)
+- With owner `disc_root/DATA/FRONT.TIM`: two `menu_submit_frame` frames (highlight 0 then 1) plus mission bar on the second frame. See [prototype-playable-smoke.md](prototype-playable-smoke.md)
+- Optional `--capture`: `prototype_playable_smoke-menu.bmp` and `prototype_playable_smoke.bmp` when FRONT is present; otherwise `prototype_playable_smoke.bmp` only
 
 `ctest prototype_playable_smoke_headless` (disc-free, no window):
 
@@ -77,15 +79,15 @@ The checkpoint line is unchanged.
 
 `prototype_task_9`, `prototype_task_9_retail`, and
 `prototype_playable_smoke_headless` call `run_prototype_playable_pipeline`.
-Retail skips with code 77 when `ALP1.TXT` is missing. SDL FRONT menu paint
-stays out of this tier. The smoke window is still the fill diagnostic.
+Retail skips with code 77 when `ALP1.TXT` is missing. Headless tier stays
+fill-free; SDL smoke optionally paints FRONT when the owner file is present.
 
 ## Gaps (honest limits)
 
 | Gap | Note |
 | --- | --- |
 | Retail mission boot | No reconstructed mission main or ALP1 asset load in the pipeline |
-| Menu GPU / FRONT.TIM | Pipeline is headless; smoke uses fill diagnostic only |
+| Menu GPU / FRONT.TIM | Headless tests omit SDL; smoke uses `menu_submit_frame` when FRONT is present |
 | `PadGetState` body | Host stub; not retail pad driver |
 | Live `0x800c3ea4` | Provisional Down inject only |
 | Gameplay | Fixed script; mission loop observation still open. ALP1 movement capture is procedure only: [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md). |
