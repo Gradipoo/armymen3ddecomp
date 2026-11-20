@@ -1,0 +1,69 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+#include "menu_input_scan.hpp"
+
+#include <array>
+#include <cstdint>
+
+namespace {
+
+std::uint32_t g_state = 0u;
+
+std::uint32_t pad_get_state(std::uint32_t port) {
+    (void)port;
+    return g_state;
+}
+
+constexpr std::array<std::uint8_t, 4u> kReleased{0u, 0x41u, 0xffu, 0xffu};
+constexpr std::array<std::uint8_t, 4u> kUp{0u, 0x41u, 0xefu, 0xffu};
+constexpr std::array<std::uint8_t, 4u> kHeld{0u, 0x41u, 0xbfu, 0xffu};
+
+}
+
+int main() {
+    std::array<std::uint8_t, 0x100u> bytes{};
+    std::uint8_t* record = bytes.data();
+    am3d::exe::MenuInputScanState scan{};
+    std::uint32_t table_index = 0u;
+    std::uint32_t sp20 = 0u;
+    g_state = 2u;
+    am3d::exe::MenuInputScanStep up = am3d::exe::menu_input_scan_step(
+        1u, 2u, pad_get_state, kUp.data(), table_index, kUp.size(), sp20, 0u,
+        0u, record, 0u, scan, 4u);
+    if (!up.tail_ran || !up.loop_again || bytes[0x0bu] != 0x80u) {
+        return 1;
+    }
+
+    bytes.fill(0u);
+    record = bytes.data();
+    scan = {};
+    table_index = 0u;
+    sp20 = 0u;
+    am3d::exe::MenuInputScanStep clear = am3d::exe::menu_input_scan_step(
+        0u, 0u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
+        sp20, 0u, 0u, record, 0u, scan, 8u);
+    if (!clear.tail_ran || !clear.loop_again || bytes[0x0bu] != 0u) {
+        return 2;
+    }
+
+    bytes.fill(0x11u);
+    record = bytes.data();
+    scan = {};
+    table_index = 0u;
+    am3d::exe::MenuInputScanStep held = am3d::exe::menu_input_scan_step(
+        0u, 0u, pad_get_state, kHeld.data(), table_index, kHeld.size(), sp20,
+        0u, 0u, record, 0u, scan, 8u);
+    if (!held.tail_ran || !held.loop_again || bytes[0x0bu] != 0x7fu ||
+        record != bytes.data() + 0x7cu) {
+        return 3;
+    }
+
+    g_state = 7u;
+    table_index = 0u;
+    am3d::exe::MenuInputScanStep high = am3d::exe::menu_input_scan_step(
+        0u, 0u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
+        sp20, 0u, 0u, record, 0u, scan, 8u);
+    if (high.tail_ran) {
+        return 4;
+    }
+    return 0;
+}

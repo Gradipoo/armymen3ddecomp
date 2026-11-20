@@ -1,0 +1,31 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+#pragma once
+
+#include "call_80064e40.hpp"
+#include "call_80064e68.hpp"
+#include "call_800650d0.hpp"
+
+#include <cstdint>
+
+namespace am3d::exe {
+
+struct MenuInputScanStep {
+    MenuLoopHead head;
+    PadStateDispatch dispatch;
+    bool tail_ran;
+    bool loop_again;
+};
+
+// Integration of the reconstructed menu scan pieces.
+// Behavior notes: docs/research/re/menu-input-scan.md.
+// pad_get_state is PadGetState. Table bytes drive mask and bit paths.
+MenuInputScanStep menu_input_scan_step(
+    std::uint32_t stack_word_18, std::uint32_t loop_s7,
+    std::uint32_t (*pad_get_state)(std::uint32_t port),
+    const std::uint8_t* menu_table, std::uint32_t& menu_table_index,
+    std::uint32_t menu_table_bytes, std::uint32_t& stack_word_20,
+    std::uint32_t fp, std::uint32_t compare_word_dd730, std::uint8_t*& record,
+    std::uint32_t stack_word_58, MenuInputScanState& scan,
+    std::uint32_t loop_limit);
+
+}
