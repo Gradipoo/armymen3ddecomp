@@ -1,6 +1,6 @@
 # PROTOTYPE task 7 synthetic acceptance
 
-Status: **synthetic / disc-free acceptance met** at integration base `9200c50`.
+Status: **synthetic / disc-free acceptance met** at integration commit `0d979fc`.
 This does not pass the full row in [PROTOTYPE.md](../../PROTOTYPE.md): no
 reconstructed retail GPU scene, no live dispatch table at `0x800c3ea4`, and no
 pixel agreement with retail at every checkpoint.
@@ -13,7 +13,7 @@ story at table-tail and dispatch cites.
 
 ## Executable and smoke identity
 
-- **Integration base:** git `9200c50` (`64778` fallthrough in `call_80064758`).
+- **Integration commit:** `0d979fc` (menu scan acceptance; chain through `842aa0f` / `9200c50`).
 - **Multi-frame path:** `run_menu_input_scan_frames` in
   `components/exe/menu_input_scan_loop.cpp`, same glue as
   `am3d_menu_scan_smoke` / `test_menu_scan_smoke_headless`.
