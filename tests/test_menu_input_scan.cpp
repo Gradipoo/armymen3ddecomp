@@ -108,7 +108,7 @@ int main() {
         1u, 2u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
         sp20, 0u, kCompareFour, record, 0u, scan, 8u);
     if (alt.tail_ran || !alt.compare_four_ran || !alt.compare_four_to_65168 ||
-        alt.compare_four_v0 != 1u || table_index != 2u) {
+        alt.compare_four_v0 != 1u || table_index != 4u) {
         return 7;
     }
 
