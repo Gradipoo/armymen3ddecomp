@@ -41,7 +41,14 @@ and NEW GAME table slots, not a retail table dump.
 the sequencer when `--scripted` is set or for multi-frame runs; see
 [menu-scan-smoke](menu-scan-smoke.md).
 
+## Synthetic acceptance (PROTOTYPE row 7)
+
+Four-frame sequencer checks and tail-byte cites for OPTIONS ↔ NEW GAME motion
+are integrated in [prototype-task-7.md](prototype-task-7.md). Retail table
+dumps are still unstated.
+
 ## Gap
 
 Retail table layout, live bytes at `sp+0x18`, compare word `== 4`, and
-observed controller transitions stay open for task 7.
+observed controller transitions stay open for full retail task 7 pass.
+Synthetic scope is listed in prototype-task-7.md.

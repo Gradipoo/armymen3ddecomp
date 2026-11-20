@@ -56,8 +56,16 @@ Down inject path locally.
 The visible target is manual or local CI with `AM3D_WITH_SDL2=ON`. A
 dummy-driver pass alone does not prove a visible window works.
 
+## Synthetic acceptance (PROTOTYPE row 7)
+
+Disc-free multi-frame and Down dispatch stand-ins for row 7 are recorded in
+[prototype-task-7.md](prototype-task-7.md) with `ctest -R prototype_task_7`.
+That path does not claim retail GPU scene pass or a verified live table at
+`0x800c3ea4`.
+
 ## Gap
 
 Retail menu update, textured geometry from reconstructed submission,
 dispatch words for `s2` other than two (except provisional index three via
-`--inject-down`), and observed screen transition remain open for task 7.
+`--inject-down`), and observed screen transition remain open for full retail
+task 7 pass; synthetic acceptance is scoped in prototype-task-7.md.
