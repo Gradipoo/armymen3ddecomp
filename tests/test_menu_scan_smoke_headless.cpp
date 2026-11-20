@@ -14,10 +14,9 @@ std::uint32_t pad_get_state(std::uint32_t port) {
 
 constexpr std::size_t kSlots = 8u;
 
-}  // namespace
+constexpr std::array<std::uint8_t, 4u> kCompareFourSlot{0u, 0x41u, 0xffu, 0xffu};
 
-// Disc-free check for the menu scan smoke integration path (no SDL).
-int main() {
+int run_sequencer_smoke() {
     std::array<std::uint8_t, kSlots * am3d::exe::kMenuInputScanSlotBytes> table{};
     am3d::exe::menu_table_fill_released_slots(table.data(), kSlots);
 
@@ -25,14 +24,15 @@ int main() {
     std::uint8_t* record = bytes.data();
     am3d::exe::MenuInputScanState scan{};
     am3d::exe::MenuInputScanIndices indices{};
+    indices.stack_word_18 = 0u;
     indices.menu_table_bytes = static_cast<std::uint32_t>(table.size());
     std::uint32_t sp20 = 0u;
-    constexpr std::uint32_t kLimit = 4u;
+    constexpr std::uint32_t kStackWord1c = 4u;
     am3d::exe::MenuTableSequencer sequencer{};
 
     const am3d::exe::MenuInputScanLoopResult result = am3d::exe::run_menu_input_scan_frames(
-        2u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record, scan, kLimit,
-        &sequencer);
+        2u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record, scan,
+        kStackWord1c, &sequencer, nullptr);
     if (result.frames_run != 2u) {
         return 1;
     }
@@ -47,4 +47,48 @@ int main() {
         return 4;
     }
     return 0;
+}
+
+int run_stack_word_28_compare_four() {
+    std::array<std::uint8_t, kCompareFourSlot.size()> table = kCompareFourSlot;
+    std::array<std::uint8_t, 0x100u> bytes{};
+    std::uint8_t* record = bytes.data();
+    am3d::exe::MenuInputScanState scan{};
+    am3d::exe::MenuInputScanIndices indices{};
+    indices.stack_word_18 = 0u;
+    indices.stack_word_28 = 0u;
+    indices.menu_table_bytes = static_cast<std::uint32_t>(table.size());
+    std::uint32_t sp20 = 0u;
+    constexpr std::uint32_t kCompareWordFour = 4u;
+    constexpr std::uint32_t kStackWord1c = 8u;
+
+    const am3d::exe::MenuInputScanLoopResult result = am3d::exe::run_menu_input_scan_frames(
+        1u, pad_get_state, table.data(), indices, sp20, 0u, kCompareWordFour, record,
+        scan, kStackWord1c, nullptr, &indices.stack_word_28);
+    if (result.frames_run != 1u) {
+        return 10;
+    }
+    if (!result.last_step.compare_four_to_65168 || !result.last_step.tail_ran ||
+        !result.last_step.loop_again) {
+        return 11;
+    }
+    if (indices.stack_word_28 != 4u) {
+        return 12;
+    }
+    // call_80065168: add four at sp+0x28 per call-80065168.md.
+    if (scan.table_cursor != 4u || record != bytes.data() + 0x7cu) {
+        return 13;
+    }
+    return 0;
+}
+
+}  // namespace
+
+// Disc-free check for the menu scan smoke integration path (no SDL).
+int main() {
+    const int sequencer = run_sequencer_smoke();
+    if (sequencer != 0) {
+        return sequencer;
+    }
+    return run_stack_word_28_compare_four();
 }

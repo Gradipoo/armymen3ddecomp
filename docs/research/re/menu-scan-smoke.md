@@ -35,7 +35,12 @@ When `--scripted` is set or `--frames` is greater than 1,
 `run_menu_input_scan_frames` uses [menu-table-sequence](menu-table-sequence.md)
 to patch released and up slots per frame at `scan.table_cursor`.
 
-No retail table dump or stack words at `sp+0x1c` or `sp+0x28` are wired here.
+Host `MenuInputScanIndices` keeps `stack_word_18` at zero to match retail
+`PadGetState` `a0=0` in [call-80064e58.md](call-80064e58.md). The synthetic
+loop limit is passed as `stack_word_1c` (default four in `ScanHostState`).
+Optional `stack_word_28` is wired through `run_menu_input_scan_frames` for the
+compare-four tail; see [menu-scan-stack-hooks.md](menu-scan-stack-hooks.md).
+Retail table dumps and live stack limits stay unstated.
 
 ## Checks
 

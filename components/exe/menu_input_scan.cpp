@@ -10,6 +10,7 @@
 #include "call_800650e0.hpp"
 #include "call_800650ec.hpp"
 #include "call_800650f4.hpp"
+#include "call_80065168.hpp"
 #include "call_80065194.hpp"
 
 namespace am3d::exe {
@@ -35,7 +36,8 @@ MenuInputScanStep menu_input_scan_step(
     std::uint32_t menu_table_bytes, std::uint32_t& stack_word_20,
     std::uint32_t fp, std::uint32_t compare_word_dd730, std::uint8_t*& record,
     std::uint32_t stack_word_58, MenuInputScanState& scan,
-    std::uint32_t loop_limit, const std::uint32_t* test_inject_s6) {
+    std::uint32_t stack_word_1c, const std::uint32_t* test_inject_s6,
+    std::uint32_t* stack_word_28) {
     MenuInputScanStep step{};
     call_80064e40(stack_word_18, loop_s7, pad_get_state, step.head);
     if (test_inject_s6 != nullptr) {
@@ -65,6 +67,12 @@ MenuInputScanStep menu_input_scan_step(
         step.compare_four_ran = true;
         step.compare_four_to_65168 = mask.branch_to_65168;
         step.compare_four_v0 = mask.compare_four_v0;
+        if (mask.branch_to_65168) {
+            step.tail_ran = true;
+            step.loop_again =
+                call_80065168(record, scan, stack_word_1c, stack_word_28);
+            record_loop_exit_when_stopped(step, scan);
+        }
         return step;
     }
     if (!mask.entered) {
@@ -84,18 +92,18 @@ MenuInputScanStep menu_input_scan_step(
         if ((complemented & 0x10u) != 0u) {
             step.tail_ran = true;
             step.loop_again = call_800650d0(record, complemented, stack_word_58,
-                                            scan, loop_limit);
+                                            scan, stack_word_1c);
             record_loop_exit_when_stopped(step, scan);
             return step;
         }
         if (call_800650e0(complemented)) {
             step.tail_ran = true;
-            step.loop_again = call_800650ec(record, stack_word_58, scan, loop_limit);
+            step.loop_again = call_800650ec(record, stack_word_58, scan, stack_word_1c);
             record_loop_exit_when_stopped(step, scan);
             return step;
         }
         step.tail_ran = true;
-        step.loop_again = call_800650f4(record, stack_word_58, scan, loop_limit);
+        step.loop_again = call_800650f4(record, stack_word_58, scan, stack_word_1c);
         record_loop_exit_when_stopped(step, scan);
         return step;
     }
@@ -103,18 +111,18 @@ MenuInputScanStep menu_input_scan_step(
     if ((complemented & 0x10u) != 0u) {
         step.tail_ran = true;
         step.loop_again = call_800650d0(record, complemented, stack_word_58, scan,
-                                        loop_limit);
+                                        stack_word_1c);
         record_loop_exit_when_stopped(step, scan);
         return step;
     }
     if (call_800650e0(complemented)) {
         step.tail_ran = true;
-        step.loop_again = call_800650ec(record, stack_word_58, scan, loop_limit);
+        step.loop_again = call_800650ec(record, stack_word_58, scan, stack_word_1c);
         record_loop_exit_when_stopped(step, scan);
         return step;
     }
     step.tail_ran = true;
-    step.loop_again = call_800650f4(record, stack_word_58, scan, loop_limit);
+    step.loop_again = call_800650f4(record, stack_word_58, scan, stack_word_1c);
     record_loop_exit_when_stopped(step, scan);
     return step;
 }

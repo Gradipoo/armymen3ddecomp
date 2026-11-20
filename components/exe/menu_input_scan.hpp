@@ -32,7 +32,8 @@ MenuInputScanStep menu_input_scan_step(
     std::uint32_t menu_table_bytes, std::uint32_t& stack_word_20,
     std::uint32_t fp, std::uint32_t compare_word_dd730, std::uint8_t*& record,
     std::uint32_t stack_word_58, MenuInputScanState& scan,
-    std::uint32_t loop_limit,
-    const std::uint32_t* test_inject_s6 = nullptr);
+    std::uint32_t stack_word_1c,
+    const std::uint32_t* test_inject_s6 = nullptr,
+    std::uint32_t* stack_word_28 = nullptr);
 
 }
