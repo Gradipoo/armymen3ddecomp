@@ -68,6 +68,6 @@ Related row notes: [prototype-task-7.md](prototype-task-7.md),
 | Menu GPU / FRONT.TIM | Pipeline is headless; smoke uses fill diagnostic only |
 | `PadGetState` body | Host stub; not retail pad driver |
 | Live `0x800c3ea4` | Provisional Down inject only |
-| Gameplay | Fixed script; no observation-backed mission loop |
+| Gameplay | Fixed script; mission loop observation still open. ALP1 movement capture is procedure only: [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md). |
 
 Coordination state: `build/coordination/prototype-playable/state.md`.

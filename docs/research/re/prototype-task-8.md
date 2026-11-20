@@ -69,7 +69,7 @@ Eight frames in `MissionPadScript` (`tests/test_prototype_task_8.cpp`):
 | Camera | No mission camera chain |
 | GTE / animation | No retail body update |
 | Retail movement compare | Deferred; synthetic z step only |
-| Mission gameplay | No in-mission observation record yet |
+| Mission gameplay | Procedure recorded in [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md). No filled run yet. |
 
 Row 8 **retail** acceptance still needs pad-driven motion vs retail and the
 services that sequence reaches (spawn index 1 is cited).
@@ -124,4 +124,4 @@ Remaining honesty after this row:
 | PAD table | Only pad index 1 spawn fields are parsed |
 | MAP / MDL use | Inventory only; no geometry load |
 | Retail movement compare | Deferred; synthetic z step only |
-| Mission gameplay observation | No in-mission retail screen record yet |
+| Mission gameplay observation | Procedure recorded in [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md). No filled run yet. |

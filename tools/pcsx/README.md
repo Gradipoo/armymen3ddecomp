@@ -93,3 +93,13 @@ DuckStation fast boot of the USA disc.
 Replace `$AM3D_DISC` with the cue path on the machine that owns the disc.
 Output stays in `build/research/behavior/`. Do not commit game files, a
 BIOS, or anything under `build/`.
+
+## ALP1 movement frames
+
+`alp1_movement_observation.lua` listens for `GPU::Vsync` and writes
+`frame-NNNNNN.ppm` every N blanks (default 60). Set `PCSX_ALP1_OUT` for the
+directory (default `build/coordination/alp1-movement-observation/frames`)
+and `PCSX_ALP1_EVERY` for N. Load it with `-dofile` or `-exec` and `dofile`,
+from the repo root, with `-interpreter`. The procedure is
+`docs/research/re/prototype-alp1-movement-observation.md`. Frames stay under
+`build/`. The script does not press buttons or claim a movement match.
