@@ -13,7 +13,7 @@ int main() {
     const am3d::exe::MenuLoopFallthrough nonzero =
         am3d::exe::call_80065194(1u);
     if (!nonzero.branch_to_651c8 || nonzero.entered_6519c ||
-        nonzero.v0 != 0u) {
+        nonzero.v0 != 0x800e0000u) {
         return 2;
     }
     return 0;

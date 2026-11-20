@@ -25,9 +25,10 @@ int main() {
     am3d::exe::MenuInputScanState scan{};
     std::uint32_t table_index = 0u;
     std::uint32_t sp20 = 0u;
+    std::uint32_t sp18 = 1u;
     g_state = 2u;
     am3d::exe::MenuInputScanStep up = am3d::exe::menu_input_scan_step(
-        1u, 2u, pad_get_state, kUp.data(), table_index, kUp.size(), sp20, 0u,
+        sp18, 2u, pad_get_state, kUp.data(), table_index, kUp.size(), sp20, 0u,
         0u, record, 0u, scan, 4u);
     if (!up.tail_ran || !up.loop_again || bytes[0x0bu] != 0x80u) {
         return 1;
@@ -38,8 +39,9 @@ int main() {
     scan = {};
     table_index = 0u;
     sp20 = 0u;
+    sp18 = 0u;
     am3d::exe::MenuInputScanStep clear = am3d::exe::menu_input_scan_step(
-        0u, 0u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
+        sp18, 0u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
         sp20, 0u, 0u, record, 0u, scan, 8u);
     if (!clear.tail_ran || !clear.loop_again || bytes[0x0bu] != 0u) {
         return 2;
@@ -49,8 +51,9 @@ int main() {
     record = bytes.data();
     scan = {};
     table_index = 0u;
+    sp18 = 0u;
     am3d::exe::MenuInputScanStep held = am3d::exe::menu_input_scan_step(
-        0u, 0u, pad_get_state, kHeld.data(), table_index, kHeld.size(), sp20,
+        sp18, 0u, pad_get_state, kHeld.data(), table_index, kHeld.size(), sp20,
         0u, 0u, record, 0u, scan, 8u);
     if (!held.tail_ran || !held.loop_again || bytes[0x0bu] != 0x7fu ||
         record != bytes.data() + 0x7cu) {
@@ -59,8 +62,9 @@ int main() {
 
     g_state = 7u;
     table_index = 0u;
+    sp18 = 0u;
     am3d::exe::MenuInputScanStep high = am3d::exe::menu_input_scan_step(
-        0u, 0u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
+        sp18, 0u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
         sp20, 0u, 0u, record, 0u, scan, 8u);
     if (high.tail_ran) {
         return 4;
@@ -74,8 +78,9 @@ int main() {
     g_state = 2u;
     constexpr std::uint32_t kForceS6 = 1u;
     constexpr std::array<std::uint8_t, 4u> kUpS6{0u, 0x41u, 0x6fu, 0xffu};
+    sp18 = 1u;
     am3d::exe::MenuInputScanStep s6_up = am3d::exe::menu_input_scan_step(
-        1u, 2u, pad_get_state, kUpS6.data(), table_index, kUpS6.size(), sp20,
+        sp18, 2u, pad_get_state, kUpS6.data(), table_index, kUpS6.size(), sp20,
         0u, 0u, record, 0u, scan, 4u, &kForceS6);
     if (!s6_up.tail_ran || !s6_up.loop_again || bytes[0x0au] != 0x80u ||
         bytes[0x0bu] != 0x80u) {
@@ -88,8 +93,9 @@ int main() {
     table_index = 0u;
     sp20 = 0u;
     constexpr std::array<std::uint8_t, 4u> kS6Released{0u, 0x41u, 0xffu, 0xffu};
+    sp18 = 0u;
     am3d::exe::MenuInputScanStep s6_clear = am3d::exe::menu_input_scan_step(
-        0u, 0u, pad_get_state, kS6Released.data(), table_index,
+        sp18, 0u, pad_get_state, kS6Released.data(), table_index,
         kS6Released.size(), sp20,
         0u, 0u, record, 0u, scan, 8u, &kForceS6);
     if (!s6_clear.tail_ran || !s6_clear.loop_again || bytes[0x0au] != 0u ||
@@ -105,8 +111,9 @@ int main() {
     g_state = 2u;
     constexpr std::uint32_t kCompareFour = 4u;
     std::uint32_t sp28 = 0u;
+    sp18 = 1u;
     am3d::exe::MenuInputScanStep alt = am3d::exe::menu_input_scan_step(
-        1u, 2u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
+        sp18, 2u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
         sp20, 0u, kCompareFour, record, 0u, scan, 8u, nullptr, &sp28);
     if (!alt.tail_ran || !alt.loop_again || !alt.compare_four_ran ||
         !alt.compare_four_to_65168 || alt.compare_four_v0 != 1u ||

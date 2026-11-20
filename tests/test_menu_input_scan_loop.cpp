@@ -55,8 +55,15 @@ int main() {
     }
     if (!result.last_step.loop_exit_recorded ||
         !result.last_step.loop_exit.branch_to_651c8 ||
-        result.last_step.loop_exit.entered_6519c) {
+        result.last_step.loop_exit.entered_6519c ||
+        result.last_step.loop_exit.v0 != 0x800e0000u) {
         return 5;
+    }
+    if (!result.last_step.loop_taken_651c8_recorded ||
+        !result.last_step.loop_taken_651c8.branch_to_64dc8 ||
+        result.last_step.loop_taken_651c8.entered_651e0 ||
+        indices.stack_word_18 != 1u) {
+        return 6;
     }
     return 0;
 }

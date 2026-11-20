@@ -5,6 +5,7 @@
 #include "call_80064e68.hpp"
 #include "call_800650d0.hpp"
 #include "call_80065194.hpp"
+#include "call_800651c8.hpp"
 
 #include <cstdint>
 
@@ -17,6 +18,8 @@ struct MenuInputScanStep {
     bool loop_again;
     MenuLoopFallthrough loop_exit;
     bool loop_exit_recorded;
+    MenuLoopTaken651c8 loop_taken_651c8;
+    bool loop_taken_651c8_recorded;
     bool compare_four_ran;
     bool compare_four_to_65168;
     std::uint32_t compare_four_v0;
@@ -26,7 +29,7 @@ struct MenuInputScanStep {
 // Behavior notes: docs/research/re/menu-input-scan.md.
 // pad_get_state is PadGetState. Table bytes drive mask and bit paths.
 MenuInputScanStep menu_input_scan_step(
-    std::uint32_t stack_word_18, std::uint32_t loop_s7,
+    std::uint32_t& stack_word_18, std::uint32_t loop_s7,
     std::uint32_t (*pad_get_state)(std::uint32_t port),
     const std::uint8_t* menu_table, std::uint32_t& menu_table_index,
     std::uint32_t menu_table_bytes, std::uint32_t& stack_word_20,

@@ -8,6 +8,7 @@ namespace am3d::exe {
 struct MenuLoopFallthrough {
     bool branch_to_651c8;
     bool entered_6519c;
+    // lui 0x800e delay slot at 0x80065198 on either bne side.
     std::uint32_t v0;
 };
 

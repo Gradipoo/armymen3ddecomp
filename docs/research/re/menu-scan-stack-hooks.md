@@ -5,9 +5,12 @@ Integration note. Does not invent `0x800dd764` or claim retail loop counts.
 ## sp+0x18 (`stack_word_18`)
 
 [call-80064e40.md](call-80064e40.md) loads this word into the `PadGetState` port
-argument as `(stack_word_18 << 4) | s7`. [call-80064e58.md](call-80064e58.md)
-measured entries used `a0=0`, so host smoke and headless ctests keep
-`MenuInputScanIndices::stack_word_18` at zero.
+argument as `(stack_word_18 << 4) | s7`. [call-800651c8.md](call-800651c8.md)
+loads, increments, and stores the same word when loop exit takes
+`0x800651c8`. `menu_input_scan_step` passes the word by reference so the
+651c8 path can update it. [call-80064e58.md](call-80064e58.md) measured
+entries used `a0=0`, so host smoke and headless ctests keep
+`MenuInputScanIndices::stack_word_18` at zero unless a test asserts the hook.
 
 ## sp+0x1c (`stack_word_1c`)
 
