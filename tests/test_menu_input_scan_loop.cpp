@@ -38,15 +38,15 @@ int main() {
     indices.menu_table_bytes =
         static_cast<std::uint32_t>(table.size());
     std::uint32_t sp20 = 0u;
-    constexpr std::uint32_t kLimit = 4u;
+    std::uint32_t stack_word_1c = 4u;
     const am3d::exe::MenuInputScanLoopResult result =
         am3d::exe::run_menu_input_scan_frames(
             16u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record,
-            scan, kLimit);
+            scan, stack_word_1c);
     if (result.frames_run < 3u) {
         return 1;
     }
-    if (result.frames_run != 4u || scan.s7 != kLimit) {
+    if (result.frames_run != 4u || scan.s7 != 4u) {
         return 2;
     }
     if (result.last_step.loop_again) {
@@ -82,10 +82,19 @@ int main() {
         result.last_step.loop_body_64dd8.t1 != 1u) {
         return 9;
     }
+    if (!result.last_step.loop_body_64dfc_recorded ||
+        result.last_step.loop_body_64dfc.branch_to_65194 ||
+        !result.last_step.loop_body_64dfc.entered_64e14 ||
+        result.last_step.loop_body_64dfc.s1 != kS1After651c8 ||
+        result.last_step.loop_body_64dfc.s7 != 0u ||
+        stack_word_1c != 1u) {
+        return 10;
+    }
 
     g_pad_state = 3u;
     scan = {};
     indices = {};
+    stack_word_1c = 4u;
     indices.menu_table_bytes =
         static_cast<std::uint32_t>(table.size());
     record = bytes.data();
@@ -95,7 +104,7 @@ int main() {
     const am3d::exe::MenuInputScanLoopResult down =
         am3d::exe::run_menu_input_scan_frames(
             1u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record,
-            scan, kLimit, nullptr, nullptr, &pad_inject);
+            scan, stack_word_1c, nullptr, nullptr, &pad_inject);
     if (down.frames_run != 1u || !down.last_step.dispatch.destination_stated ||
         down.last_step.dispatch.destination != kProvisionalDownDest ||
         down.last_step.dispatch.word_address != 0x800c3ea4u ||

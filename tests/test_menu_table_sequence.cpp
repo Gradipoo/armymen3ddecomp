@@ -27,14 +27,14 @@ int main() {
     am3d::exe::MenuInputScanIndices indices{};
     indices.menu_table_bytes = static_cast<std::uint32_t>(table.size());
     std::uint32_t sp20 = 0u;
-    constexpr std::uint32_t kLimit = 4u;
+    std::uint32_t stack_word_1c = 4u;
     am3d::exe::MenuTableSequencer sequencer{};
 
     record_bytes.fill(0u);
     scan = {};
     record = record_bytes.data();
     const am3d::exe::MenuInputScanLoopResult frame0 = am3d::exe::run_menu_input_scan_frames(
-        1u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record, scan, kLimit,
+        1u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record, scan, stack_word_1c,
         &sequencer);
     constexpr std::size_t kRecordStride = 0x7cu;
     // Frame 0 clear tail writes at the record base; frame 1 up tail follows record advance.
@@ -42,7 +42,7 @@ int main() {
     const std::uint32_t s7_after_frame0 = scan.s7;
 
     const am3d::exe::MenuInputScanLoopResult frame1 = am3d::exe::run_menu_input_scan_frames(
-        1u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record, scan, kLimit,
+        1u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record, scan, stack_word_1c,
         &sequencer);
     const std::uint8_t tail_frame1 = record_bytes[kRecordStride + 0x0bu];
 

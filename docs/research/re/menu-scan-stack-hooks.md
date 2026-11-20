@@ -15,8 +15,10 @@ entries used `a0=0`, so host smoke and headless ctests keep
 ## sp+0x1c (`stack_word_1c`)
 
 [call-80065168.md](call-80065168.md) compares `s7` to the limit at `sp+0x1c`
-for the `bne` back to `0x80064e40`. Live retail value is unstated. The loop
-API passes the caller limit as `stack_word_1c` into `menu_input_scan_step` and
+for the `bne` back to `0x80064e40`. [call-80064dfc.md](call-80064dfc.md)
+stores and reloads the same word when the `0x80064de4` taken path runs.
+Live retail value is unstated. The loop API passes the caller limit as
+`stack_word_1c` by reference into `menu_input_scan_step` and
 `menu_scan_should_loop`. Synthetic tests use small limits (often four or eight).
 
 ## sp+0x28 (`stack_word_28`)

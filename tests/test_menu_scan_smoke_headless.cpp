@@ -27,12 +27,12 @@ int run_sequencer_smoke() {
     indices.stack_word_18 = 0u;
     indices.menu_table_bytes = static_cast<std::uint32_t>(table.size());
     std::uint32_t sp20 = 0u;
-    constexpr std::uint32_t kStackWord1c = 4u;
+    std::uint32_t stack_word_1c = 4u;
     am3d::exe::MenuTableSequencer sequencer{};
 
     const am3d::exe::MenuInputScanLoopResult result = am3d::exe::run_menu_input_scan_frames(
         2u, pad_get_state, table.data(), indices, sp20, 0u, 0u, record, scan,
-        kStackWord1c, &sequencer, nullptr);
+        stack_word_1c, &sequencer, nullptr);
     if (result.frames_run != 2u) {
         return 1;
     }
@@ -60,11 +60,11 @@ int run_stack_word_28_compare_four() {
     indices.menu_table_bytes = static_cast<std::uint32_t>(table.size());
     std::uint32_t sp20 = 0u;
     constexpr std::uint32_t kCompareWordFour = 4u;
-    constexpr std::uint32_t kStackWord1c = 8u;
+    std::uint32_t stack_word_1c = 8u;
 
     const am3d::exe::MenuInputScanLoopResult result = am3d::exe::run_menu_input_scan_frames(
         1u, pad_get_state, table.data(), indices, sp20, 0u, kCompareWordFour, record,
-        scan, kStackWord1c, nullptr, &indices.stack_word_28);
+        scan, stack_word_1c, nullptr, &indices.stack_word_28);
     if (result.frames_run != 1u) {
         return 10;
     }

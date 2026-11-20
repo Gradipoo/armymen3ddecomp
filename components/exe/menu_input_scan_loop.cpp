@@ -9,7 +9,7 @@ MenuInputScanLoopResult run_menu_input_scan_frames(
     std::uint32_t count, std::uint32_t (*pad_get_state)(std::uint32_t port),
     std::uint8_t* table, MenuInputScanIndices& indices, std::uint32_t& sp20,
     std::uint32_t fp, std::uint32_t compare_word, std::uint8_t*& record,
-    MenuInputScanState& scan, std::uint32_t stack_word_1c,
+    MenuInputScanState& scan, std::uint32_t& stack_word_1c,
     MenuTableSequencer* table_sequencer, std::uint32_t* stack_word_28,
     const PadStateDispatchInject* test_inject_pad_dispatch) {
     MenuInputScanLoopResult result{};

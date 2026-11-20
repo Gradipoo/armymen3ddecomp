@@ -62,7 +62,7 @@ struct ScanHostState {
     am3d::exe::MenuInputScanState scan{};
     am3d::exe::MenuInputScanIndices indices{};
     std::uint32_t sp20 = 0u;
-    static constexpr std::uint32_t kStackWord1c = 4u;
+    std::uint32_t stack_word_1c = 4u;
 };
 
 ScanHostState make_scan_host() {
@@ -160,7 +160,7 @@ int main(int argc, char** argv) {
             const am3d::exe::MenuInputScanLoopResult result = am3d::exe::run_menu_input_scan_frames(
                 static_cast<std::uint32_t>(frames), pad_get_state_from_poll, scan_host.table.data(),
                 scan_host.indices, scan_host.sp20, 0u, 0u, scan_host.record, scan_host.scan,
-                ScanHostState::kStackWord1c, table_sequencer,
+                scan_host.stack_word_1c, table_sequencer,
                 &scan_host.indices.stack_word_28);
             const std::uint32_t marker_x = 200u + scan_host.scan.s7 * 12u;
             present_scan_marker(marker_x, 0x00ff00u);
@@ -185,7 +185,7 @@ int main(int argc, char** argv) {
                 am3d::exe::run_menu_input_scan_frames(
                     1u, pad_get_state_from_poll, scan_host.table.data(), scan_host.indices,
                     scan_host.sp20,
-                    0u, 0u, scan_host.record, scan_host.scan, ScanHostState::kStackWord1c,
+                    0u, 0u, scan_host.record, scan_host.scan, scan_host.stack_word_1c,
                     table_sequencer, &scan_host.indices.stack_word_28);
             const std::uint32_t marker_x = 200u + scan_host.scan.s7 * 12u;
             const std::uint32_t marker_color =

@@ -13,6 +13,7 @@
 #include "call_80065168.hpp"
 #include "call_80064dc8.hpp"
 #include "call_80064dd8.hpp"
+#include "call_80064dfc.hpp"
 #include "call_80065194.hpp"
 #include "call_800651c8.hpp"
 
@@ -36,6 +37,7 @@ const std::uint32_t* resolve_pad_dispatch_inject(
 void record_loop_exit_when_stopped(MenuInputScanStep& step,
                                    const MenuInputScanState& scan,
                                    std::uint32_t& stack_word_18,
+                                   std::uint32_t& stack_word_1c,
                                    const std::uint8_t* test_inject_s1_lbu) {
     if (!step.loop_again) {
         step.loop_exit = call_80065194(scan.index);
@@ -56,6 +58,12 @@ void record_loop_exit_when_stopped(MenuInputScanStep& step,
                     step.loop_body_64dd8 = call_80064dd8(step.loop_body_64dc8.s1,
                                                          byte_at_dd8_s1);
                     step.loop_body_64dd8_recorded = true;
+                    if (step.loop_body_64dd8.branch_to_64dfc) {
+                        step.loop_body_64dfc = call_80064dfc(
+                            step.loop_body_64dc8.s1, step.loop_body_64dd8.t1,
+                            &stack_word_1c);
+                        step.loop_body_64dfc_recorded = true;
+                    }
                 }
             }
         }
@@ -71,7 +79,7 @@ MenuInputScanStep menu_input_scan_step(
     std::uint32_t menu_table_bytes, std::uint32_t& stack_word_20,
     std::uint32_t fp, std::uint32_t compare_word_dd730, std::uint8_t*& record,
     std::uint32_t stack_word_58, MenuInputScanState& scan,
-    std::uint32_t stack_word_1c, const std::uint32_t* test_inject_s6,
+    std::uint32_t& stack_word_1c, const std::uint32_t* test_inject_s6,
     std::uint32_t* stack_word_28,
     const PadStateDispatchInject* test_inject_pad_dispatch,
     const std::uint8_t* test_inject_s1_lbu) {
@@ -106,7 +114,8 @@ MenuInputScanStep menu_input_scan_step(
             step.tail_ran = true;
             step.loop_again =
                 call_80065168(record, scan, stack_word_1c, stack_word_28);
-            record_loop_exit_when_stopped(step, scan, stack_word_18, test_inject_s1_lbu);
+            record_loop_exit_when_stopped(step, scan, stack_word_18, stack_word_1c,
+                                          test_inject_s1_lbu);
         }
         return step;
     }
@@ -128,18 +137,21 @@ MenuInputScanStep menu_input_scan_step(
             step.tail_ran = true;
             step.loop_again = call_800650d0(record, complemented, stack_word_58,
                                             scan, stack_word_1c);
-            record_loop_exit_when_stopped(step, scan, stack_word_18, test_inject_s1_lbu);
+            record_loop_exit_when_stopped(step, scan, stack_word_18, stack_word_1c,
+                                          test_inject_s1_lbu);
             return step;
         }
         if (call_800650e0(complemented)) {
             step.tail_ran = true;
             step.loop_again = call_800650ec(record, stack_word_58, scan, stack_word_1c);
-            record_loop_exit_when_stopped(step, scan, stack_word_18, test_inject_s1_lbu);
+            record_loop_exit_when_stopped(step, scan, stack_word_18, stack_word_1c,
+                                          test_inject_s1_lbu);
             return step;
         }
         step.tail_ran = true;
         step.loop_again = call_800650f4(record, stack_word_58, scan, stack_word_1c);
-        record_loop_exit_when_stopped(step, scan, stack_word_18, test_inject_s1_lbu);
+        record_loop_exit_when_stopped(step, scan, stack_word_18, stack_word_1c,
+                                      test_inject_s1_lbu);
         return step;
     }
     const std::uint32_t complemented = mask.complemented;
@@ -147,18 +159,21 @@ MenuInputScanStep menu_input_scan_step(
         step.tail_ran = true;
         step.loop_again = call_800650d0(record, complemented, stack_word_58, scan,
                                         stack_word_1c);
-        record_loop_exit_when_stopped(step, scan, stack_word_18, test_inject_s1_lbu);
+        record_loop_exit_when_stopped(step, scan, stack_word_18, stack_word_1c,
+                                      test_inject_s1_lbu);
         return step;
     }
     if (call_800650e0(complemented)) {
         step.tail_ran = true;
         step.loop_again = call_800650ec(record, stack_word_58, scan, stack_word_1c);
-        record_loop_exit_when_stopped(step, scan, stack_word_18, test_inject_s1_lbu);
+        record_loop_exit_when_stopped(step, scan, stack_word_18, stack_word_1c,
+                                      test_inject_s1_lbu);
         return step;
     }
     step.tail_ran = true;
     step.loop_again = call_800650f4(record, stack_word_58, scan, stack_word_1c);
-    record_loop_exit_when_stopped(step, scan, stack_word_18, test_inject_s1_lbu);
+    record_loop_exit_when_stopped(step, scan, stack_word_18, stack_word_1c,
+                                  test_inject_s1_lbu);
     return step;
 }
 
