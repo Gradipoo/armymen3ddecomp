@@ -23,10 +23,22 @@ int main() {
         return 2;
     }
     index = 0u;
-    const auto blocked = am3d::exe::call_80064f48(
+    record.fill(0u);
+    const auto all_ones = am3d::exe::call_80064f48(
         sp20, 0u, table.data(), index, table.size(), 4u, record.data());
-    if (blocked.entered) {
+    if (all_ones.entered || !all_ones.compare_eq_four ||
+        all_ones.raw_halfword != 0xffffu || all_ones.complemented != 0u ||
+        !all_ones.branch_to_65168 || all_ones.compare_four_v0 != 1u ||
+        index != 2u) {
         return 3;
+    }
+    constexpr std::array<std::uint8_t, 2u> up_bits{0xefu, 0xffu};
+    index = 0u;
+    const auto up_alt = am3d::exe::call_80064f48(
+        sp20, 0u, up_bits.data(), index, up_bits.size(), 4u, record.data());
+    if (up_alt.entered || !up_alt.compare_eq_four || up_alt.complemented != 0x10u ||
+        up_alt.branch_to_65168 || up_alt.compare_four_v0 != 1u) {
+        return 4;
     }
     return 0;
 }

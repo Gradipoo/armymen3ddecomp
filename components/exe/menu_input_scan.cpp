@@ -61,6 +61,12 @@ MenuInputScanStep menu_input_scan_step(
     const MenuMaskPathResult mask = call_80064f48(
         stack_word_20, fp, menu_table, menu_table_index, menu_table_bytes,
         compare_word_dd730, record);
+    if (mask.compare_eq_four) {
+        step.compare_four_ran = true;
+        step.compare_four_to_65168 = mask.branch_to_65168;
+        step.compare_four_v0 = mask.compare_four_v0;
+        return step;
+    }
     if (!mask.entered) {
         return step;
     }

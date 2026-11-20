@@ -17,6 +17,9 @@ struct MenuInputScanStep {
     bool loop_again;
     MenuLoopFallthrough loop_exit;
     bool loop_exit_recorded;
+    bool compare_four_ran;
+    bool compare_four_to_65168;
+    std::uint32_t compare_four_v0;
 };
 
 // Integration of the reconstructed menu scan pieces.

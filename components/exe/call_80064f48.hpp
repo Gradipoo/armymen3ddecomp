@@ -9,6 +9,9 @@ struct MenuMaskPathResult {
     std::uint16_t raw_halfword;
     std::uint32_t complemented;
     bool entered;
+    bool compare_eq_four;
+    bool branch_to_65168;
+    std::uint32_t compare_four_v0;
 };
 
 // Behavior reference: docs/research/re/call-80064f48.md.

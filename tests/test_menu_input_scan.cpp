@@ -97,5 +97,20 @@ int main() {
         return 6;
     }
 
+    bytes.fill(0u);
+    record = bytes.data();
+    scan = {};
+    table_index = 0u;
+    sp20 = 0u;
+    g_state = 2u;
+    constexpr std::uint32_t kCompareFour = 4u;
+    am3d::exe::MenuInputScanStep alt = am3d::exe::menu_input_scan_step(
+        1u, 2u, pad_get_state, kReleased.data(), table_index, kReleased.size(),
+        sp20, 0u, kCompareFour, record, 0u, scan, 8u);
+    if (alt.tail_ran || !alt.compare_four_ran || !alt.compare_four_to_65168 ||
+        alt.compare_four_v0 != 1u || table_index != 2u) {
+        return 7;
+    }
+
     return 0;
 }
