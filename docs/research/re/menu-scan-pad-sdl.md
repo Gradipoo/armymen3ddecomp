@@ -51,7 +51,10 @@ table sequence) remains open.
 
 `src/menu_scan_smoke.cpp` polls each frame (once before `--batch`), stores
 buttons in module state, and passes `pad_get_state_from_poll` into
-`run_menu_input_scan_frames`. Headless ctests keep a fixed `2` stub.
+`run_menu_input_scan_frames`. With `--inject-down`, the same path passes
+`menu_scan_down_dispatch_inject()` so index three can reach the provisional
+tail cite. Headless ctests keep a fixed `2` stub unless
+`kMenuScanHeadlessInjectDown` is enabled.
 
 ## Checks
 

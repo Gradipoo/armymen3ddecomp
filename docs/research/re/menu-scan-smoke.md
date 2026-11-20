@@ -19,9 +19,14 @@ measured 4-bit picture at the same stand-in offset as
 horizontal axis only. That placement is diagnostic, not measured menu
 layout.
 
-`--batch` runs `run_menu_input_scan_frames` once for the full `--frames`
-budget, then presents a single diagnostic frame. It does not pace multiple
-SDL updates across scan steps.
+`--batch` runs one scan step per frame in the `--frames` budget (same glue as a
+single multi-count call), logs each step, then presents a single diagnostic
+frame. It does not pace multiple SDL updates across scan steps.
+
+`--inject-down` passes `menu_scan_down_dispatch_inject()` into
+`run_menu_input_scan_frames` so SDL Down (`s2=3`) can cite provisional
+`0x80064f14` through `PadStateDispatchInject` entry three. Default is no
+inject. Each scan step logs one line: `s2`, `destination_stated`, `tail_ran`.
 
 ## Pad input
 
@@ -45,11 +50,14 @@ Retail table dumps and live stack limits stay unstated.
 ## Checks
 
 `tests/test_menu_scan_smoke_headless.cpp` runs two scan frames without SDL.
+Default ctest keeps `nullptr` inject. Set `kMenuScanHeadlessInjectDown` to one
+in `menu_scan_pad_dispatch_inject.hpp` (or override at compile time) to run the
+Down inject path locally.
 The visible target is manual or local CI with `AM3D_WITH_SDL2=ON`. A
 dummy-driver pass alone does not prove a visible window works.
 
 ## Gap
 
 Retail menu update, textured geometry from reconstructed submission,
-dispatch words for `s2` other than two, and observed screen transition
-remain open for task 7.
+dispatch words for `s2` other than two (except provisional index three via
+`--inject-down`), and observed screen transition remain open for task 7.

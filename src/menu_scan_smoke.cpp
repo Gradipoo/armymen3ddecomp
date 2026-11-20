@@ -3,6 +3,7 @@
 #include "display_clear.hpp"
 #include "front_tim.hpp"
 #include "menu_input_scan_loop.hpp"
+#include "menu_scan_pad_dispatch_inject.hpp"
 #include "menu_pad_get_state.hpp"
 #include "menu_submit_frame.hpp"
 #include "menu_table_sequence.hpp"
@@ -85,6 +86,7 @@ int main(int argc, char** argv) {
         bool batch = false;
         bool submit = false;
         bool scripted = false;
+        bool inject_down = false;
         for (int i = 1; i < argc; ++i) {
             const std::string arg = argv[i];
             if (arg == "--hidden") {
@@ -97,11 +99,14 @@ int main(int argc, char** argv) {
                 submit = true;
             } else if (arg == "--scripted") {
                 scripted = true;
+            } else if (arg == "--inject-down") {
+                inject_down = true;
             } else if (arg == "--frames" && i + 1 < argc) {
                 frames = std::stoi(argv[++i]);
             } else {
                 throw std::invalid_argument(
-                    "use --frames NUMBER, --hidden, --capture, --batch, --submit, or --scripted");
+                    "use --frames NUMBER, --hidden, --capture, --batch, --submit, "
+                    "--scripted, or --inject-down");
             }
         }
         if (frames < 1 || frames > 36000) {
@@ -132,6 +137,8 @@ int main(int argc, char** argv) {
         const bool use_table_sequencer = scripted || frames > 1;
         am3d::exe::MenuTableSequencer* const table_sequencer =
             use_table_sequencer ? &scan_host.table_sequencer : nullptr;
+        const am3d::exe::PadStateDispatchInject* const pad_dispatch_inject =
+            inject_down ? &am3d::exe::menu_scan_down_dispatch_inject() : nullptr;
         int completed = 0;
 
         auto present_scan_marker = [&](std::uint32_t marker_x, std::uint32_t marker_color) {
@@ -157,11 +164,20 @@ int main(int argc, char** argv) {
 
         if (batch) {
             g_live_pad_buttons = window.poll().buttons;
-            const am3d::exe::MenuInputScanLoopResult result = am3d::exe::run_menu_input_scan_frames(
-                static_cast<std::uint32_t>(frames), pad_get_state_from_poll, scan_host.table.data(),
-                scan_host.indices, scan_host.sp20, 0u, 0u, scan_host.record, scan_host.scan,
-                scan_host.stack_word_1c, table_sequencer,
-                &scan_host.indices.stack_word_28);
+            std::uint32_t batch_frames_run = 0u;
+            for (int frame = 0; frame < frames; ++frame) {
+                const am3d::exe::MenuInputScanLoopResult step =
+                    am3d::exe::run_menu_input_scan_frames(
+                        1u, pad_get_state_from_poll, scan_host.table.data(),
+                        scan_host.indices, scan_host.sp20, 0u, 0u, scan_host.record,
+                        scan_host.scan, scan_host.stack_word_1c, table_sequencer,
+                        &scan_host.indices.stack_word_28, pad_dispatch_inject);
+                am3d::exe::log_menu_input_scan_step(std::cout, step.last_step);
+                batch_frames_run += step.frames_run;
+                if (!step.last_step.loop_again) {
+                    break;
+                }
+            }
             const std::uint32_t marker_x = 200u + scan_host.scan.s7 * 12u;
             present_scan_marker(marker_x, 0x00ff00u);
             completed = 1;
@@ -169,7 +185,7 @@ int main(int argc, char** argv) {
                 std::filesystem::create_directories("build/platform");
                 window.save_frame("build/platform/menu_scan_smoke.bmp");
             }
-            std::cout << "Menu scan batch ran " << result.frames_run << " scan frames; presented 1 "
+            std::cout << "Menu scan batch ran " << batch_frames_run << " scan frames; presented 1 "
                       << (submit ? "submission" : (front_bytes.empty() ? "synthetic" : "FRONT.TIM"))
                       << " diagnostic frame (s7=" << scan_host.scan.s7 << ").\n";
             return 0;
@@ -186,7 +202,8 @@ int main(int argc, char** argv) {
                     1u, pad_get_state_from_poll, scan_host.table.data(), scan_host.indices,
                     scan_host.sp20,
                     0u, 0u, scan_host.record, scan_host.scan, scan_host.stack_word_1c,
-                    table_sequencer, &scan_host.indices.stack_word_28);
+                    table_sequencer, &scan_host.indices.stack_word_28, pad_dispatch_inject);
+            am3d::exe::log_menu_input_scan_step(std::cout, step.last_step);
             const std::uint32_t marker_x = 200u + scan_host.scan.s7 * 12u;
             const std::uint32_t marker_color =
                 (pad.buttons & (1u << 14)) ? 0xffffffu : 0x0000ffu;
