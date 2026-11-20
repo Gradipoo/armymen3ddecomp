@@ -172,6 +172,20 @@ Tasks 5 through 9 are milestones split into one-gap implementation changes,
 each with its own required research note. The table is not permission to
 bundle several gaps into one change or bypass note boundaries.
 
+### Rows 7 through 9 (retail checkpoint tier)
+
+These rows have a documented **retail checkpoint tier** on native builds. It
+names before/after controller transitions, headless ctests, and owner-file
+smokes. It does not claim pixel-identical retail menus, reconstructed game
+main, or in-mission physics match. Full table acceptance in rows 7 and 8 still
+needs retail compare beyond named checkpoints.
+
+| Row | Tier status | Research note |
+| --- | --- | --- |
+| 7 | Menu scan, Down dispatch, FRONT submit, selection highlight stand-in | [prototype-task-7.md](research/re/prototype-task-7.md) |
+| 8 | ALP1 spawn from PAD fixture, eight-frame movement, observation runbook | [prototype-task-8.md](research/re/prototype-task-8.md), [prototype-alp1-movement-observation.md](research/re/prototype-alp1-movement-observation.md) |
+| 9 | Pipeline composes row 7 then row 8 runners; playable smoke with FRONT | [prototype-task-9.md](research/re/prototype-task-9.md), [prototype-playable-smoke.md](research/re/prototype-playable-smoke.md) |
+
 Use the first two changes for the screen observation record and the
 synthetic graphics trial. Do not start with another compiler experiment.
 During the trial, retain the current fill sink as a small reference for
