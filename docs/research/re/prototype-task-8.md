@@ -160,7 +160,9 @@ line uses `1` in `spawn_from_pad`.
 `build/platform/task8-checkpoint.txt`.
 
 External compare (no filled run in this tier):
-[prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md).
+[prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md)
+(**Operator quick start**: `tools/pcsx/run_alp1_observation.sh` and
+`tools/alp1_observation_checklist.py`).
 
 Remaining limits at this tier:
 

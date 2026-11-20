@@ -11,6 +11,46 @@ spawn `(x, z, heading) = (50, 1252, 50)` is recorded in
 meant to compare against lives in `tests/test_prototype_task_8.cpp`: four
 idle guest frames, then four frames with Cross held.
 
+## Operator quick start
+
+Run from the repository root on the machine that owns the USA cue. Set
+`AM3D_DISC` to the cue path, or pass it as the first argument to the script.
+
+```sh
+export AM3D_DISC="/path/to/Army Men 3D (USA).cue"
+sh tools/pcsx/run_alp1_observation.sh
+```
+
+The script creates
+`build/coordination/alp1-movement-observation/<run-id>/` with UTC
+`run-id` (`YYYYMMDD-HHMMSS`), writes `session.txt`, calls the checklist
+`init` helper, sets `PCSX_ALP1_OUT` to `<run-id>/frames`, and launches
+PCSX-Redux with the framebuffer helper. If the app is not in
+`/Applications`, the script prints the install steps from
+[tools/pcsx/README.md](../../../tools/pcsx/README.md) and exits 2.
+
+After the session (or to refresh the checklist file on an existing run dir):
+
+```sh
+python3 tools/alp1_observation_checklist.py init \
+  build/coordination/alp1-movement-observation/<run-id>
+python3 tools/alp1_observation_checklist.py show \
+  build/coordination/alp1-movement-observation/<run-id>
+python3 tools/alp1_observation_checklist.py validate \
+  build/coordination/alp1-movement-observation/<run-id>
+```
+
+Dry-run layout check (no emulator):
+
+```sh
+python3 tools/alp1_observation_checklist.py self-test
+python3 tools/alp1_observation_checklist.py validate \
+  build/coordination/alp1-movement-observation/_dry_run
+```
+
+Fill `session.txt` and the row in `checklist.tsv`. Do not commit anything
+under `build/coordination/`.
+
 ## Retail setup
 
 Use the same class of run as [first-screen-observation.md](first-screen-observation.md).
@@ -37,16 +77,18 @@ Planned setup, not a completed run:
   run's saved configuration says otherwise. Write the actual settings into
   the run directory. Do not invent them.
 
-Launch from the repository root with a portable directory under `build/`:
+Prefer `tools/pcsx/run_alp1_observation.sh` (see **Operator quick start**).
+Manual equivalent from the repository root:
 
 ```text
--portable build/coordination/alp1-movement-observation/pcsx-config
--interpreter -debugger -run
+-portable build/coordination/alp1-movement-observation/<run-id>/pcsx-config
+-interpreter -debugger -run -iso "$AM3D_DISC"
+-exec "dofile('tools/pcsx/alp1_movement_observation.lua')"
 ```
 
-Leave fast boot off (do not pass `-fastboot`). Optional framebuffer helper:
-[tools/pcsx/README.md](../../../tools/pcsx/README.md) and
-`tools/pcsx/alp1_movement_observation.lua`.
+Leave fast boot off (do not pass `-fastboot`). Set `PCSX_ALP1_OUT` to the
+run's `frames/` directory. Helper details:
+[tools/pcsx/README.md](../../../tools/pcsx/README.md).
 
 ## Controller path to ALP1
 
@@ -74,6 +116,20 @@ steps stay TBD until an operator records them.
 
 Stop the note at the first unknown prompt. Do not guess a button.
 
+### Menu path worksheet (copy per run)
+
+Record Y/N and notes in the run directory. Steps 3 to 7 stay TBD until filled.
+
+```text
+[ ] 1. Boot: SCE BIOS, PlayStation license, 3DO logo, Green Plastic News intro (observed elsewhere)
+[ ] 2. Intro: Return ~200 ms -> LOADING -> stable 1 PLAYER menu (NEW GAME white)
+[ ] 3. TBD: Return highlight to NEW GAME if on OPTIONS (key and duration: ____________)
+[ ] 4. TBD: Confirm NEW GAME / start mission (key and duration: ____________)
+[ ] 5. TBD: Difficulty, name, or memory-card prompts (record each: ____________)
+[ ] 6. TBD: Mission select until Alpine 1 / ALP1 highlighted (path: ____________)
+[ ] 7. TBD: Confirm mission; in-mission view stable (frame number: ____________)
+```
+
 ## Declared compare window
 
 This is the compare target for a later check against the host script. It is
@@ -93,6 +149,23 @@ camera, or GTE. A retail capture in this window can later be compared with
 spawn `(50, 1252, 50)` and with that eight-frame script. Matching frame
 counts on the host do not prove the retail game uses the same clock or the
 same step size.
+
+### Compare window worksheet (copy per run)
+
+Guest frame numbers from the emulator log or operator notes. The helper saves
+`frame-NNNNNN.ppm` every `PCSX_ALP1_EVERY` vsyncs (default 60); mark button
+edges separately in `session.txt`.
+
+```text
+Frame in-mission stable:     ________
+Idle hold (4 guest frames):
+  frame ___ , ___ , ___ , ___
+Cross held (4 guest frames):
+  frame ___ , ___ , ___ , ___
+Cross up (release):          ________
+Optional capture paths:      ________
+On-screen position readout:  ________  (or "no on-screen position")
+```
 
 ## What to record per run
 
@@ -114,11 +187,16 @@ Do not commit that tree.
 
 ## Checklist
 
-Empty cells are fine until a run exists.
+Empty cells are fine until a run exists. Each run directory holds
+`checklist.tsv` with this header (created by
+`tools/alp1_observation_checklist.py init`):
 
 | Run id | Date | Reach ALP1 (Y/N) | Spawn sanity vs PAD 50 / 1252 / 50 | After-sequence position notes | Capture paths |
 | --- | --- | --- | --- | --- | --- |
 | | | | | | |
+
+Aggregate copies for the repo note can be pasted from `show` output. Per-run
+source of truth stays under `build/coordination/alp1-movement-observation/`.
 
 ## Limits
 
