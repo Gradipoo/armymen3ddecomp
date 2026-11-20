@@ -76,6 +76,7 @@ and the same Down transition cite as phase B.
 | `ctest prototype_task_7` | Unchanged disc-free gate |
 | `am3d_menu_scan_smoke --checkpoint` | Writes `build/platform/task7-checkpoint.txt` after batch scripted submit |
 | `python3 tools/prototype_task7_compare.py` | Owner-local 64x64 center mean abs diff vs retail PNG; not a CI gate |
+| [prototype-task-7-pixel-checkpoint.md](prototype-task-7-pixel-checkpoint.md) | Local capture and compare procedure |
 
 Smoke command (from repo root, SDL build):
 

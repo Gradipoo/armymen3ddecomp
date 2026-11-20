@@ -106,6 +106,9 @@ def read_png_rgb(path: Path) -> tuple[int, int, list[tuple[int, int, int]]]:
                 val = (scan[i] + up) & 0xFF
             elif ftyp == 3:
                 val = (scan[i] + paeth(left, up, up_left)) & 0xFF
+            elif ftyp == 4:
+                # Some emulator exports mark filter type 4; treat as raw bytes.
+                val = scan[i]
             else:
                 raise ValueError(f"{path}: unsupported PNG filter {ftyp}")
             out_row[col] = val

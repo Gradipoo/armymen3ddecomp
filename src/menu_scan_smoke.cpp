@@ -209,7 +209,8 @@ int main(int argc, char** argv) {
                 out << scan_host.scan.s7 << ' '
                     << static_cast<unsigned>(scan_host.record_bytes[0x0bu]) << ' '
                     << static_cast<unsigned>(scan_host.record_bytes[0x87u]) << ' ' << frames << ' '
-                    << (front_bytes.empty() ? 0 : 1) << ' ' << (submit ? 1 : 0) << '\n';
+                    << (front_bytes.empty() ? 0 : 1) << ' ' << (submit ? 1 : 0) << ' '
+                    << batch_frames_run << '\n';
             }
             std::cout << "Menu scan batch ran " << batch_frames_run << " scan frames; presented 1 "
                       << (submit ? "submission" : (front_bytes.empty() ? "synthetic" : "FRONT.TIM"))
