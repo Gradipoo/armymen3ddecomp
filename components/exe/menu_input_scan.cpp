@@ -12,6 +12,7 @@
 #include "call_800650f4.hpp"
 #include "call_80065168.hpp"
 #include "call_80064dc8.hpp"
+#include "call_80064dd8.hpp"
 #include "call_80065194.hpp"
 #include "call_800651c8.hpp"
 
@@ -47,6 +48,15 @@ void record_loop_exit_when_stopped(MenuInputScanStep& step,
                 step.loop_body_64dc8 = call_80064dc8(step.loop_taken_651c8.s1,
                                                       test_inject_s1_lbu);
                 step.loop_body_64dc8_recorded = true;
+                if (step.loop_body_64dc8.entered_64dd8) {
+                    const std::uint8_t* byte_at_dd8_s1 = nullptr;
+                    if (test_inject_s1_lbu != nullptr) {
+                        byte_at_dd8_s1 = test_inject_s1_lbu + 1u;
+                    }
+                    step.loop_body_64dd8 = call_80064dd8(step.loop_body_64dc8.s1,
+                                                         byte_at_dd8_s1);
+                    step.loop_body_64dd8_recorded = true;
+                }
             }
         }
     }

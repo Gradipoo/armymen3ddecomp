@@ -75,6 +75,13 @@ int main() {
         result.last_step.loop_body_64dc8.s1 != kS1After651c8 + 1u) {
         return 8;
     }
+    if (!result.last_step.loop_body_64dd8_recorded ||
+        !result.last_step.loop_body_64dd8.branch_to_64dfc ||
+        result.last_step.loop_body_64dd8.entered_64dec ||
+        result.last_step.loop_body_64dd8.v0 != 0u ||
+        result.last_step.loop_body_64dd8.t1 != 1u) {
+        return 9;
+    }
 
     g_pad_state = 3u;
     scan = {};

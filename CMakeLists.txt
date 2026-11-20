@@ -198,6 +198,7 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_80065168.cpp
     components/exe/call_8006518c.cpp
     components/exe/call_80064dc8.cpp
+    components/exe/call_80064dd8.cpp
     components/exe/call_80065194.cpp
     components/exe/call_800651c8.cpp
     components/exe/menu_input_scan.cpp
@@ -1331,6 +1332,9 @@ if(BUILD_TESTING)
     add_executable(test_call_80064dc8 tests/test_call_80064dc8.cpp)
     target_link_libraries(test_call_80064dc8 PRIVATE am3d_exe)
     add_test(NAME call_80064dc8 COMMAND test_call_80064dc8)
+    add_executable(test_call_80064dd8 tests/test_call_80064dd8.cpp)
+    target_link_libraries(test_call_80064dd8 PRIVATE am3d_exe)
+    add_test(NAME call_80064dd8 COMMAND test_call_80064dd8)
     add_executable(test_menu_input_scan tests/test_menu_input_scan.cpp)
     target_link_libraries(test_menu_input_scan PRIVATE am3d_exe)
     add_test(NAME menu_input_scan COMMAND test_menu_input_scan)

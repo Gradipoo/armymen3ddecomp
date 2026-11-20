@@ -16,7 +16,6 @@ MenuLoopBody64dc8 call_80064dc8(std::uint32_t s1, const std::uint8_t* byte_at_s1
         // gap: re-entry at 0x80065194 is not modeled.
     } else {
         result.entered_64dd8 = true;
-        // gap: body at 0x80064dd8 is not entered.
     }
     return result;
 }

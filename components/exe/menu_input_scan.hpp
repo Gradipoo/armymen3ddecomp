@@ -5,6 +5,7 @@
 #include "call_80064e68.hpp"
 #include "call_800650d0.hpp"
 #include "call_80064dc8.hpp"
+#include "call_80064dd8.hpp"
 #include "call_80065194.hpp"
 #include "call_800651c8.hpp"
 
@@ -23,6 +24,8 @@ struct MenuInputScanStep {
     bool loop_taken_651c8_recorded;
     MenuLoopBody64dc8 loop_body_64dc8;
     bool loop_body_64dc8_recorded;
+    MenuLoopBody64dd8 loop_body_64dd8;
+    bool loop_body_64dd8_recorded;
     bool compare_four_ran;
     bool compare_four_to_65168;
     std::uint32_t compare_four_v0;
