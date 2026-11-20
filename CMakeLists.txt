@@ -209,6 +209,7 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/alp1_pad_spawn.cpp
     components/exe/mission_movement_slice.cpp
     components/exe/prototype_playable_pipeline.cpp
+    components/exe/prototype_playable_checkpoint.cpp
     components/exe/menu_table_sequence.cpp
     components/exe/call_80065304.cpp
     components/exe/call_800655e4.cpp
@@ -1390,6 +1391,11 @@ if(BUILD_TESTING)
     add_executable(test_prototype_task_9 tests/test_prototype_task_9.cpp)
     target_link_libraries(test_prototype_task_9 PRIVATE am3d_exe)
     add_test(NAME prototype_task_9 COMMAND test_prototype_task_9)
+    add_executable(test_prototype_playable_smoke_headless
+        tests/test_prototype_playable_smoke_headless.cpp)
+    target_link_libraries(test_prototype_playable_smoke_headless PRIVATE am3d_exe)
+    add_test(NAME prototype_playable_smoke_headless
+        COMMAND test_prototype_playable_smoke_headless)
     add_executable(test_prototype_task_9_retail tests/test_prototype_task_9_retail.cpp)
     target_link_libraries(test_prototype_task_9_retail PRIVATE am3d_exe)
     add_test(NAME prototype_task_9_retail COMMAND test_prototype_task_9_retail)

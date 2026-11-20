@@ -47,8 +47,15 @@ only. Mission frames use the fixed eight-frame script (idle then Cross).
 
 SDL smoke (`am3d_prototype_playable_smoke --hidden --checkpoint`):
 
-- Writes `build/platform/task9-checkpoint.txt`: menu s7 fields, mission `z`, stage frame counts, `mission_path_gpr`
+- Writes `build/platform/task9-checkpoint.txt` through `format_prototype_playable_checkpoint_line`
+- Column order: `menu_s7_after_menu_budget`, `menu_s7`, mission `z`, `frames.menu`, `frames.down`, `frames.mission`, `mission_path_gpr` (`0x` hex), movement start `x`, `z`, `heading`, `spawn_from_pad` (`1` when pad index 1 loaded, else `0`)
 - Optional `--capture` → `build/platform/prototype_playable_smoke.bmp`
+
+`ctest prototype_playable_smoke_headless` (disc-free, no window):
+
+- Synthetic start `100`/`200`/`0`, idle pad
+- Formatted line `8 9 264 4 1 8 0x800bfdbc 100 200 0 0`
+- `spawn_from_pad` is `0`
 
 Related row notes: [prototype-task-7.md](prototype-task-7.md),
 [prototype-task-8.md](prototype-task-8.md).

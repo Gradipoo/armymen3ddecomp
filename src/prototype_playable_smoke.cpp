@@ -4,12 +4,12 @@
 #include "display_clear.hpp"
 #include "display_fill.hpp"
 #include "alp1_pad_spawn.hpp"
+#include "prototype_playable_checkpoint.hpp"
 #include "prototype_playable_pipeline.hpp"
 
 #include <chrono>
 #include <cstdint>
 #include <filesystem>
-#include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
         }
 
         am3d::exe::PrototypePlayablePipelineConfig config{};
+        bool spawn_from_pad = false;
         const std::filesystem::path disc_root = resolve_disc_root();
         if (!disc_root.empty()) {
             const am3d::exe::Alp1PadSpawnParseResult spawn =
@@ -76,6 +77,7 @@ int main(int argc, char** argv) {
                 config.movement_start.x = spawn.x;
                 config.movement_start.z = spawn.z;
                 config.movement_start.heading = spawn.heading;
+                spawn_from_pad = true;
             }
         }
         const am3d::exe::PrototypePlayablePipelineResult result =
@@ -105,12 +107,11 @@ int main(int argc, char** argv) {
             window.save_frame("build/platform/prototype_playable_smoke.bmp");
         }
         if (checkpoint) {
-            std::filesystem::create_directories("build/platform");
-            std::ofstream out("build/platform/task9-checkpoint.txt", std::ios::trunc);
-            out << result.menu_s7_after_menu_budget << ' ' << result.menu_s7 << ' '
-                << result.movement_final_state.z << ' ' << result.frames.menu << ' '
-                << result.frames.down << ' ' << result.frames.mission << ' '
-                << result.mission_path_gpr << '\n';
+            const am3d::exe::PrototypePlayableCheckpointLine line =
+                am3d::exe::make_prototype_playable_checkpoint_line(
+                    result, config.movement_start, spawn_from_pad);
+            am3d::exe::write_prototype_playable_checkpoint_file(
+                am3d::exe::kPrototypePlayableCheckpointPath, line);
         }
 
         if (!hidden) {
