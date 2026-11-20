@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+#include "alp1_pad_spawn_fixture.hpp"
 #include "mission_menu_handoff.hpp"
 #include "mission_movement_slice.hpp"
 
@@ -16,10 +17,13 @@ int run_movement_slice() {
         script.s2[i] = am3d::exe::MissionPadScript::kPadCrossS2;
     }
 
-    am3d::exe::MissionMovementStartState start{};
-    start.x = 100;
-    start.z = 200;
-    start.heading = 0;
+    const am3d::exe::MissionMovementStartState start =
+        am3d::exe::mission_start_from_alp1_pad_fixture();
+    if (start.x != am3d::exe::kAlp1PadSpawnDiscFreeGoldenX ||
+        start.z != am3d::exe::kAlp1PadSpawnDiscFreeGoldenZ ||
+        start.heading != am3d::exe::kAlp1PadSpawnDiscFreeGoldenHeading) {
+        return 5;
+    }
     am3d::exe::MissionMovementStartState state{};
 
     const am3d::exe::MissionMovementRunResult result =
@@ -30,7 +34,8 @@ int run_movement_slice() {
     if (state.x != start.x || state.heading != start.heading) {
         return 2;
     }
-    if (state.z <= start.z) {
+    // Four Cross frames step z by 16.
+    if (state.z != start.z + 64) {
         return 3;
     }
     if (result.final_state.z != state.z) {

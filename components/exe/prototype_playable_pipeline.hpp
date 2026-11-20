@@ -12,7 +12,9 @@ struct PrototypePlayablePipelineConfig {
     std::uint32_t menu_frame_budget = 4u;
     std::uint32_t down_frame_budget = 1u;
     std::uint32_t mission_frame_budget = 8u;
-    MissionMovementStartState movement_start{100, 200, 0};
+    // Disc-free default is the ALP1.PAD index 1 fixture (50/1252/50).
+    MissionMovementStartState movement_start{};
+    PrototypePlayablePipelineConfig();
 };
 
 struct PrototypePlayablePipelineStageFrames {

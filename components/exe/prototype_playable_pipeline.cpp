@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "prototype_playable_pipeline.hpp"
 
+#include "alp1_pad_spawn_fixture.hpp"
 #include "menu_input_scan_loop.hpp"
 #include "menu_table_sequence.hpp"
 #include "mission_menu_handoff.hpp"
@@ -21,6 +22,10 @@ std::uint32_t down_pad_get_state(std::uint32_t port) {
 }
 
 }  // namespace
+
+PrototypePlayablePipelineConfig::PrototypePlayablePipelineConfig() {
+    movement_start = mission_start_from_alp1_pad_fixture();
+}
 
 MissionPadScript prototype_playable_default_mission_script(std::uint32_t frame_budget) {
     MissionPadScript script{};

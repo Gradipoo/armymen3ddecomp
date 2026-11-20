@@ -52,9 +52,9 @@ address is cited in this change.
 | Parser | `components/exe/alp1_pad_spawn.hpp`, `alp1_pad_spawn.cpp` |
 | Movement start | `components/exe/mission_movement_slice.hpp` |
 
-Disc-free tests keep synthetic `x=100`, `z=200`, `heading=0`. Retail-path
-tests and smokes call `load_alp1_pad_spawn_from_disc_root` when
-`build/disc/DATA/ALP1.PAD` is present.
+Disc-free tests decode spawn from `alp1_pad_spawn_fixture.hpp` (pad index 1:
+`x=50`, `z=1252`, `heading=50`). Retail-path tests and smokes call
+`load_alp1_pad_spawn_from_disc_root` when `build/disc/DATA/ALP1.PAD` is present.
 
 ## Limits
 

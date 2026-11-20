@@ -17,8 +17,8 @@ composes rows 7 and 8 without widening physics or GPU scope.
 | ALP1 movement script | Row 8 slice | `prototype_playable_default_mission_script` + `run_mission_movement_frames` |
 
 Frame budgets (defaults): menu `4`, down `1`, mission `8`. Disc-free spawn
-stays `100`/`200`/`0`; `prototype_task_9_retail` fills movement start from
-`ALP1.PAD` pad index 1 when the owner extract is present.
+is the ALP1.PAD index 1 fixture (`50`/`1252`/`50`); `prototype_task_9_retail`
+fills movement start from `ALP1.PAD` when the owner extract is present.
 
 ## API
 
@@ -53,8 +53,8 @@ SDL smoke (`am3d_prototype_playable_smoke --hidden --checkpoint`):
 
 `ctest prototype_playable_smoke_headless` (disc-free, no window):
 
-- Synthetic start `100`/`200`/`0`, idle pad
-- Formatted line `8 9 264 4 1 8 0x800bfdbc 100 200 0 0`
+- Synthetic start `50`/`1252`/`50` from the pad fixture, idle pad
+- Formatted line `8 9 1316 4 1 8 0x800bfdbc 50 1252 50 0`
 - `spawn_from_pad` is `0`
 
 Related row notes: [prototype-task-7.md](prototype-task-7.md),

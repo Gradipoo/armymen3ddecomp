@@ -9,8 +9,8 @@ collision, camera, and gameplay comparison are deferred.
 **ALP1** (Alpine mission 1). Owner files live under `build/disc/DATA/`:
 `ALP1.TXT` (header `//Alpine1 Mission1`), plus companion `.MAP`, `.PAD`,
 `.MDL`, and related assets. This slice declares paths only. It does not
-parse MAP, MDL, or TXT. Pad index 1 spawn is parsed via `alp1_pad_spawn` on
-retail paths only.
+parse MAP, MDL, or TXT. Disc-free start state is the pad index 1 fixture in
+`alp1_pad_spawn_fixture.hpp`. Retail paths load owner `ALP1.PAD` when present.
 
 Load-path research (not executed here): [mission-ini-loop.md](mission-ini-loop.md)
 and [call-80063b34.md](call-80063b34.md) cite `call_80063b34` on the
@@ -22,9 +22,9 @@ Host stand-in in `MissionMovementStartState`:
 
 | Field | Disc-free (`prototype_task_8`) | Retail path (pad index 1) |
 | --- | --- | --- |
-| `x` | `100` | `50` from [alp1-pad-spawn.md](alp1-pad-spawn.md) |
-| `z` | `200` | `1252` from owner `ALP1.PAD` |
-| `heading` | `0` | `50` from owner `ALP1.PAD` |
+| `x` | `50` from the fixture bytes | `50` from [alp1-pad-spawn.md](alp1-pad-spawn.md) |
+| `z` | `1252` from the fixture bytes | `1252` from owner `ALP1.PAD` |
+| `heading` | `50` from the fixture bytes | `50` from owner `ALP1.PAD` |
 
 ## Fixed input script
 

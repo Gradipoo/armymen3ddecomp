@@ -17,7 +17,6 @@ std::uint32_t pad_get_state_idle(std::uint32_t port) {
 // Disc-free checkpoint line for the playable pipeline (same tokens as --checkpoint).
 int main() {
     am3d::exe::PrototypePlayablePipelineConfig config{};
-    config.movement_start = {100, 200, 0};
     const am3d::exe::PrototypePlayablePipelineResult result =
         am3d::exe::run_prototype_playable_pipeline(config, pad_get_state_idle);
 
@@ -40,8 +39,8 @@ int main() {
     if (line.spawn_from_pad) {
         return 5;
     }
-    // Four Cross frames of the default script step z by 16 from 200.
-    const std::string expected = "8 9 264 4 1 8 0x800bfdbc 100 200 0 0\n";
+    // Four Cross frames of the default script step z by 16 from fixture z 1252.
+    const std::string expected = "8 9 1316 4 1 8 0x800bfdbc 50 1252 50 0\n";
     if (text != expected) {
         return 6;
     }

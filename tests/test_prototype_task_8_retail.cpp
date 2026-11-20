@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "alp1_pad_spawn.hpp"
+#include "alp1_pad_spawn_fixture.hpp"
 #include "mission_movement_slice.hpp"
 
 #include <cstdint>
@@ -103,7 +104,7 @@ int main() {
     if (!regular_file_nonzero(resolve_disc_data("ALP1.MDL"))) {
         return 8;
     }
-    am3d::exe::MissionMovementStartState start{100, 200, 0};
+    am3d::exe::MissionMovementStartState start = am3d::exe::mission_start_from_alp1_pad_fixture();
     const std::filesystem::path disc_root = resolve_disc_root();
     if (!disc_root.empty()) {
         const am3d::exe::Alp1PadSpawnParseResult spawn =
