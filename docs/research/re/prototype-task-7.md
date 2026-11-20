@@ -1,10 +1,8 @@
 # PROTOTYPE task 7 synthetic acceptance
 
-Status: **synthetic acceptance met** at `0d979fc`; **disc-backed row 7 path** at `e59edfa`
-when owner `FRONT.TIM` is present.
-This does not pass the full row in [PROTOTYPE.md](../../PROTOTYPE.md): no
-reconstructed retail GPU scene, no live dispatch table at `0x800c3ea4`, and no
-pixel agreement with retail at every checkpoint.
+Status: **synthetic** met at `0d979fc`; **disc-backed row 7** met at `dfcf309` when
+owner `FRONT.TIM` is present (`ctest prototype_task_7_retail`).
+Automated pixel match vs retail is not claimed; see limits below.
 
 Retail comparison anchor: [first-screen-observation.md](first-screen-observation.md)
 (PCSX-Redux `SLUS-00491`, Down 100 ms between `NEW GAME` and `OPTIONS`
