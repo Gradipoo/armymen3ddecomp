@@ -11,14 +11,14 @@ composes rows 7 and 8 without widening physics or GPU scope.
 
 | Stage | Source row | Host entry |
 | --- | --- | --- |
-| Menu multi-frame scan | Row 7 phase A | `run_menu_input_scan_frames` + `MenuTableSequencer` |
-| Optional Down dispatch | Row 7 phase B | `menu_input_scan_host_resume` + `PadStateDispatchInject` |
-| Mission load intent | Row 8 handoff | `record_mission_load_intent()` |
-| ALP1 movement script | Row 8 slice | `prototype_playable_default_mission_script` + `run_mission_movement_frames` |
+| Menu scan and Down | Row 7 | `run_prototype_task_7_menu_transition` |
+| Mission load and movement | Row 8 | `run_prototype_task_8_mission_slice` |
 
-Frame budgets (defaults): menu `4`, down `1`, mission `8`. Disc-free spawn
-is the ALP1.PAD index 1 fixture (`50`/`1252`/`50`); `prototype_task_9_retail`
-fills movement start from `ALP1.PAD` when the owner extract is present.
+`run_prototype_playable_pipeline` calls those two runners. It does not scan
+the menu table or step movement itself. Frame budgets stay the runner
+defaults: menu `4`, down `1`, mission `8`. Disc-free spawn is the ALP1.PAD
+index 1 fixture (`50`/`1252`/`50`). A non-empty `config.disc_root` is passed
+to the row 8 runner so pad index 1 loads when the owner extract is present.
 
 ## API
 
@@ -27,8 +27,10 @@ fills movement start from `ALP1.PAD` when the owner extract is present.
 | Config / result / runner | `components/exe/prototype_playable_pipeline.hpp` |
 | Implementation | `components/exe/prototype_playable_pipeline.cpp` |
 
-`run_prototype_playable_pipeline` takes `pad_get_state` for menu/down scan
-only. Mission frames use the fixed eight-frame script (idle then Cross).
+`run_prototype_playable_pipeline` requires a non-null `pad_get_state`. The
+row 7 runner reads the pad through `prototype_task_7_pad_get_state` (2 until
+`s7` reaches 8, then 3). Mission frames stay the row 8 eight-frame script
+(idle then Cross). `config.disc_root` empty keeps the fixture.
 
 ## Checks
 
@@ -59,6 +61,24 @@ SDL smoke (`am3d_prototype_playable_smoke --hidden --checkpoint`):
 
 Related row notes: [prototype-task-7.md](prototype-task-7.md),
 [prototype-task-8.md](prototype-task-8.md).
+
+## Row 9 complete (retail checkpoint tier)
+
+Named gates, not a retail in-mission boot and not a gameplay compare. The
+pipeline chains the row 7 and row 8 runners. Frame budgets stay 4, 1, and 8.
+The checkpoint line is unchanged.
+
+| Gate | What it locks |
+| --- | --- |
+| Row 7 menu | `run_prototype_task_7_menu_transition`: `s7` 8 after four frames, `s7` 9 after one Down step, dispatch word `0x800c3ea4`, destination `0x80064f14`, `tail_ran` |
+| Row 8 mission | `run_prototype_task_8_mission_slice`: handoff GPR `0x800bfdbc`, 8 frames, final `z` `1316` from fixture start `50` / `1252` / `50` when `disc_root` is empty |
+| Disc-backed mission | Same row 8 runner with `config.disc_root` set. `spawn_from_pad` is 1 when `ALP1.PAD` pad index 1 loads |
+| Headless checkpoint | `prototype_playable_smoke_headless` line `8 9 1316 4 1 8 0x800bfdbc 50 1252 50 0` |
+
+`prototype_task_9`, `prototype_task_9_retail`, and
+`prototype_playable_smoke_headless` call `run_prototype_playable_pipeline`.
+Retail skips with code 77 when `ALP1.TXT` is missing. SDL FRONT menu paint
+stays out of this tier. The smoke window is still the fill diagnostic.
 
 ## Gaps (honest limits)
 

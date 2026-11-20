@@ -4,6 +4,7 @@
 #include "mission_movement_slice.hpp"
 
 #include <cstdint>
+#include <filesystem>
 
 namespace am3d::exe {
 
@@ -13,7 +14,10 @@ struct PrototypePlayablePipelineConfig {
     std::uint32_t down_frame_budget = 1u;
     std::uint32_t mission_frame_budget = 8u;
     // Disc-free default is the ALP1.PAD index 1 fixture (50/1252/50).
+    // The mission stage uses run_prototype_task_8_mission_slice(disc_root).
+    // An empty disc_root keeps the fixture. A non-empty root loads pad index 1.
     MissionMovementStartState movement_start{};
+    std::filesystem::path disc_root{};
     PrototypePlayablePipelineConfig();
 };
 
@@ -33,15 +37,16 @@ struct PrototypePlayablePipelineResult {
     std::uint32_t mission_path_gpr = 0u;
     MissionMovementStartState movement_final_state{};
     PrototypePlayablePipelineStageFrames frames{};
+    bool spawn_from_pad = false;
 };
 
-// Menu and Down stages call pad_get_state (Idle s2=2 in synthetic tests).
-// Mission frames use the fixed MissionPadScript from task 8, not pad_get_state.
+// Composes run_prototype_task_7_menu_transition (4 scan frames, 1 Down frame)
+// then run_prototype_task_8_mission_slice (8 movement frames).
+// pad_get_state must be non-null. The scan uses prototype_task_7_pad_get_state
+// so Down still dispatches when the caller passes idle s2=2.
 // See docs/research/re/prototype-task-9.md.
 PrototypePlayablePipelineResult run_prototype_playable_pipeline(
     const PrototypePlayablePipelineConfig& config,
     std::uint32_t (*pad_get_state)(std::uint32_t port));
-
-MissionPadScript prototype_playable_default_mission_script(std::uint32_t frame_budget);
 
 }  // namespace am3d::exe

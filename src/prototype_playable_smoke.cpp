@@ -70,6 +70,7 @@ int main(int argc, char** argv) {
         am3d::exe::PrototypePlayablePipelineConfig config{};
         bool spawn_from_pad = false;
         const std::filesystem::path disc_root = resolve_disc_root();
+        config.disc_root = disc_root;
         if (!disc_root.empty()) {
             const am3d::exe::Alp1PadSpawnParseResult spawn =
                 am3d::exe::load_alp1_pad_spawn_from_disc_root(disc_root, 1u);
