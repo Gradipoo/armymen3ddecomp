@@ -21,6 +21,17 @@ std::uint16_t load_halfword_at_4(const std::uint8_t* record_bytes) {
     return value;
 }
 
+std::uint16_t reload_halfword_1c(const std::uint8_t* record_bytes,
+                                 const std::uint16_t* inject_halfword_1c) {
+    if (record_bytes != nullptr) {
+        return load_halfword_at_1c(record_bytes);
+    }
+    if (inject_halfword_1c != nullptr) {
+        return *inject_halfword_1c;
+    }
+    return 0u;
+}
+
 } // namespace
 
 std::uint32_t call_8006471c(std::uint32_t index, std::uint32_t bits, std::uint32_t& masked,
@@ -56,7 +67,7 @@ std::uint32_t call_8006471c(std::uint32_t index, std::uint32_t bits, std::uint32
         outcome->halfword_at_1c_stated = true;
     }
 
-    auto fallthrough_64758 = [&](std::uint32_t a2_mask) -> std::uint32_t {
+    const auto fallthrough_64758 = [&](std::uint32_t a2_mask) -> bool {
         std::uint16_t halfword_at_4 = 0u;
         if (record_bytes != nullptr) {
             halfword_at_4 = load_halfword_at_4(record_bytes);
@@ -64,39 +75,33 @@ std::uint32_t call_8006471c(std::uint32_t index, std::uint32_t bits, std::uint32
             halfword_at_4 = *inject_halfword_4;
         } else {
             // gap: lhu at record+4 unstated without record_bytes or inject.
-            return record;
+            return false;
         }
 
         std::uint8_t* record_mut =
             record_bytes != nullptr ? const_cast<std::uint8_t*>(record_bytes) : nullptr;
-        const std::uint32_t masked_bits =
-            call_80064758(halfword_at_4, a2_mask, nullptr, record_mut, bits & 0xffffu);
+        Call80064758Outcome outcome_64758{};
+        const std::uint32_t masked_bits = call_80064758(halfword_at_4, a2_mask, &outcome_64758,
+                                                        record_mut, bits & 0xffffu);
         if (outcome != nullptr) {
             outcome->fell_through_64758 = true;
             outcome->fallthrough_bits = masked_bits;
         }
-        return record;
+        return outcome_64758.continues_at_647c4;
     };
 
-    if (*halfword_1c_ptr == 0u) {
-        if (outcome != nullptr) {
-            outcome->branch_to_647c4 = true;
-        }
-
-        std::uint32_t t1 = 0u;
-        std::uint32_t a2_reg = 1u;
+    const auto run_647c4_loop = [&](std::uint32_t t1, std::uint32_t a2_reg) -> std::uint32_t {
         for (;;) {
             t1 += 1u;
             a2_reg <<= 1u;
             if (t1 < 0x10u) {
-                std::uint16_t halfword_1c_loop = 0u;
-                if (record_bytes != nullptr) {
-                    halfword_1c_loop = load_halfword_at_1c(record_bytes);
-                } else if (inject_halfword_1c != nullptr) {
-                    halfword_1c_loop = *inject_halfword_1c;
-                }
+                const std::uint16_t halfword_1c_loop =
+                    reload_halfword_1c(record_bytes, inject_halfword_1c);
                 if (halfword_1c_loop != 0u) {
-                    return fallthrough_64758(a2_reg);
+                    if (fallthrough_64758(a2_reg)) {
+                        continue;
+                    }
+                    return record;
                 }
                 continue;
             }
@@ -106,9 +111,19 @@ std::uint32_t call_8006471c(std::uint32_t index, std::uint32_t bits, std::uint32
             }
             return record;
         }
+    };
+
+    if (*halfword_1c_ptr == 0u) {
+        if (outcome != nullptr) {
+            outcome->branch_to_647c4 = true;
+        }
+        return run_647c4_loop(0u, 1u);
     }
 
-    return fallthrough_64758(1u);
+    if (fallthrough_64758(1u)) {
+        return run_647c4_loop(0u, 1u);
+    }
+    return record;
 }
 
 } // namespace am3d::exe

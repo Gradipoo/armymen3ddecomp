@@ -29,11 +29,14 @@ int main() {
     }
 
     record[0x1cu] = 3u;
-    record[4u] = 1u;
+    record[4u] = 0u;
+    record[0x3cu] = 0u;
+    record[0x3du] = 0u;
     outcome = {};
-    (void)am3d::exe::call_8006471c(0u, 0u, masked, &outcome, record.data());
+    (void)am3d::exe::call_8006471c(0u, 1u, masked, &outcome, record.data());
     if (!outcome.halfword_at_1c_stated || outcome.branch_to_647c4 ||
-        !outcome.fell_through_64758 || outcome.fallthrough_bits != 1u) {
+        !outcome.fell_through_64758 || outcome.fallthrough_bits != 0u ||
+        !outcome.completed_647c4_loop || !outcome.returned_to_caller) {
         return 5;
     }
 
@@ -44,6 +47,19 @@ int main() {
     if (!outcome.halfword_at_1c_stated || outcome.branch_to_647c4 ||
         !outcome.fell_through_64758 || outcome.fallthrough_bits != 0u) {
         return 6;
+    }
+
+    std::array<std::uint8_t, 0x40u> record_continue{};
+    record_continue[0x1cu] = 0x0au;
+    record_continue[0x1du] = 0u;
+    record_continue[4u] = 1u;
+    record_continue[5u] = 0u;
+    outcome = {};
+    (void)am3d::exe::call_8006471c(0u, 5u, masked, &outcome, record_continue.data());
+    if (!outcome.halfword_at_1c_stated || outcome.branch_to_647c4 ||
+        !outcome.fell_through_64758 || !outcome.completed_647c4_loop ||
+        !outcome.returned_to_caller) {
+        return 7;
     }
 
     return 0;
