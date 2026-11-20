@@ -20,7 +20,6 @@ MenuLoopBody64dec call_80064dec(std::uint32_t s1, std::uint32_t* stack_word_1c) 
         // gap: re-entry at 0x80065194 is not modeled.
     } else {
         result.entered_64e14 = true;
-        // gap: body at 0x80064e14 is not entered.
     }
     return result;
 }

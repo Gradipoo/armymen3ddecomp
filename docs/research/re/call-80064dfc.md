@@ -32,10 +32,10 @@ applies the delay-slot `s7` clear, and records `branch_to_65194` or
 `menu_input_scan_step` calls this block after [call-80064dd8](call-80064dd8.md)
 when `loop_body_64dd8.branch_to_64dfc` is true. Glue passes `s1` from the
 64dc8 delay-slot bump, `t1` from the 64dd8 delay slot, and the caller
-`stack_word_1c` reference for the store and load.
+`stack_word_1c` reference for the store and load. When `entered_64e14` is
+true, glue calls [call-80064e14](call-80064e14.md).
 
 ## Gap
 
-Re-entry at `0x80065194` on the taken `beq` is not modeled. Instructions at
-`0x80064e14` are not traced. Live retail words at `sp+0x1c` on this path are
-not stated.
+Re-entry at `0x80065194` on the taken `beq` is not modeled. Live retail words
+at `sp+0x1c` on this path are not stated.

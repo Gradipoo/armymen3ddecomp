@@ -90,6 +90,16 @@ int main() {
         stack_word_1c != 1u) {
         return 10;
     }
+    constexpr std::uint32_t kIndex = 4u;
+    if (!result.last_step.loop_body_64e14_recorded ||
+        result.last_step.loop_body_64e14.s0 != 0x800dd748u + kIndex * 124u ||
+        result.last_step.loop_body_64e14.s4 != 0x800dd708u + kIndex * 4u ||
+        result.last_step.loop_body_64e14.head.s6 != 0u ||
+        result.last_step.loop_body_64e14.head.s2 != 2u ||
+        result.last_step.loop_body_64e14.head.below_seven != 1u ||
+        scan.index != kIndex) {
+        return 11;
+    }
 
     g_pad_state = 3u;
     scan = {};

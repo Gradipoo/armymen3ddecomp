@@ -9,7 +9,10 @@ the parked lane at `0x80061fe4`.
 [call_800650a8](call-800650a8.md), [call_800650b4](call-800650b4.md),
 [call_800650d0](call-800650d0.md), [call_800650e0](call-800650e0.md),
 [call_800650ec](call-800650ec.md), and [call_800650f4](call_800650f4.md), and [call_80065194](call-80065194.md)
-when the loop compare stops the tail.
+when the loop compare stops the tail, then [call-800651c8](call-800651c8.md),
+[call-80064dc8](call-80064dc8.md), [call-80064dd8](call-80064dd8.md),
+[call-80064dfc](call-80064dfc.md) or [call-80064dec](call-80064dec.md), and
+[call-80064e14](call-80064e14.md) when the shared `sp+0x1c` compare falls through.
 The table supplies the measured `0x41` byte and the following halfword.
 After the mask stores, glue enters `0x8006508c` with `s6` from the loop
 head. Measured samples had `s6` zero, so execution continues to the
