@@ -1,6 +1,7 @@
 # PROTOTYPE task 7 synthetic acceptance
 
-Status: **synthetic / disc-free acceptance met** at integration commit `0d979fc`.
+Status: **synthetic acceptance met** at `0d979fc`; **disc-backed row 7 path** at `e59edfa`
+when owner `FRONT.TIM` is present.
 This does not pass the full row in [PROTOTYPE.md](../../PROTOTYPE.md): no
 reconstructed retail GPU scene, no live dispatch table at `0x800c3ea4`, and no
 pixel agreement with retail at every checkpoint.
@@ -64,3 +65,49 @@ defaults to no inject in CI.
 
 Row 7 **retail** acceptance still needs owner files, reconstructed update plus
 submission, and checkpoint comparison beyond this integration note.
+
+## Full row 7 (disc-backed)
+
+When the owner extract includes `build/disc/DATA/FRONT.TIM`, the native path
+below extends synthetic `0d979fc` with FRONT.TIM load, `menu_submit_frame`,
+and the same Down transition cite as phase B.
+
+| Piece | Role |
+| --- | --- |
+| `ctest prototype_task_7_retail` | `tests/test_prototype_task_7_retail.cpp`; skips with code 77 if FRONT.TIM is missing |
+| `ctest prototype_task_7` | Unchanged disc-free gate |
+| `am3d_menu_scan_smoke --checkpoint` | Writes `build/platform/task7-checkpoint.txt` after batch scripted submit |
+| `python3 tools/prototype_task7_compare.py` | Owner-local 64x64 center mean abs diff vs retail PNG; not a CI gate |
+
+Smoke command (from repo root, SDL build):
+
+```text
+./build/am3d_menu_scan_smoke --batch --scripted --submit --hidden --frames 4 --checkpoint
+```
+
+Retail checkpoint names (no pixels in repo): [first-screen-observation.md](first-screen-observation.md)
+run5 `menu-before.png` from frame 3720 (`NEW GAME` white) and `menu-after.png`
+from frame 5040 (`OPTIONS` white after Down). Compare tool defaults to those
+paths when present under `build/coordination/retail-screen/`.
+
+`prototype_task_7_retail` checks:
+
+- Phase A: four `run_menu_input_scan_frames` steps with `MenuTableSequencer`,
+  tail bytes `0x0b`/`0x87`, `menu_submit_frame` with owner FRONT bytes, green
+  marker at `200 + s7*12`, and a non-zero sample in the stand-in rect at
+  origin `(0,0)` offset `(234,56)`.
+- Phase B: fifth scan step on the same host state with Down (`pad_get_state` 3
+  once `s7>=8`) and `PadStateDispatchInject` entry three `0x80064f14`; dispatch
+  word `0x800c3ea4` and second `menu_submit_frame`. After the cited four-frame
+  budget (`stack_word_1c` 4), `s7` stays 8 and `tail_ran` does not repeat on
+  that fifth step; marker x stays `200+s7*12`. Isolated Down in
+  `prototype_task_7` still shows `tail_ran` on a fresh scan.
+
+Remaining honesty after this row:
+
+| Limit | Note |
+| --- | --- |
+| Pixel-exact retail match | Manual when owner BMP/PNG exist; compare tool reports diff only |
+| `PadGetState` body | Host stub in ctest; SDL mapping in smoke |
+| Live `0x800c3ea4` | Provisional inject; no RAM dump of the dispatch table |
+| Full retail scene loop | Submission slice plus scan glue, not reconstructed retail menu main |

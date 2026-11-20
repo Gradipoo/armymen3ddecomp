@@ -63,6 +63,21 @@ Disc-free multi-frame and Down dispatch stand-ins for row 7 are recorded in
 That path does not claim retail GPU scene pass or a verified live table at
 `0x800c3ea4`.
 
+## Row 7 checkpoint line (`--checkpoint`)
+
+With owner `build/disc/DATA/FRONT.TIM`, batch scripted submit smoke can emit
+one status line for native vs retail coordination:
+
+```text
+./build/am3d_menu_scan_smoke --batch --scripted --submit --hidden --frames 4 --checkpoint
+```
+
+Output: `build/platform/task7-checkpoint.txt` with fields `s7`,
+`record[0x0b]`, `record[0x87]`, `frames`, `has_front_tim`, `submit` (0/1).
+Pair with `python3 tools/prototype_task7_compare.py` and retail PNGs under
+`build/coordination/retail-screen/` (not committed). See
+[prototype-task-7.md](prototype-task-7.md).
+
 ## Gap
 
 Retail menu update, textured geometry from reconstructed submission,

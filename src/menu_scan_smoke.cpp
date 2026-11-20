@@ -87,6 +87,7 @@ int main(int argc, char** argv) {
         bool submit = false;
         bool scripted = false;
         bool inject_down = false;
+        bool checkpoint = false;
         for (int i = 1; i < argc; ++i) {
             const std::string arg = argv[i];
             if (arg == "--hidden") {
@@ -101,12 +102,14 @@ int main(int argc, char** argv) {
                 scripted = true;
             } else if (arg == "--inject-down") {
                 inject_down = true;
+            } else if (arg == "--checkpoint") {
+                checkpoint = true;
             } else if (arg == "--frames" && i + 1 < argc) {
                 frames = std::stoi(argv[++i]);
             } else {
                 throw std::invalid_argument(
                     "use --frames NUMBER, --hidden, --capture, --batch, --submit, "
-                    "--scripted, or --inject-down");
+                    "--scripted, --inject-down, or --checkpoint");
             }
         }
         if (frames < 1 || frames > 36000) {
@@ -184,6 +187,14 @@ int main(int argc, char** argv) {
             if (capture) {
                 std::filesystem::create_directories("build/platform");
                 window.save_frame("build/platform/menu_scan_smoke.bmp");
+            }
+            if (checkpoint) {
+                std::filesystem::create_directories("build/platform");
+                std::ofstream out("build/platform/task7-checkpoint.txt", std::ios::trunc);
+                out << scan_host.scan.s7 << ' '
+                    << static_cast<unsigned>(scan_host.record_bytes[0x0bu]) << ' '
+                    << static_cast<unsigned>(scan_host.record_bytes[0x87u]) << ' ' << frames << ' '
+                    << (front_bytes.empty() ? 0 : 1) << ' ' << (submit ? 1 : 0) << '\n';
             }
             std::cout << "Menu scan batch ran " << batch_frames_run << " scan frames; presented 1 "
                       << (submit ? "submission" : (front_bytes.empty() ? "synthetic" : "FRONT.TIM"))
