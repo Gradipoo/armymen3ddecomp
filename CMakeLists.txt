@@ -207,6 +207,7 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/menu_input_scan.cpp
     components/exe/menu_input_scan_loop.cpp
     components/exe/mission_movement_slice.cpp
+    components/exe/prototype_playable_pipeline.cpp
     components/exe/menu_table_sequence.cpp
     components/exe/call_80065304.cpp
     components/exe/call_800655e4.cpp
@@ -785,6 +786,8 @@ if(AM3D_WITH_SDL2)
     target_link_libraries(am3d_menu_scan_smoke PRIVATE am3d_platform_sdl2)
     add_executable(am3d_mission_slice_smoke src/mission_slice_smoke.cpp)
     target_link_libraries(am3d_mission_slice_smoke PRIVATE am3d_platform_sdl2)
+    add_executable(am3d_prototype_playable_smoke src/prototype_playable_smoke.cpp)
+    target_link_libraries(am3d_prototype_playable_smoke PRIVATE am3d_platform_sdl2)
 endif()
 
 add_library(am3d_input STATIC components/input/keyboard.cpp)
@@ -1376,6 +1379,13 @@ if(BUILD_TESTING)
     target_link_libraries(test_prototype_task_8_retail PRIVATE am3d_exe)
     add_test(NAME prototype_task_8_retail COMMAND test_prototype_task_8_retail)
     set_tests_properties(prototype_task_8_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_prototype_task_9 tests/test_prototype_task_9.cpp)
+    target_link_libraries(test_prototype_task_9 PRIVATE am3d_exe)
+    add_test(NAME prototype_task_9 COMMAND test_prototype_task_9)
+    add_executable(test_prototype_task_9_retail tests/test_prototype_task_9_retail.cpp)
+    target_link_libraries(test_prototype_task_9_retail PRIVATE am3d_exe)
+    add_test(NAME prototype_task_9_retail COMMAND test_prototype_task_9_retail)
+    set_tests_properties(prototype_task_9_retail PROPERTIES SKIP_RETURN_CODE 77)
     add_executable(test_menu_table_sequence tests/test_menu_table_sequence.cpp)
     target_link_libraries(test_menu_table_sequence PRIVATE am3d_exe)
     add_test(NAME menu_table_sequence COMMAND test_menu_table_sequence)

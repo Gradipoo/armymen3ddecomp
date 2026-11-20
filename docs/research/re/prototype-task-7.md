@@ -109,3 +109,5 @@ Remaining honesty after this row:
 | Full retail scene loop | Submission slice plus scan glue, not reconstructed retail menu main |
 
 Mission movement disc-backed row: [prototype-task-8.md](prototype-task-8.md) Full row 8.
+
+Menu-to-mission host pipeline (tasks 7+8): [prototype-task-9.md](prototype-task-9.md).
