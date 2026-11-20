@@ -1,8 +1,9 @@
 # PROTOTYPE task 7 synthetic acceptance
 
-Status: **synthetic** met at `0d979fc`; **disc-backed row 7** met at `dfcf309` when
-owner `FRONT.TIM` is present (`ctest prototype_task_7_retail`).
-Automated pixel match vs retail is not claimed; see limits below.
+Status: **synthetic** met at `0d979fc`; **disc-backed** met at `dfcf309`;
+**retail checkpoint tier** met at `2374b6f` (`prototype_task_7_smoke_headless`,
+selection highlight, named before/after gates). Automated pixel match vs retail
+is not claimed; see limits below.
 
 Retail comparison anchor: [first-screen-observation.md](first-screen-observation.md)
 (PCSX-Redux `SLUS-00491`, Down 100 ms between `NEW GAME` and `OPTIONS`
