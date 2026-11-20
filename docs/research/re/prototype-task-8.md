@@ -80,6 +80,8 @@ services that sequence reaches (spawn index 1 is cited).
 | --- | --- |
 | `prototype_task_8` | Disc-free synthetic gate |
 | `prototype_task_8_retail` | Skips with code 77 if ALP1.TXT missing |
+| `prototype_task_8_smoke_headless` | Disc-free golden checkpoint line, no SDL |
+| `prototype_task_8_smoke_headless_retail` | Same line with owner pad; skips 77 if ALP1.TXT or ALP1.PAD is missing |
 | `alp1_pad_spawn` | Disc-free fixture decode |
 | `alp1_pad_spawn_retail` | Owner `ALP1.PAD` golden spawn |
 | `call_80063b34` | Path GPR cite used by handoff |
@@ -114,8 +116,10 @@ Optional capture: `--capture` writes `build/platform/mission_slice_smoke.bmp`.
 - Loads pad index 1 spawn from `ALP1.PAD` when present; same movement checks as
   synthetic (no retail physics compare)
 
-Checkpoint file columns (space-separated): mission id `Alp1`, final `x`, `z`,
-`heading`, `frames_run`.
+Checkpoint file columns (space-separated): `Alp1 x z h x2 z2 h2 frames spawn_from_pad mission_path_gpr`.
+`x z h` are the spawn. `x2 z2 h2` are the final state. `spawn_from_pad` is 0 or 1.
+`mission_path_gpr` is hexadecimal with a `0x` prefix. The formatter is
+`format_mission_task8_checkpoint`.
 
 Remaining honesty after this row:
 
@@ -125,3 +129,43 @@ Remaining honesty after this row:
 | MAP / MDL use | Inventory only; no geometry load |
 | Retail movement compare | Deferred; synthetic z step only |
 | Mission gameplay observation | Procedure recorded in [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md). No filled run yet. |
+
+## Row 8 complete (retail checkpoint tier)
+
+Named gates, not retail collision, camera, or a pixel compare of the mission.
+
+| Gate | What it locks |
+| --- | --- |
+| Disc-free | Fixture spawn `50` / `1252` / `50`, 8 frames, final `z` `1316`, handoff GPR `0x800bfdbc`, `spawn_from_pad` 0 |
+| Disc-backed | Same movement when owner `ALP1.TXT` and `ALP1.PAD` are present, with `spawn_from_pad` 1 |
+
+Shared runner: `run_prototype_task_8_mission_slice` in
+`components/exe/prototype_task_8_mission.cpp`. It calls `record_mission_load_intent`,
+resolves start through `mission_movement_start_disc_free` or
+`load_alp1_pad_spawn_from_disc_root`, and runs the default 8-frame script.
+`prototype_task_8`, `prototype_task_8_retail`, and `prototype_task_8_smoke_headless`
+call it. The headless test is disc-free and does not link SDL. Its golden
+checkpoint line is:
+
+```text
+Alp1 50 1252 50 50 1316 50 8 0 0x800bfdbc
+```
+
+Columns: `Alp1 x z h x2 z2 h2 frames spawn_from_pad mission_path_gpr`.
+`prototype_task_8_smoke_headless_retail` is the same slice with owner ALP1 files
+and skips 77 when `ALP1.TXT` or `ALP1.PAD` is absent. With the owner pad the
+line uses `1` in `spawn_from_pad`.
+
+`am3d_mission_slice_smoke --checkpoint` uses the runner and writes that line to
+`build/platform/task8-checkpoint.txt`.
+
+External compare (no filled run in this tier):
+[prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md).
+
+Remaining limits at this tier:
+
+| Limit | Note |
+| --- | --- |
+| Collision, camera, MAP parse | Not in this slice |
+| Pixel retail compare | Not a pass for this tier |
+| PAD table | Only pad index 1 spawn fields are parsed |

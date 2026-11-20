@@ -767,7 +767,9 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_80010f00.cpp
     components/exe/call_8002fb9c.cpp
     components/exe/prototype_task_7_menu.cpp
-    components/exe/menu_task7_checkpoint.cpp)
+    components/exe/menu_task7_checkpoint.cpp
+    components/exe/prototype_task_8_mission.cpp
+    components/exe/mission_task8_checkpoint.cpp)
 target_include_directories(am3d_exe PUBLIC components/exe)
 
 add_library(am3d_platform_core STATIC
@@ -1399,6 +1401,16 @@ if(BUILD_TESTING)
     target_link_libraries(test_prototype_task_8_retail PRIVATE am3d_exe)
     add_test(NAME prototype_task_8_retail COMMAND test_prototype_task_8_retail)
     set_tests_properties(prototype_task_8_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_prototype_task_8_smoke_headless
+        tests/test_prototype_task_8_smoke_headless.cpp)
+    target_link_libraries(test_prototype_task_8_smoke_headless PRIVATE am3d_exe)
+    add_test(NAME prototype_task_8_smoke_headless COMMAND test_prototype_task_8_smoke_headless)
+    add_executable(test_prototype_task_8_smoke_headless_retail
+        tests/test_prototype_task_8_smoke_headless_retail.cpp)
+    target_link_libraries(test_prototype_task_8_smoke_headless_retail PRIVATE am3d_exe)
+    add_test(NAME prototype_task_8_smoke_headless_retail
+        COMMAND test_prototype_task_8_smoke_headless_retail)
+    set_tests_properties(prototype_task_8_smoke_headless_retail PROPERTIES SKIP_RETURN_CODE 77)
     add_executable(test_prototype_task_9 tests/test_prototype_task_9.cpp)
     target_link_libraries(test_prototype_task_9 PRIVATE am3d_exe)
     add_test(NAME prototype_task_9 COMMAND test_prototype_task_9)

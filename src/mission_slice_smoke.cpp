@@ -3,9 +3,8 @@
 #include "display_buffers.hpp"
 #include "display_clear.hpp"
 #include "display_fill.hpp"
-#include "mission_menu_handoff.hpp"
-#include "alp1_pad_spawn.hpp"
-#include "mission_movement_slice.hpp"
+#include "mission_task8_checkpoint.hpp"
+#include "prototype_task_8_mission.hpp"
 
 #include <chrono>
 #include <cstdint>
@@ -16,18 +15,6 @@
 #include <string>
 
 namespace {
-
-am3d::exe::MissionPadScript default_eight_frame_script() {
-    am3d::exe::MissionPadScript script{};
-    script.length = 8u;
-    for (std::size_t i = 0u; i < 4u; ++i) {
-        script.s2[i] = am3d::exe::MissionPadScript::kPadIdleS2;
-    }
-    for (std::size_t i = 4u; i < 8u; ++i) {
-        script.s2[i] = am3d::exe::MissionPadScript::kPadCrossS2;
-    }
-    return script;
-}
 
 void draw_mission_diagnostic(am3d::exe::DisplayBufferState& display, am3d::platform::FillVram& vram,
                              std::uint32_t marker_x) {
@@ -70,32 +57,17 @@ int main(int argc, char** argv) {
             }
         }
 
-        const am3d::exe::MissionLoadIntent intent = am3d::exe::record_mission_load_intent();
-        if (intent.mission_path_gpr != 0x800bfdbcu) {
+        const am3d::exe::PrototypeTask8MissionResult mission =
+            am3d::exe::run_prototype_task_8_mission_slice(resolve_disc_root());
+        if (mission.mission_path_gpr != 0x800bfdbcu) {
             throw std::runtime_error("mission_path_gpr does not cite 0x800bfdbc");
         }
-
-        const am3d::exe::MissionPadScript script = default_eight_frame_script();
-        am3d::exe::MissionMovementStartState start{100, 200, 0};
-        const std::filesystem::path disc_root = resolve_disc_root();
-        if (!disc_root.empty()) {
-            const am3d::exe::Alp1PadSpawnParseResult spawn =
-                am3d::exe::load_alp1_pad_spawn_from_disc_root(disc_root, 1u);
-            if (spawn.ok) {
-                start.x = spawn.x;
-                start.z = spawn.z;
-                start.heading = spawn.heading;
-            }
-        }
-        am3d::exe::MissionMovementStartState state{};
-        const am3d::exe::MissionMovementRunResult result =
-            am3d::exe::run_mission_movement_frames(script, start, state);
-        if (result.frames_run != 8u) {
+        if (mission.frames_run != 8u) {
             throw std::runtime_error("expected 8 movement frames");
         }
 
         const std::uint32_t marker_x =
-            200u + static_cast<std::uint32_t>(state.z - start.z);
+            200u + static_cast<std::uint32_t>(mission.final_state.z - mission.spawn_z);
 
         am3d::platform::SdlPlatform window("Army Men 3D mission slice test", 640, 480, hidden);
         am3d::platform::FillVram vram;
@@ -118,8 +90,7 @@ int main(int argc, char** argv) {
         if (checkpoint) {
             std::filesystem::create_directories("build/platform");
             std::ofstream out("build/platform/task8-checkpoint.txt", std::ios::trunc);
-            out << am3d::exe::MissionSliceDeclaration::kMissionId << ' ' << state.x << ' '
-                << state.z << ' ' << state.heading << ' ' << result.frames_run << '\n';
+            out << am3d::exe::format_mission_task8_checkpoint(mission);
         }
 
         if (!hidden) {
@@ -133,8 +104,8 @@ int main(int argc, char** argv) {
             }
         }
 
-        std::cout << "Mission slice presented 1 diagnostic frame (Alp1 z=" << state.z
-                  << ", marker_x=" << marker_x << ").\n";
+        std::cout << "Mission slice presented 1 diagnostic frame (Alp1 z="
+                  << mission.final_state.z << ", marker_x=" << marker_x << ").\n";
         return 0;
     } catch (const std::exception& e) {
         std::cerr << "error: " << e.what() << '\n';

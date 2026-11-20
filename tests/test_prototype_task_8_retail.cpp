@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-#include "alp1_pad_spawn.hpp"
-#include "alp1_pad_spawn_fixture.hpp"
-#include "mission_movement_slice.hpp"
+#include "prototype_task_8_mission.hpp"
 
 #include <cstdint>
 #include <filesystem>
@@ -55,35 +53,6 @@ bool first_line_contains_alpine1(const std::filesystem::path& path) {
     return line.find("Alpine1") != std::string::npos;
 }
 
-int run_movement_slice(const am3d::exe::MissionMovementStartState& start) {
-    am3d::exe::MissionPadScript script{};
-    script.length = 8u;
-    for (std::size_t i = 0u; i < 4u; ++i) {
-        script.s2[i] = am3d::exe::MissionPadScript::kPadIdleS2;
-    }
-    for (std::size_t i = 4u; i < 8u; ++i) {
-        script.s2[i] = am3d::exe::MissionPadScript::kPadCrossS2;
-    }
-
-    am3d::exe::MissionMovementStartState state{};
-
-    const am3d::exe::MissionMovementRunResult result =
-        am3d::exe::run_mission_movement_frames(script, start, state);
-    if (result.frames_run != 8u) {
-        return 1;
-    }
-    if (state.x != start.x || state.heading != start.heading) {
-        return 2;
-    }
-    if (state.z <= start.z) {
-        return 3;
-    }
-    if (result.final_state.z != state.z) {
-        return 4;
-    }
-    return 0;
-}
-
 }  // namespace
 
 // PROTOTYPE.md row 8 disc-backed check when build/disc/DATA/ALP1.TXT exists.
@@ -104,16 +73,27 @@ int main() {
     if (!regular_file_nonzero(resolve_disc_data("ALP1.MDL"))) {
         return 8;
     }
-    am3d::exe::MissionMovementStartState start = am3d::exe::mission_start_from_alp1_pad_fixture();
     const std::filesystem::path disc_root = resolve_disc_root();
-    if (!disc_root.empty()) {
-        const am3d::exe::Alp1PadSpawnParseResult spawn =
-            am3d::exe::load_alp1_pad_spawn_from_disc_root(disc_root, 1u);
-        if (spawn.ok) {
-            start.x = spawn.x;
-            start.z = spawn.z;
-            start.heading = spawn.heading;
-        }
+    if (disc_root.empty()) {
+        return kSkipNoDisc;
     }
-    return run_movement_slice(start);
+    const am3d::exe::PrototypeTask8MissionResult result =
+        am3d::exe::run_prototype_task_8_mission_slice(disc_root);
+    if (!result.spawn_from_pad) {
+        return 9;
+    }
+    if (result.frames_run != 8u) {
+        return 1;
+    }
+    if (result.final_state.x != result.spawn_x ||
+        result.final_state.heading != result.spawn_heading) {
+        return 2;
+    }
+    if (result.final_state.z <= result.spawn_z) {
+        return 3;
+    }
+    if (result.mission_path_gpr != 0x800bfdbcu) {
+        return 10;
+    }
+    return 0;
 }
