@@ -39,13 +39,27 @@ fill behavior. Do not drop that reference to force a migration.
 
 ## Execution state in this repo
 
-No in-tree row 3 adapter trial has been run to the checklist above. No PsyZ
-source import, optional trial target, or CMake option was added for this row.
-Coordination trials under `build/` and the notes in the table remain local
-evidence only.
+A **narrow coordination trial** ran November 17, 2026 and is recorded in
+[psyz-synthetic-trial.md](psyz-synthetic-trial.md). It is not the full row 3
+in-tree adapter. Evidence stays under `build/coordination/psyz-trial/` when
+present locally.
 
-Row 4 (adopt or stop) stays **open** until row 3 executes or is explicitly
-parked with cited failure.
+| Row 3 checklist item | Coordination trial result |
+| --- | --- |
+| Fill quirks vs fill sink | **Failed** alignment on a synthetic GP0-style rectangle; see psyz-synthetic-trial fill section |
+| Draw and display page changes | Not executed in that runner |
+| 4-bit texture and palette upload | Narrow sample **passed** in runner (not retail path) |
+| Textured rectangle | **Passed** in runner |
+| Clipping | **Passed** in runner |
+| Transparency (first screen) | Semi-transparent 4-bit sample **passed** in runner |
+| Controller press and release | Not executed |
+| Raw GPU transfers | Not executed |
+
+No PsyZ source import, optional trial target, or CMake option ships on the
+default build path. Row 3 stays **open** until an in-tree adapter trial hits
+the full checklist or is parked with cited failure.
+
+Row 4 (adopt or stop) stays **open** until row 3 executes fully or is parked.
 
 ## Stop rules
 
