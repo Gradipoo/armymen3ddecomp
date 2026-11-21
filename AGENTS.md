@@ -28,7 +28,7 @@ The principal owns scope, tradeoffs, integration, and acceptance. A worker owns 
 
 Send internal messages for decisions, changed dependencies, meaningful risks, or work ready to integrate. Keep routine progress in a short local work note. Review decisive evidence without repeating the whole investigation. Use supported, interruptible waits within runtime limits. Do not send heartbeats or use blind sleeps.
 
-Read [docs/agents/WORKFLOW.md](docs/agents/WORKFLOW.md) when delegating or resuming shared work. [docs/WORKERS.md](docs/WORKERS.md) holds the separate research trial queue and its additional contract. A pending task is not an executed result.
+Read [docs/agents/WORKFLOW.md](docs/agents/WORKFLOW.md) when delegating or resuming shared work. Default: **Composer** for planning and integration; **Grok low** (`cursor-grok-4.7-low-fast`) for delegated workers. [docs/WORKERS.md](docs/WORKERS.md) holds the separate research trial queue and its additional contract. A pending task is not an executed result.
 
 ## Ask first
 

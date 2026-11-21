@@ -38,6 +38,10 @@ A controller's D-pad moves the marker, its cross/A button changes the
 marker color, and Start ends the test. Closing the window also ends it.
 There are no keyboard game bindings. Keyboard play remains a future lane.
 
+PROTOTYPE rows 5 through 9 share a single CTest checklist, optional playable
+SDL capture with the dummy video driver, and owner-disc skip rules. See
+[prototype-verification-runbook.md](research/re/prototype-verification-runbook.md).
+
 `--capture` saves a local BMP under `build/platform/`. Captures from a
 future game renderer may contain assets and must stay local. `--hidden`
 is available for local automation. The CTest integration test uses SDL's
@@ -121,3 +125,23 @@ SDL2 was selected for the host display and input boundary. The tested fill
 sink is our code. This is a partial foundation toward the required PS1
 interfaces, not a substitute for completing them. PsyCross remains a
 research lead for separately evaluated components.
+
+## Native FRONT.TIM upload service
+
+`upload_front_tim` now submits the measured palette and packed pixel blocks
+to a caller-provided sink after validating both blocks. It preserves all
+16 bits and rejects wrapping rectangles. See the
+[file and upload record](research/re/front-tim.md#native-upload-service).
+The default and optional SDL2 builds retain their existing dependencies.
+The smoke window still uses its decoded-image stand-in. A local GPU-parser
+integration passed, but no backend or game loop is adopted by this API.
+
+A later [native drawing trial](research/re/native-front-draw-trial.md)
+passed whole-quad RGB checks for owner, synthetic, and missing-file inputs.
+The principal observed the soldier texture in a native window. Placement
+remains diagnostic, and the game update loop is not connected.
+
+The [reconstructed submission integration](research/re/native-submit-integration.md)
+routes two original test tables through the implemented game submission
+wrapper into the local adapter and native window. It retains a fixed zero
+branch word and diagnostic placement; menu selection and updates remain open.

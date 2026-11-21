@@ -1,23 +1,80 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "front_tim.hpp"
+#include <vector>
 
 namespace am3d::platform {
 namespace {
 
 bool read_u16(const std::uint8_t* bytes, std::size_t size, std::size_t at, unsigned* out) {
-    if (at + 2 > size) return false;
+    if (!bytes || at > size || size - at < 2) return false;
     *out = bytes[at] | (static_cast<unsigned>(bytes[at + 1]) << 8);
     return true;
 }
 
 bool read_u32(const std::uint8_t* bytes, std::size_t size, std::size_t at, unsigned* out) {
-    if (at + 4 > size) return false;
+    if (!bytes || at > size || size - at < 4) return false;
     *out = bytes[at] | (static_cast<unsigned>(bytes[at + 1]) << 8) |
         (static_cast<unsigned>(bytes[at + 2]) << 16) |
         (static_cast<unsigned>(bytes[at + 3]) << 24);
     return true;
 }
 
+struct UploadBlock {
+    FrontTimUploadRect rect{};
+    std::size_t data_at = 0;
+    std::size_t word_count = 0;
+};
+
+bool read_upload_block(const std::uint8_t* bytes, std::size_t size,
+    std::size_t at, UploadBlock* block, std::size_t* end) {
+    unsigned length = 0;
+    auto& rect = block->rect;
+    if (!read_u32(bytes, size, at, &length) || length < 12 ||
+        length > size - at) return false;
+    if (!read_u16(bytes, size, at + 4, &rect.x) ||
+        !read_u16(bytes, size, at + 6, &rect.y) ||
+        !read_u16(bytes, size, at + 8, &rect.width) ||
+        !read_u16(bytes, size, at + 10, &rect.height)) return false;
+    if (rect.width == 0 || rect.height == 0 || rect.x >= 1024 || rect.y >= 512 ||
+        rect.width > 1024 - rect.x || rect.height > 512 - rect.y) return false;
+    const std::size_t words = static_cast<std::size_t>(rect.width) * rect.height;
+    if (words != (length - 12) / 2 || (length - 12) % 2 != 0) return false;
+    block->data_at = at + 12;
+    block->word_count = words;
+    *end = at + length;
+    return true;
+}
+
+std::vector<std::uint16_t> upload_words(const std::uint8_t* bytes,
+    const UploadBlock& block) {
+    std::vector<std::uint16_t> words;
+    words.reserve(block.word_count);
+    for (std::size_t i = 0; i < block.word_count; ++i) {
+        const std::size_t at = block.data_at + i * 2;
+        words.push_back(static_cast<std::uint16_t>(bytes[at] |
+            (static_cast<unsigned>(bytes[at + 1]) << 8)));
+    }
+    return words;
+}
+
+}
+
+bool upload_front_tim(const std::uint8_t* bytes, std::size_t size,
+    FrontTimUploadSink sink, void* context) {
+    unsigned magic = 0, flag = 0;
+    if (!sink || !read_u32(bytes, size, 0, &magic) || magic != 0x10 ||
+        !read_u32(bytes, size, 4, &flag) || flag != 0x8) return false;
+    UploadBlock palette, pixels;
+    std::size_t image_at = 0, end = 0;
+    if (!read_upload_block(bytes, size, 8, &palette, &image_at) ||
+        !read_upload_block(bytes, size, image_at, &pixels, &end) || end != size) {
+        return false;
+    }
+    const auto palette_words = upload_words(bytes, palette);
+    const auto pixel_words = upload_words(bytes, pixels);
+    sink(context, palette.rect, palette_words.data(), palette_words.size());
+    sink(context, pixels.rect, pixel_words.data(), pixel_words.size());
+    return true;
 }
 
 bool paint_front_tim(const std::uint8_t* bytes, std::size_t size,

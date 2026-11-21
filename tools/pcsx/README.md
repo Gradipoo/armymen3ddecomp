@@ -93,3 +93,41 @@ DuckStation fast boot of the USA disc.
 Replace `$AM3D_DISC` with the cue path on the machine that owns the disc.
 Output stays in `build/research/behavior/`. Do not commit game files, a
 BIOS, or anything under `build/`.
+
+## ALP1 movement observation
+
+Row 8 retail compare procedure:
+`docs/research/re/prototype-alp1-movement-observation.md`.
+
+### Runbook script
+
+From the repository root, with `AM3D_DISC` set to the USA cue path (or pass
+the cue as the first argument):
+
+```sh
+export AM3D_DISC="/path/to/Army Men 3D (USA).cue"
+sh tools/pcsx/run_alp1_observation.sh
+```
+
+The script creates `build/coordination/alp1-movement-observation/<run-id>/`
+(UTC timestamp id), `session.txt`, `checklist.tsv` via
+`tools/alp1_observation_checklist.py init`, portable config under
+`<run-id>/pcsx-config`, and `frames/` for captures. It exports
+`PCSX_ALP1_OUT=<run-id>/frames` and starts PCSX-Redux with `-interpreter
+-debugger -run -iso`, portable config, and
+`-exec "dofile('tools/pcsx/alp1_movement_observation.lua')"`. Fast boot stays
+off. Nothing under `build/` is committed.
+
+Checklist helpers (stdlib only):
+
+```sh
+python3 tools/alp1_observation_checklist.py validate \
+  build/coordination/alp1-movement-observation/<run-id>
+```
+
+### Frame helper
+
+`alp1_movement_observation.lua` listens for `GPU::Vsync` and writes
+`frame-NNNNNN.ppm` every N blanks (default 60). Set `PCSX_ALP1_OUT` for the
+directory and `PCSX_ALP1_EVERY` for N. The runbook sets `PCSX_ALP1_OUT`
+automatically. The script does not press buttons or claim a movement match.

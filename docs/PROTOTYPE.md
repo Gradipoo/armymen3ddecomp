@@ -165,11 +165,50 @@ and callbacks prevent a reliable date for the first playable mission.
 | 6 | Close one required file-read or callback gap per change. | Synthetic tests check bytes, bounds, callback order, and completion/error behavior. Local retail evidence checks actual names, sizes, and state. Preserve observed asynchronous behavior rather than inventing immediate success. |
 | 7 | Connect the selected screen's update loop and controller transition. | A fresh native run reconstructs the screen from the owner's files. Our update code produces multiple frames and the observed input transition. Compare against retail at named checkpoints. Captured packet replay alone does not pass. |
 | 8 | Load one mission and implement one movement sequence. | Declare start state and fixed input frames. Check movement, camera, collision, and the resulting state against retail. Add only the graphics, geometry, audio, or movie services this sequence reaches. |
+| 9 | Chain the menu transition into one mission movement run. | One host pipeline runs the row 7 menu scan and controller transition, records mission load intent, then executes the row 8 fixed movement script. `ctest prototype_task_9` passes disc-free; `prototype_task_9_retail` when ALP1.TXT is present. Checkpoint smoke writes stage counts and end state. Captured menu replay or mission frames alone do not pass. No retail in-mission boot required at this row. |
 
 Tasks 1 and 2 are observation work. Task 3 is a tooling/backend trial.
-Tasks 5 through 8 are milestones split into one-gap implementation changes,
+Tasks 5 through 9 are milestones split into one-gap implementation changes,
 each with its own required research note. The table is not permission to
 bundle several gaps into one change or bypass note boundaries.
+
+Row index: [prototype-tier-index.md](research/re/prototype-tier-index.md).
+Verification commands: [prototype-verification-runbook.md](research/re/prototype-verification-runbook.md).
+
+### Rows 1 and 2 (observation tier)
+
+| Row | Tier status | Research note |
+| --- | --- | --- |
+| 1 | Partial: menu path and Down transition logged; row 1 checklist open | [prototype-task-1.md](research/re/prototype-task-1.md) (detail: [first-screen-observation.md](research/re/first-screen-observation.md)) |
+| 2 | Row 7 menu service inventory (files, SDK cites, callback order, open gaps) | [prototype-task-2.md](research/re/prototype-task-2.md) |
+
+### Rows 3 and 4 (trial tier)
+
+| Row | Tier status | Research note |
+| --- | --- | --- |
+| 3 | PsyZ adapter trial not started in-repo; fill sink stays reference | [prototype-psyZ-trial-status.md](research/re/prototype-psyZ-trial-status.md) |
+| 4 | SOTN-style replay not started; pad fixture and fixed script only | [prototype-replay-trial-status.md](research/re/prototype-replay-trial-status.md) |
+
+### Rows 5 and 6 (retail checkpoint tier)
+
+| Row | Tier status | Research note |
+| --- | --- | --- |
+| 5 | FRONT.TIM measured layout, `upload_front_tim`, disc-free fallback | [prototype-task-5.md](research/re/prototype-task-5.md), [front-tim.md](research/re/front-tim.md) |
+| 6 | `read_disc_data_file` bounds; ALP1.TXT probe on row 8 slice | [prototype-task-6.md](research/re/prototype-task-6.md) |
+
+### Rows 7 through 9 (retail checkpoint tier)
+
+These rows have a documented **retail checkpoint tier** on native builds. It
+names before/after controller transitions, headless ctests, and owner-file
+smokes. It does not claim pixel-identical retail menus, reconstructed game
+main, or in-mission physics match. Full table acceptance in rows 7 and 8 still
+needs retail compare beyond named checkpoints.
+
+| Row | Tier status | Research note |
+| --- | --- | --- |
+| 7 | Menu scan, Down dispatch, FRONT submit, selection highlight stand-in | [prototype-task-7.md](research/re/prototype-task-7.md) |
+| 8 | ALP1 spawn from PAD fixture, eight-frame movement, observation runbook | [prototype-task-8.md](research/re/prototype-task-8.md), [prototype-alp1-movement-observation.md](research/re/prototype-alp1-movement-observation.md) |
+| 9 | Pipeline composes row 7 then row 8 runners; playable smoke with FRONT | [prototype-task-9.md](research/re/prototype-task-9.md), [prototype-playable-smoke.md](research/re/prototype-playable-smoke.md) |
 
 Use the first two changes for the screen observation record and the
 synthetic graphics trial. Do not start with another compiler experiment.

@@ -17,7 +17,7 @@ with 3DO. Follow [LEGAL.md](../LEGAL.md) and [AGENTS.md](../AGENTS.md).
 
 ## Current position
 
-Updated November 16, 2026. The scaffold, disc tools, first function
+Updated November 20, 2026. The scaffold, disc tools, first function
 inventory, progress ledger, and local compile-and-compare loop exist.
 The optional SDL2 window connects our fill, buffer advance, and startup
 clear implementations. It displays DATA/FRONT.TIM when that local file
@@ -25,7 +25,21 @@ exists and synthetic bars otherwise. This is a platform test. The picture's
 placement is a stand-in, not evidence of the retail screen layout.
 The launcher checks the disc and executable. It does not run the game.
 
-The current export has 1,869 candidate functions. The ledger records three
+The selected retail target is the front-end menu and its NEW GAME to
+OPTIONS transition. Local captures identify the submission wrapper and
+trace the controller-status caller through two measured branches. The
+button bits and selection update are still unresolved. See the
+[latest input-path record](research/re/call-80064f14.md).
+
+Our FRONT.TIM uploader validates and submits the palette and packed pixel
+blocks. The owner file was matched to a live retail upload. A local native
+trial routes original synthetic ordering tables through our reconstructed
+submission wrapper and a restricted GPU adapter, then displays the texture.
+Placement and updates remain stand-ins. The adapter is a local trial, not
+an adopted backend. See the [submission integration record](research/re/native-submit-integration.md).
+No reconstructed menu loop produces the retail screen yet.
+
+The current export has 1,869 candidate functions. The ledger records four
 implemented functions and no verified functions. These are a dated snapshot,
 not a completion percentage. Automatic function boundaries need review.
 Use `python tools/progress.py` for current counts and evidence.
@@ -45,7 +59,7 @@ and assembler remain unconfirmed. See the
 | Local comparison loop | Complete for a synthetic case | Explicit local tools compile our fixture. Its expected bytes match. Commands, flags, and hashes are recorded locally. |
 | Retail compiler calibration | In progress | Reviewed functions provide reproducible evidence for a useful compiler configuration. Mismatches and limits are documented. |
 | PS1 platform layer | Partial foundation | SDL2 display and input work for the platform test. A selected backend must still supply the graphics, disc, and timing interfaces needed by the first scene. |
-| First running scene | Not started | A clean build reads the owner's disc, reaches the main loop, and displays one identified scene with documented retail comparisons. |
+| First running scene | In progress, acceptance open | A clean build reads the owner's disc, reaches the main loop, and displays one identified scene with documented retail comparisons. |
 | First playable slice | Not started | One defined play sequence supports movement and its required game behavior, with reproducible checks. |
 
 A configured CI matrix is not evidence of a successful remote run. Record
@@ -59,13 +73,22 @@ useful research, but it is not a prerequisite for a portable prototype.
 Use [PROTOTYPE.md](PROTOTYPE.md) for the source review, ordered work, and
 acceptance checks behind this priority change.
 
-| Order | Work | Exit condition |
+| Order | Work | Current result and exit condition |
 | --- | --- | --- |
-| 1 | Observe one real front-end screen on the owner's USA disc. | A repeatable cold boot and controller sequence identify its assets, frame submission, callbacks, and live state. Local captures stay in build/. |
-| 2 | Trial a narrow PsyZ graphics adapter. Keep the existing SDL2 test building. | Original synthetic tests cover fill, texture upload, a textured rectangle, buffer changes, and controller input. Record host results, selected files, dependencies, and license scopes before adoption. |
-| 3 | Connect one observed file read and image upload. | The window uses the measured retail placement and palette when the local file exists. Disc-free tests keep a synthetic fallback. |
-| 4 | Connect that screen's update and input loop. | Reconstructed game code drives the identified screen and one observed controller transition, with retail comparison evidence. A still picture or captured packet replay alone does not pass. |
-| 5 | Extend to one mission and a bounded movement sequence. | Loading, camera, movement, and collision work for the declared sequence, with repeatable retail checks. Add sound or movie behavior when that sequence requires it. |
+| 1 | Observe the selected retail menu. | Menu and NEW GAME to OPTIONS transition observed. Submission, FRONT.TIM upload identity, and controller-status path have records. Continue only for an unresolved dependency of this screen. |
+| 2 | Prove the narrow graphics interfaces. Keep the existing SDL2 test building. | PsyZ and a separate PS1Recomp GPU component were tried locally. Restricted list submission, texture drawing and bounded copy checks passed within recorded limits. Neither backend is adopted; license scope and host coverage still constrain adoption. |
+| 3 | Connect the observed file and image upload. | Our uploader and a local native drawing trial work with owner, synthetic and missing-file inputs. Retail screen placement, palette use by menu geometry, and the game file-read service remain open. |
+| 4 | Connect the screen's update and input loop. | Submission wrapper implemented and locally integrated. Next measure the byte compared with 0x41 at 0x80064f34, then follow only the observed path toward button bits and selection state. Exit requires reconstructed game code producing multiple frames and the observed controller transition. A still picture or packet replay does not pass. |
+| 5 | Extend to one mission and a bounded movement sequence. | Not started. Define the mission and sequence after the menu passes. Loading, camera, movement and collision must work for that sequence with repeatable retail checks. |
+
+The immediate priority is the input and update path, followed by the menu's
+own geometry and measured display placement. Copy trials retain their
+separate scope and recorded limits. Do not widen backend work to services
+the selected outcome does not need.
+
+Skip the intro cinematic through the observed controller path during
+routine menu captures. Record the skip in each capture. Preserve full-boot
+identity and do not substitute invented memory state or the parked lane.
 
 The first screen is selected by observation. FRONT.TIM is a decoded asset,
 not proof of a complete front end. MEMCARD.TIM is a useful observed loading
@@ -130,7 +153,7 @@ Evaluate shared tools and platform code before writing replacements:
 | [Spyro 1 decomp](https://github.com/TheMobyCollective/spyro-1) | PS1 build layout and overlay organization where our disc evidence supports it. |
 | [splat](https://github.com/ethteck/splat) | Local code/data splitting and symbol maps. |
 | [PsyCross](https://github.com/OpenDriver2/PsyCross) | A possible PS1 platform backend. Test the required interfaces and its dependencies first. |
-| [PsyZ](https://github.com/Xeeynamo/psyz) | First candidate for a narrow graphics trial. Check its host packet types, SDL3 dependency, raw-command limits, and mixed license scopes. |
+| [PsyZ](https://github.com/Xeeynamo/psyz) | Locally tried graphics candidate. Preserve recorded host packet, SDL3, raw-command and mixed-license limits before any adoption. |
 | [PS1Recomp](https://github.com/PS1Recomp/ps1-recomp) | A bounded local execution experiment or a separately tested GPU component. Army Men support is unproven. |
 | [ghidra_psx_ldr](https://github.com/lab313ru/ghidra_psx_ldr) | PS1 and GTE analysis support. |
 | [PCSX-Redux](https://github.com/pcsx-redux/pcsx-redux) | Local retail debugging and behavior observations. |

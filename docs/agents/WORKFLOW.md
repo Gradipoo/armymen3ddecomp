@@ -72,6 +72,29 @@ Search narrowly and bound tool output. Return summaries and artifact paths.
 Keep raw logs in the task's local output directory and fetch detail when
 needed. Do not send the same large logs to several agents.
 
+## Models (principal vs worker)
+
+Sean’s default split:
+
+| Role | Model | Use |
+| --- | --- | --- |
+| **Principal** (planning, scope, tradeoffs, integration, acceptance) | **Composer** (`composer-2.5`) | Pick the next prototype row or gap, write the delegation brief, review decisive evidence, commit when asked. Stay in the main chat or a planning turn. |
+| **Worker** (bounded implementation) | **Grok low** (`cursor-grok-4.7-low-fast`) | One gap or one stand-in: investigate, code, ctests, research note, local coordination file. |
+
+Rules:
+
+- Spawn workers with **Grok low** unless Sean names another worker model.
+- Do not use Composer Fast for workers when Grok low is available.
+- Escalate the **worker** to Composer or a stronger model only after three
+  failures on the same problem or a blocked design choice that needs the
+  principal.
+- The principal does not re-run the worker’s full investigation at each
+  update; it integrates checkpoints and runs required gates.
+
+When delegating through the Task tool, set `model` to `cursor-grok-4.7-low-fast`
+on the worker spawn. Keep planning and user-facing tradeoffs on Composer in
+this session unless Sean redirects.
+
 ## Waiting and reasoning
 
 When no useful independent work remains, use a supported, permitted,

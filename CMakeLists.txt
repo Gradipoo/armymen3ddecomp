@@ -6,6 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+add_library(am3d_disc_data STATIC
+    components/platform/disc_data_file_read.cpp
+    components/platform/disc_front_tim_load.cpp)
+target_include_directories(am3d_disc_data PUBLIC components/platform)
+
 add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.cpp
     components/exe/display_buffers.cpp components/exe/display_clear.cpp
     components/exe/after_display_clear.cpp components/exe/call_80010c90.cpp
@@ -33,6 +38,7 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_80010d38.cpp components/exe/call_80076234.cpp
     components/exe/call_80025398.cpp
     components/exe/call_8007c03c.cpp
+    components/exe/call_8007c11c.cpp
     components/exe/call_800253a4.cpp
     components/exe/call_800253b0.cpp
     components/exe/call_8007e130.cpp
@@ -179,6 +185,37 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_800644f0.cpp
     components/exe/call_80064500.cpp
     components/exe/call_80064518.cpp
+    components/exe/call_8006471c.cpp
+    components/exe/call_80064758.cpp
+    components/exe/call_80064e40.cpp
+    components/exe/call_80064e68.cpp
+    components/exe/call_80064f14.cpp
+    components/exe/call_80064f48.cpp
+    components/exe/call_80064f78.cpp
+    components/exe/call_8006508c.cpp
+    components/exe/call_80065098.cpp
+    components/exe/call_800650a8.cpp
+    components/exe/call_800650b4.cpp
+    components/exe/call_800650d0.cpp
+    components/exe/call_800650e0.cpp
+    components/exe/call_800650ec.cpp
+    components/exe/call_800650f4.cpp
+    components/exe/call_80065168.cpp
+    components/exe/call_8006518c.cpp
+    components/exe/call_80064dc8.cpp
+    components/exe/call_80064dd8.cpp
+    components/exe/call_80064dfc.cpp
+    components/exe/call_80064dec.cpp
+    components/exe/call_80064e14.cpp
+    components/exe/call_80065194.cpp
+    components/exe/call_800651c8.cpp
+    components/exe/menu_input_scan.cpp
+    components/exe/menu_input_scan_loop.cpp
+    components/exe/alp1_pad_spawn.cpp
+    components/exe/mission_movement_slice.cpp
+    components/exe/prototype_playable_pipeline.cpp
+    components/exe/prototype_playable_checkpoint.cpp
+    components/exe/menu_table_sequence.cpp
     components/exe/call_80065304.cpp
     components/exe/call_800655e4.cpp
     components/exe/call_800655fc.cpp
@@ -733,12 +770,20 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/call_80010f5c.cpp
     components/exe/call_80010fbc.cpp
     components/exe/call_80010f00.cpp
-    components/exe/call_8002fb9c.cpp)
+    components/exe/call_8002fb9c.cpp
+    components/exe/prototype_task_7_menu.cpp
+    components/exe/menu_task7_checkpoint.cpp
+    components/exe/prototype_task_8_mission.cpp
+    components/exe/mission_task8_checkpoint.cpp)
 target_include_directories(am3d_exe PUBLIC components/exe)
+target_link_libraries(am3d_exe PUBLIC am3d_disc_data)
 
 add_library(am3d_platform_core STATIC
     components/platform/fill_vram.cpp
-    components/platform/front_tim.cpp)
+    components/platform/front_tim.cpp
+    components/platform/menu_pad_get_state.cpp
+    components/platform/menu_submit_frame.cpp
+    components/platform/menu_selection_highlight.cpp)
 target_include_directories(am3d_platform_core PUBLIC components/platform)
 target_link_libraries(am3d_platform_core PUBLIC am3d_exe)
 
@@ -750,6 +795,12 @@ if(AM3D_WITH_SDL2)
     target_link_libraries(am3d_platform_sdl2 PUBLIC am3d_platform_core SDL2::SDL2)
     add_executable(am3d_platform_smoke src/platform_smoke.cpp)
     target_link_libraries(am3d_platform_smoke PRIVATE am3d_platform_sdl2)
+    add_executable(am3d_menu_scan_smoke src/menu_scan_smoke.cpp)
+    target_link_libraries(am3d_menu_scan_smoke PRIVATE am3d_platform_sdl2)
+    add_executable(am3d_mission_slice_smoke src/mission_slice_smoke.cpp)
+    target_link_libraries(am3d_mission_slice_smoke PRIVATE am3d_platform_sdl2)
+    add_executable(am3d_prototype_playable_smoke src/prototype_playable_smoke.cpp)
+    target_link_libraries(am3d_prototype_playable_smoke PRIVATE am3d_platform_sdl2)
 endif()
 
 add_library(am3d_input STATIC components/input/keyboard.cpp)
@@ -850,6 +901,9 @@ if(BUILD_TESTING)
     add_executable(test_call_8007c03c tests/test_call_8007c03c.cpp)
     target_link_libraries(test_call_8007c03c PRIVATE am3d_exe)
     add_test(NAME call_8007c03c COMMAND test_call_8007c03c)
+    add_executable(test_call_8007c11c tests/test_call_8007c11c.cpp)
+    target_link_libraries(test_call_8007c11c PRIVATE am3d_exe)
+    add_test(NAME call_8007c11c COMMAND test_call_8007c11c)
     add_executable(test_call_800253a4 tests/test_call_800253a4.cpp)
     target_link_libraries(test_call_800253a4 PRIVATE am3d_exe)
     add_test(NAME call_800253a4 COMMAND test_call_800253a4)
@@ -1252,6 +1306,138 @@ if(BUILD_TESTING)
     add_executable(test_call_80064518 tests/test_call_80064518.cpp)
     target_link_libraries(test_call_80064518 PRIVATE am3d_exe)
     add_test(NAME call_80064518 COMMAND test_call_80064518)
+    add_executable(test_call_80064e40 tests/test_call_80064e40.cpp)
+    target_link_libraries(test_call_80064e40 PRIVATE am3d_exe)
+    add_test(NAME call_80064e40 COMMAND test_call_80064e40)
+    add_executable(test_call_80064e68 tests/test_call_80064e68.cpp)
+    target_link_libraries(test_call_80064e68 PRIVATE am3d_exe)
+    add_test(NAME call_80064e68 COMMAND test_call_80064e68)
+    add_executable(test_call_80064f14 tests/test_call_80064f14.cpp)
+    target_link_libraries(test_call_80064f14 PRIVATE am3d_exe)
+    add_test(NAME call_80064f14 COMMAND test_call_80064f14)
+    add_executable(test_call_80064f48 tests/test_call_80064f48.cpp)
+    target_link_libraries(test_call_80064f48 PRIVATE am3d_exe)
+    add_test(NAME call_80064f48 COMMAND test_call_80064f48)
+    add_executable(test_call_8006508c tests/test_call_8006508c.cpp)
+    target_link_libraries(test_call_8006508c PRIVATE am3d_exe)
+    add_test(NAME call_8006508c COMMAND test_call_8006508c)
+    add_executable(test_call_80065098 tests/test_call_80065098.cpp)
+    target_link_libraries(test_call_80065098 PRIVATE am3d_exe)
+    add_test(NAME call_80065098 COMMAND test_call_80065098)
+    add_executable(test_call_8006471c tests/test_call_8006471c.cpp)
+    target_link_libraries(test_call_8006471c PRIVATE am3d_exe)
+    add_test(NAME call_8006471c COMMAND test_call_8006471c)
+    add_executable(test_call_80064758 tests/test_call_80064758.cpp)
+    target_link_libraries(test_call_80064758 PRIVATE am3d_exe)
+    add_test(NAME call_80064758 COMMAND test_call_80064758)
+    add_executable(test_call_800650d0 tests/test_call_800650d0.cpp)
+    target_link_libraries(test_call_800650d0 PRIVATE am3d_exe)
+    add_test(NAME call_800650d0 COMMAND test_call_800650d0)
+    add_executable(test_call_800650e0 tests/test_call_800650e0.cpp)
+    target_link_libraries(test_call_800650e0 PRIVATE am3d_exe)
+    add_test(NAME call_800650e0 COMMAND test_call_800650e0)
+    add_executable(test_call_800650ec tests/test_call_800650ec.cpp)
+    target_link_libraries(test_call_800650ec PRIVATE am3d_exe)
+    add_test(NAME call_800650ec COMMAND test_call_800650ec)
+    add_executable(test_call_800650f4 tests/test_call_800650f4.cpp)
+    target_link_libraries(test_call_800650f4 PRIVATE am3d_exe)
+    add_test(NAME call_800650f4 COMMAND test_call_800650f4)
+    add_executable(test_call_80065168 tests/test_call_80065168.cpp)
+    target_link_libraries(test_call_80065168 PRIVATE am3d_exe)
+    add_test(NAME call_80065168 COMMAND test_call_80065168)
+    add_executable(test_call_8006518c tests/test_call_8006518c.cpp)
+    target_link_libraries(test_call_8006518c PRIVATE am3d_exe)
+    add_test(NAME call_8006518c COMMAND test_call_8006518c)
+    add_executable(test_call_80065194 tests/test_call_80065194.cpp)
+    target_link_libraries(test_call_80065194 PRIVATE am3d_exe)
+    add_test(NAME call_80065194 COMMAND test_call_80065194)
+    add_executable(test_call_800651c8 tests/test_call_800651c8.cpp)
+    target_link_libraries(test_call_800651c8 PRIVATE am3d_exe)
+    add_test(NAME call_800651c8 COMMAND test_call_800651c8)
+    add_executable(test_call_80064dc8 tests/test_call_80064dc8.cpp)
+    target_link_libraries(test_call_80064dc8 PRIVATE am3d_exe)
+    add_test(NAME call_80064dc8 COMMAND test_call_80064dc8)
+    add_executable(test_call_80064dd8 tests/test_call_80064dd8.cpp)
+    target_link_libraries(test_call_80064dd8 PRIVATE am3d_exe)
+    add_test(NAME call_80064dd8 COMMAND test_call_80064dd8)
+    add_executable(test_call_80064dfc tests/test_call_80064dfc.cpp)
+    target_link_libraries(test_call_80064dfc PRIVATE am3d_exe)
+    add_test(NAME call_80064dfc COMMAND test_call_80064dfc)
+    add_executable(test_call_80064dec tests/test_call_80064dec.cpp)
+    target_link_libraries(test_call_80064dec PRIVATE am3d_exe)
+    add_test(NAME call_80064dec COMMAND test_call_80064dec)
+    add_executable(test_call_80064e14 tests/test_call_80064e14.cpp)
+    target_link_libraries(test_call_80064e14 PRIVATE am3d_exe)
+    add_test(NAME call_80064e14 COMMAND test_call_80064e14)
+    add_executable(test_menu_input_scan tests/test_menu_input_scan.cpp)
+    target_link_libraries(test_menu_input_scan PRIVATE am3d_exe)
+    add_test(NAME menu_input_scan COMMAND test_menu_input_scan)
+    add_executable(test_menu_input_scan_loop tests/test_menu_input_scan_loop.cpp)
+    target_link_libraries(test_menu_input_scan_loop PRIVATE am3d_exe)
+    add_test(NAME menu_input_scan_loop COMMAND test_menu_input_scan_loop)
+    add_executable(test_menu_scan_smoke_headless tests/test_menu_scan_smoke_headless.cpp)
+    target_link_libraries(test_menu_scan_smoke_headless PRIVATE am3d_exe)
+    add_test(NAME menu_scan_smoke_headless COMMAND test_menu_scan_smoke_headless)
+    add_executable(test_prototype_task_7 tests/test_prototype_task_7.cpp)
+    target_link_libraries(test_prototype_task_7 PRIVATE am3d_exe)
+    add_test(NAME prototype_task_7 COMMAND test_prototype_task_7)
+    add_executable(test_prototype_task_7_retail tests/test_prototype_task_7_retail.cpp)
+    target_link_libraries(test_prototype_task_7_retail PRIVATE am3d_platform_core)
+    add_test(NAME prototype_task_7_retail COMMAND test_prototype_task_7_retail)
+    set_tests_properties(prototype_task_7_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_prototype_task_7_smoke_headless tests/test_prototype_task_7_smoke_headless.cpp)
+    target_link_libraries(test_prototype_task_7_smoke_headless PRIVATE am3d_exe)
+    add_test(NAME prototype_task_7_smoke_headless COMMAND test_prototype_task_7_smoke_headless)
+    add_executable(test_prototype_task_7_smoke_headless_retail
+        tests/test_prototype_task_7_smoke_headless_retail.cpp)
+    target_link_libraries(test_prototype_task_7_smoke_headless_retail PRIVATE am3d_exe)
+    add_test(NAME prototype_task_7_smoke_headless_retail COMMAND test_prototype_task_7_smoke_headless_retail)
+    set_tests_properties(prototype_task_7_smoke_headless_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_alp1_pad_spawn tests/test_alp1_pad_spawn.cpp)
+    target_link_libraries(test_alp1_pad_spawn PRIVATE am3d_exe)
+    add_test(NAME alp1_pad_spawn COMMAND test_alp1_pad_spawn)
+    add_executable(test_alp1_pad_spawn_retail tests/test_alp1_pad_spawn_retail.cpp)
+    target_link_libraries(test_alp1_pad_spawn_retail PRIVATE am3d_exe)
+    add_test(NAME alp1_pad_spawn_retail COMMAND test_alp1_pad_spawn_retail)
+    set_tests_properties(alp1_pad_spawn_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_prototype_task_8 tests/test_prototype_task_8.cpp)
+    target_link_libraries(test_prototype_task_8 PRIVATE am3d_exe)
+    add_test(NAME prototype_task_8 COMMAND test_prototype_task_8)
+    add_executable(test_prototype_task_8_retail tests/test_prototype_task_8_retail.cpp)
+    target_link_libraries(test_prototype_task_8_retail PRIVATE am3d_exe)
+    add_test(NAME prototype_task_8_retail COMMAND test_prototype_task_8_retail)
+    set_tests_properties(prototype_task_8_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_prototype_task_8_smoke_headless
+        tests/test_prototype_task_8_smoke_headless.cpp)
+    target_link_libraries(test_prototype_task_8_smoke_headless PRIVATE am3d_exe)
+    add_test(NAME prototype_task_8_smoke_headless COMMAND test_prototype_task_8_smoke_headless)
+    add_executable(test_prototype_task_8_smoke_headless_retail
+        tests/test_prototype_task_8_smoke_headless_retail.cpp)
+    target_link_libraries(test_prototype_task_8_smoke_headless_retail PRIVATE am3d_exe)
+    add_test(NAME prototype_task_8_smoke_headless_retail
+        COMMAND test_prototype_task_8_smoke_headless_retail)
+    set_tests_properties(prototype_task_8_smoke_headless_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_prototype_task_9 tests/test_prototype_task_9.cpp)
+    target_link_libraries(test_prototype_task_9 PRIVATE am3d_exe)
+    add_test(NAME prototype_task_9 COMMAND test_prototype_task_9)
+    add_executable(test_prototype_playable_smoke_headless
+        tests/test_prototype_playable_smoke_headless.cpp)
+    target_link_libraries(test_prototype_playable_smoke_headless PRIVATE am3d_exe)
+    add_test(NAME prototype_playable_smoke_headless
+        COMMAND test_prototype_playable_smoke_headless)
+    add_executable(test_prototype_task_9_retail tests/test_prototype_task_9_retail.cpp)
+    target_link_libraries(test_prototype_task_9_retail PRIVATE am3d_exe)
+    add_test(NAME prototype_task_9_retail COMMAND test_prototype_task_9_retail)
+    set_tests_properties(prototype_task_9_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_menu_table_sequence tests/test_menu_table_sequence.cpp)
+    target_link_libraries(test_menu_table_sequence PRIVATE am3d_exe)
+    add_test(NAME menu_table_sequence COMMAND test_menu_table_sequence)
+    add_executable(test_menu_scan_pad_get_state tests/test_menu_scan_pad_get_state.cpp)
+    target_link_libraries(test_menu_scan_pad_get_state PRIVATE am3d_platform_core)
+    add_test(NAME menu_scan_pad_get_state COMMAND test_menu_scan_pad_get_state)
+    add_executable(test_menu_submit_frame tests/test_menu_submit_frame.cpp)
+    target_link_libraries(test_menu_submit_frame PRIVATE am3d_platform_core)
+    add_test(NAME menu_submit_frame COMMAND test_menu_submit_frame)
     add_executable(test_call_80065304 tests/test_call_80065304.cpp)
     target_link_libraries(test_call_80065304 PRIVATE am3d_exe)
     add_test(NAME call_80065304 COMMAND test_call_80065304)
@@ -3118,6 +3304,15 @@ if(BUILD_TESTING)
     add_executable(test_front_tim tests/test_front_tim.cpp)
     target_link_libraries(test_front_tim PRIVATE am3d_platform_core)
     add_test(NAME front_tim COMMAND test_front_tim)
+    add_test(NAME prototype_task_5 COMMAND test_front_tim)
+    add_executable(test_prototype_task_5_retail tests/test_prototype_task_5_retail.cpp)
+    target_link_libraries(test_prototype_task_5_retail PRIVATE am3d_platform_core)
+    add_test(NAME prototype_task_5_retail COMMAND test_prototype_task_5_retail)
+    set_tests_properties(prototype_task_5_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_disc_data_file_read tests/test_disc_data_file_read.cpp)
+    target_link_libraries(test_disc_data_file_read PRIVATE am3d_exe)
+    add_test(NAME test_disc_data_file_read COMMAND test_disc_data_file_read)
+    add_test(NAME prototype_task_6 COMMAND test_disc_data_file_read)
     if(AM3D_WITH_SDL2)
         add_executable(test_sdl_platform tests/test_sdl_platform.cpp)
         target_link_libraries(test_sdl_platform PRIVATE am3d_platform_sdl2)
