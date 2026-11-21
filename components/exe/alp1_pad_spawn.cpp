@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "alp1_pad_spawn.hpp"
 
+#include "disc_data_file_read.hpp"
 #include "mission_movement_slice.hpp"
 
 #include <cstdint>
-#include <fstream>
 #include <vector>
 
 namespace am3d::exe {
@@ -12,6 +12,8 @@ namespace {
 
 constexpr std::size_t kAlp1PadHeaderBytes = 0x20u;
 constexpr std::size_t kAlp1PadRecordStride = 0x10u;
+// Measured owner size. See docs/research/re/alp1-pad-spawn.md.
+constexpr std::size_t kAlp1PadMeasuredBytes = 0x2000u;
 
 std::int32_t low_u16(std::uint32_t word) {
     return static_cast<std::int32_t>(word & 0xffffu);
@@ -53,21 +55,13 @@ Alp1PadSpawnParseResult parse_alp1_pad_spawn_from_bytes(Alp1PadBytes bytes,
 Alp1PadSpawnParseResult load_alp1_pad_spawn_from_disc_root(
     const std::filesystem::path& disc_root, std::uint32_t pad_index) {
     const std::filesystem::path resolved = disc_root / MissionSliceDeclaration::kPadPath;
-    std::ifstream in(resolved, std::ios::binary);
-    if (!in) {
+    std::vector<std::uint8_t> buffer(kAlp1PadMeasuredBytes);
+    const am3d::platform::DiscDataFileReadResult read = am3d::platform::read_disc_data_file(
+        resolved, kAlp1PadMeasuredBytes, buffer.data());
+    if (!read.ok || read.truncated || read.bytes_read == 0u) {
         return {};
     }
-    in.seekg(0, std::ios::end);
-    const auto end = in.tellg();
-    if (end <= 0) {
-        return {};
-    }
-    std::vector<std::uint8_t> buffer(static_cast<std::size_t>(end));
-    in.seekg(0, std::ios::beg);
-    if (!in.read(reinterpret_cast<char*>(buffer.data()),
-                 static_cast<std::streamsize>(buffer.size()))) {
-        return {};
-    }
+    buffer.resize(read.bytes_read);
     return parse_alp1_pad_spawn_from_bytes({buffer.data(), buffer.size()}, pad_index);
 }
 

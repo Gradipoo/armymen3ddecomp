@@ -94,6 +94,16 @@ def validate_run(run_dir: Path) -> int:
         print(f"validate: ok ({run_dir}); frames/ has {count} file(s)")
     else:
         print(f"validate: ok ({run_dir}); frames/ not present yet (optional)")
+
+    pad_log = run_dir / "pad-input.tsv"
+    if pad_log.is_file():
+        pad_lines = [line for line in pad_log.read_text(encoding="utf-8").splitlines() if line.strip()]
+        if len(pad_lines) <= 1:
+            print(
+                "validate: warn pad-input.tsv has no guest pad edges; map keyboard or "
+                "controller to pad 1 in PCSX",
+                file=sys.stderr,
+            )
     return 0
 
 
