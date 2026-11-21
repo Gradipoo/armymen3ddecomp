@@ -6,14 +6,13 @@
 #include "alp1_pad_spawn.hpp"
 #include "menu_submit_frame.hpp"
 #include "prototype_playable_checkpoint.hpp"
+#include "disc_front_tim_load.hpp"
 #include "prototype_playable_pipeline.hpp"
 
 #include <chrono>
 #include <cstdint>
 #include <filesystem>
-#include <fstream>
 #include <iostream>
-#include <iterator>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -33,23 +32,6 @@ std::filesystem::path resolve_disc_root() {
         return "disc";
     }
     return {};
-}
-
-std::vector<std::uint8_t> load_front_tim(const std::filesystem::path& disc_root) {
-    std::vector<std::uint8_t> bytes;
-    if (disc_root.empty()) {
-        return bytes;
-    }
-    const std::filesystem::path front_path = disc_root / "DATA" / "FRONT.TIM";
-    if (!std::filesystem::is_regular_file(front_path)) {
-        return bytes;
-    }
-    std::ifstream in(front_path, std::ios::binary);
-    bytes.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
-    if (!in) {
-        throw std::runtime_error("could not read DATA/FRONT.TIM");
-    }
-    return bytes;
 }
 
 void draw_playable_diagnostic(am3d::exe::DisplayBufferState& display,
@@ -149,7 +131,8 @@ int main(int argc, char** argv) {
         display.buffer_count = 2;
         am3d::exe::clear_display_buffers(0, display, window, vram);
 
-        const std::vector<std::uint8_t> front_bytes = load_front_tim(disc_root);
+        const std::vector<std::uint8_t> front_bytes =
+            am3d::platform::load_front_tim_disc_bytes(disc_root);
         const bool use_menu_submit = result.has_front && !front_bytes.empty();
         unsigned frames_presented = 0u;
 

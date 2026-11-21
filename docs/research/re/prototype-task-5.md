@@ -22,6 +22,10 @@ to the drawing page origin per [front-tim.md](front-tim.md).
 When `DATA/FRONT.TIM` is absent, `am3d_platform_smoke` keeps the synthetic color
 bars and does not call `paint_front_tim`. The default build and CI stay disc-free.
 
+Prototype smoke and retail tests load owner bytes through
+`platform::load_front_tim_disc_bytes` (`disc_front_tim_load.hpp`), capped at
+2880 bytes via `read_disc_data_file`.
+
 ## Checks
 
 | Name | Role |

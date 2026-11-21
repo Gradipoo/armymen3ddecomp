@@ -6,7 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_library(am3d_disc_data STATIC components/platform/disc_data_file_read.cpp)
+add_library(am3d_disc_data STATIC
+    components/platform/disc_data_file_read.cpp
+    components/platform/disc_front_tim_load.cpp)
 target_include_directories(am3d_disc_data PUBLIC components/platform)
 
 add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.cpp

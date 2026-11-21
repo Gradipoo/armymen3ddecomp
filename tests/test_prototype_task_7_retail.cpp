@@ -1,36 +1,25 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+#include "disc_front_tim_load.hpp"
 #include "menu_submit_frame.hpp"
 #include "menu_task7_checkpoint.hpp"
 #include "prototype_task_7_menu.hpp"
 
 #include <cstdint>
 #include <filesystem>
-#include <fstream>
 #include <vector>
 
 namespace {
 
 constexpr int kSkipNoDisc = 77;
 
-std::filesystem::path resolve_front_tim() {
-    const std::filesystem::path from_build = "disc/DATA/FRONT.TIM";
-    if (std::filesystem::is_regular_file(from_build)) {
-        return from_build;
+std::filesystem::path resolve_disc_root() {
+    if (std::filesystem::is_directory("build/disc")) {
+        return "build/disc";
     }
-    const std::filesystem::path from_root = "build/disc/DATA/FRONT.TIM";
-    if (std::filesystem::is_regular_file(from_root)) {
-        return from_root;
+    if (std::filesystem::is_directory("disc")) {
+        return "disc";
     }
     return {};
-}
-
-bool load_front_bytes(const std::filesystem::path& path, std::vector<std::uint8_t>& out) {
-    std::ifstream in(path, std::ios::binary);
-    if (!in) {
-        return false;
-    }
-    out.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
-    return static_cast<bool>(in);
 }
 
 bool front_stand_in_has_visible_pixel(const am3d::platform::FillVram& vram,
@@ -93,13 +82,9 @@ int submit_menu_frame(am3d::platform::FillVram& vram, const std::vector<std::uin
 
 // PROTOTYPE.md row 7 disc-backed acceptance when build/disc/DATA/FRONT.TIM exists.
 int main() {
-    const std::filesystem::path front_path = resolve_front_tim();
-    if (front_path.empty()) {
-        return kSkipNoDisc;
-    }
-
-    std::vector<std::uint8_t> front_bytes;
-    if (!load_front_bytes(front_path, front_bytes) || front_bytes.empty()) {
+    const std::vector<std::uint8_t> front_bytes =
+        am3d::platform::load_front_tim_disc_bytes(resolve_disc_root());
+    if (front_bytes.empty()) {
         return kSkipNoDisc;
     }
 

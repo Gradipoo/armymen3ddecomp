@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "disc_data_file_read.hpp"
+#include "disc_front_tim_load.hpp"
 #include "mission_movement_slice.hpp"
 
 #include <cstdint>
@@ -77,6 +78,10 @@ int main() {
         am3d::platform::read_disc_data_file(tiny_path, 0u, buf);
     if (no_buf.ok) {
         return 5;
+    }
+
+    if (!am3d::platform::load_front_tim_disc_bytes({}).empty()) {
+        return 10;
     }
 
     const std::filesystem::path disc_root = resolve_disc_root();

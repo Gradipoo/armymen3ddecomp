@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "sdl_platform.hpp"
 #include "display_clear.hpp"
+#include "disc_front_tim_load.hpp"
 #include "front_tim.hpp"
 #include "menu_input_scan_loop.hpp"
 #include "menu_scan_pad_dispatch_inject.hpp"
@@ -132,15 +133,14 @@ int main(int argc, char** argv) {
         display.buffer_count = 2;
         am3d::exe::clear_display_buffers(0, display, window, vram);
 
-        const std::filesystem::path front_path = "build/disc/DATA/FRONT.TIM";
-        std::vector<std::uint8_t> front_bytes;
-        if (std::filesystem::is_regular_file(front_path)) {
-            std::ifstream in(front_path, std::ios::binary);
-            front_bytes.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
-            if (!in) {
-                throw std::runtime_error("could not read build/disc/DATA/FRONT.TIM");
-            }
+        std::filesystem::path disc_root;
+        if (std::filesystem::is_directory("build/disc")) {
+            disc_root = "build/disc";
+        } else if (std::filesystem::is_directory("disc")) {
+            disc_root = "disc";
         }
+        const std::vector<std::uint8_t> front_bytes =
+            am3d::platform::load_front_tim_disc_bytes(disc_root);
 
         ScanHostState scan_host = make_scan_host();
         const bool use_table_sequencer = scripted || frames > 1;

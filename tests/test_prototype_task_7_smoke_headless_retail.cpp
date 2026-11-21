@@ -1,23 +1,21 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+#include "disc_front_tim_load.hpp"
 #include "prototype_task_7_menu.hpp"
 
 #include <cstdint>
 #include <filesystem>
-#include <fstream>
 #include <vector>
 
 namespace {
 
 constexpr int kSkipNoDisc = 77;
 
-std::filesystem::path resolve_front_tim() {
-    const std::filesystem::path from_build = "disc/DATA/FRONT.TIM";
-    if (std::filesystem::is_regular_file(from_build)) {
-        return from_build;
+std::filesystem::path resolve_disc_root() {
+    if (std::filesystem::is_directory("build/disc")) {
+        return "build/disc";
     }
-    const std::filesystem::path from_root = "build/disc/DATA/FRONT.TIM";
-    if (std::filesystem::is_regular_file(from_root)) {
-        return from_root;
+    if (std::filesystem::is_directory("disc")) {
+        return "disc";
     }
     return {};
 }
@@ -26,14 +24,9 @@ std::filesystem::path resolve_front_tim() {
 
 // Same transition as the disc-free checkpoint, with owner FRONT bytes present.
 int main() {
-    const std::filesystem::path front_path = resolve_front_tim();
-    if (front_path.empty()) {
-        return kSkipNoDisc;
-    }
-    std::ifstream in(front_path, std::ios::binary);
-    std::vector<std::uint8_t> front_bytes;
-    front_bytes.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
-    if (!in || front_bytes.empty()) {
+    const std::vector<std::uint8_t> front_bytes =
+        am3d::platform::load_front_tim_disc_bytes(resolve_disc_root());
+    if (front_bytes.empty()) {
         return kSkipNoDisc;
     }
 
