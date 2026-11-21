@@ -18,7 +18,7 @@ One claim per entry:
 
 - Address: none (procedure, not a code address)
 - Claim: PROTOTYPE rows 5 through 9 `*_retail` and related owner-file CTests are not green in disc-free CI; they need an owner extract under `build/disc/`
-- Re-check: [prototype-verification-runbook.md](prototype-verification-runbook.md) (table **Prototype CTest names**); run the matching `prototype_task_*_retail` or `prototype_task_*_smoke_headless_retail` after `python tools/disc.py`
+- Re-check: [prototype-verification-runbook.md](prototype-verification-runbook.md) (table **Prototype CTest names**); run `python3 tools/disc.py`, then `ctest --test-dir build -R '_retail'` from the repo root. CTest working directory is `build/`; tests resolve `disc/DATA/` relative to that folder. Exit 77 means skip (missing extract or FRONT/ALP1 file), not a green retail proof.
 
 - Address: none (procedure, not a code address)
 - Claim: Host FRONT presentation and menu smoke BMPs are not an automated pixel match vs PCSX-Redux retail
