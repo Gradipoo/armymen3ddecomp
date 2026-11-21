@@ -2,27 +2,30 @@
 #include "prototype_playable_pipeline.hpp"
 
 #include "alp1_pad_spawn_fixture.hpp"
+#include "disc_data_file_read.hpp"
 #include "prototype_task_7_menu.hpp"
 #include "prototype_task_8_mission.hpp"
 
-#include <fstream>
-#include <iterator>
+#include <array>
 #include <vector>
 
 namespace am3d::exe {
 namespace {
 
-std::vector<std::uint8_t> load_front_tim_bytes(const std::filesystem::path& disc_root) {
+constexpr std::size_t kFrontTimMeasuredBytes = 2880u;
+
+std::vector<std::uint8_t> load_front_tim_disc_bytes(const std::filesystem::path& disc_root) {
     std::vector<std::uint8_t> bytes;
     if (disc_root.empty()) {
         return bytes;
     }
-    const std::filesystem::path front_path = disc_root / "DATA" / "FRONT.TIM";
-    if (!std::filesystem::is_regular_file(front_path)) {
+    std::array<std::uint8_t, kFrontTimMeasuredBytes> buffer{};
+    const platform::DiscDataFileReadResult read = platform::read_disc_data_file(
+        disc_root / "DATA/FRONT.TIM", buffer.size(), buffer.data());
+    if (!read.ok || read.truncated || read.bytes_read != kFrontTimMeasuredBytes) {
         return bytes;
     }
-    std::ifstream in(front_path, std::ios::binary);
-    bytes.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
+    bytes.assign(buffer.begin(), buffer.begin() + read.bytes_read);
     return bytes;
 }
 
@@ -40,7 +43,7 @@ PrototypePlayablePipelineResult run_prototype_playable_pipeline(
         return out;
     }
 
-      const std::vector<std::uint8_t> front_bytes = load_front_tim_bytes(config.disc_root);
+    const std::vector<std::uint8_t> front_bytes = load_front_tim_disc_bytes(config.disc_root);
     const std::uint8_t* front_ptr =
         front_bytes.empty() ? nullptr : front_bytes.data();
     const std::size_t front_size = front_bytes.size();

@@ -26,6 +26,7 @@ canonicalize paths outside the disc tree.
 
 The row 8 slice reads up to 256 bytes from `DATA/ALP1.TXT` when `disc_root` is
 non-empty and sets `alp1_txt_header` when the first line contains `Alpine1`.
+FRONT retail load in `run_prototype_playable_pipeline` uses the same helper.
 
 ## Acceptance
 
@@ -43,7 +44,7 @@ non-empty and sets `alp1_txt_header` when the first line contains `Alpine1`.
 | CdRead / CdReadSync | No async queue, no BIOS callbacks, no sector addressing |
 | Path policy | Callers must keep paths under owner `disc_root` |
 | Full ALP1.TXT parse | Header probe only; MAP, MDL, and mission ini loop stay later rows |
-| Other disc opens | `load_alp1_pad_spawn_from_disc_root` and FRONT.TIM loads still use local ifstream until a later gap |
+| Other disc opens | `load_alp1_pad_spawn_from_disc_root` still uses local ifstream until a later gap |
 
 Rows 5 and 7 retail checkpoint tier: [prototype-task-5.md](prototype-task-5.md),
 [prototype-task-7.md](prototype-task-7.md).
