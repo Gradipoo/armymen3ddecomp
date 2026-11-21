@@ -69,7 +69,7 @@ Eight frames in `MissionPadScript` (`tests/test_prototype_task_8.cpp`):
 | Camera | No mission camera chain |
 | GTE / animation | No retail body update |
 | Retail movement compare | Deferred; synthetic z step only |
-| Mission gameplay | Procedure recorded in [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md). No filled run yet. |
+| Mission gameplay | [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md): USA **NEW GAME** may load **bootcamp** (no mission title; operator map guess), not verified `DATA/ALP1.*` play. |
 
 Row 8 **retail** acceptance still needs pad-driven motion vs retail and the
 services that sequence reaches (spawn index 1 is cited).

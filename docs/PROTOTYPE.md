@@ -174,6 +174,7 @@ bundle several gaps into one change or bypass note boundaries.
 
 Row index: [prototype-tier-index.md](research/re/prototype-tier-index.md).
 Verification commands: [prototype-verification-runbook.md](research/re/prototype-verification-runbook.md).
+Retail path split (menu vs bootcamp vs ALP1): [prototype-retail-paths.md](research/re/prototype-retail-paths.md).
 
 ### Rows 1 and 2 (observation tier)
 

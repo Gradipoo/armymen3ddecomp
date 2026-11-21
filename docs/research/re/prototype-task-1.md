@@ -34,7 +34,8 @@ There is no separate `screen-retail-observation` note. Use these instead:
 | Detailed run log (runs 5–11) | [first-screen-observation.md](first-screen-observation.md) |
 | Local evidence tree | `build/coordination/retail-screen/` (owner machine) |
 | PCSX-Redux install, portable config, Lua capture | [tools/pcsx/README.md](../../../tools/pcsx/README.md) |
-| ALP1 observation procedure (row 8; same emulator class) | [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md) |
+| Retail path split (menu vs bootcamp vs ALP1) | [prototype-retail-paths.md](prototype-retail-paths.md) |
+| Mission observation after NEW GAME (row 8; not the menu row) | [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md) |
 | Host window / disc-free smoke (not retail recreation) | [PLATFORM.md](../../PLATFORM.md) |
 | Retail vs static boot MEMCARD path | [deviations.md](deviations.md) § Retail MEMCARD backup path |
 | Row 2 service inventory | [prototype-task-2.md](prototype-task-2.md) |

@@ -1,7 +1,9 @@
 # ALP1 movement observation
 
-Status: procedure only. A local run may exist under
-`build/coordination/alp1-movement-observation/`; see
+Status: **partial operator report** (2026-11-21). Menu-to-mission path is
+recorded once without frame numbers or PCSX capture paths. Mission identity
+(ALP1 vs another map) is **not verified** on that report. A local run may
+exist under `build/coordination/alp1-movement-observation/`; see
 [prototype-alp1-run-handoff.md](prototype-alp1-run-handoff.md). That
 directory is gitignored. This note does not claim a retail physics match, a
 measured spawn on screen, or agreement with the host movement script.
@@ -104,10 +106,35 @@ Leave fast boot off (do not pass `-fastboot`). Set `PCSX_ALP1_OUT` to the
 run's `frames/` directory. Helper details:
 [tools/pcsx/README.md](../../../tools/pcsx/README.md).
 
+## Operator report (2026-11-21)
+
+Uninstrumented PCSX session on the owner USA disc. No frame numbers or
+`checklist.tsv` row committed from this report alone.
+
+| Step | Result |
+| --- | --- |
+| Boot / intro | Operator reached the game intro, then the main menu path below. |
+| `1 PLAYER` menu | Reached; **NEW GAME** was used (not the first-screen Down test). |
+| Confirm **NEW GAME** | **Cross (X)** on **NEW GAME**. No second options screen after confirm. |
+| Load | Roughly **5 seconds** of loading, then gameplay. |
+| Difficulty / name / memory card | **None** observed between menu confirm and in-mission play. |
+| Mission select | **None** observed; play went **straight into a mission**. |
+| Mission id | **Unknown** on screen. Owner `MISSION.INI` sets `Bootcamp_Mission = 8` for new-player bootcamp (`Bootcamp_ID = alp`), which may **not** be the `DATA/ALP1.*` slice row 8 tests. Confirm HUD / mission name before **Reach ALP1**. |
+| On-screen mission title | **None** observed after load (operator report 2026-11-21, run `20261121-095957`). Do not infer ALP1 from visuals alone. |
+| Operator map guess | **Likely bootcamp** (training layout), not Alpine snow. Subjective; not a file-load proof. |
+| Retail ini alignment | Owner `MISSION.INI` sets `Bootcamp_Mission = 8` and `Bootcamp_ID = alp` for new-player bootcamp. That path may load bootcamp assets, not `DATA/ALP1.*`. |
+| Compare window | Not recorded (idle / Cross hold frames, spawn sanity, captures). |
+
+Copy these answers into the active run's `session.txt` and checklist when
+using `run_alp1_observation.sh`. Mark **Reach ALP1** `N` until mission id is
+confirmed.
+
 ## Controller path to ALP1
 
-High-level steps. Only the menu transition below is already observed. Later
-steps stay TBD until an operator records them.
+High-level steps. First-screen **Down** on the menu is observed in
+[first-screen-observation.md](first-screen-observation.md). The 2026-11-21
+**NEW GAME → load → mission** path is recorded in the table above. Frame
+timings and mission-select steps below stay open where not cited.
 
 1. Observed boot images, from the first-screen note: Sony Computer
    Entertainment BIOS screen, PlayStation license screen, 3DO logo, Green
@@ -118,15 +145,18 @@ steps stay TBD until an operator records them.
    `OPTIONS`. Starting a mission needs `NEW GAME` highlighted. If a run
    lands on `OPTIONS`, move back to `NEW GAME`. The exact key and duration
    for that return are TBD.
-4. TBD: confirm `NEW GAME` (host key and duration not yet recorded for a
-   mission start).
-5. TBD: any difficulty, name, or memory-card prompt between the menu and
-   mission select.
-6. TBD: mission select control path until the highlight is Alpine 1 / ALP1.
-   The owner file header cited by row 8 is `//Alpine1 Mission1` in
-   `ALP1.TXT`. The on-screen label is not recorded here.
-7. TBD: confirm that mission and wait until the in-mission view is stable
-   before the compare window.
+4. Observed once (2026-11-21): **Cross** confirms **NEW GAME** with no follow-up
+   menu. Guest frame count and duration are not recorded.
+5. Observed once (2026-11-21): **no** difficulty, name, or memory-card prompts
+   before load. Slot/card state for that run is not recorded here.
+6. Observed once (2026-11-21): **no** mission-select screen; load goes direct
+   to a mission. Operator judges **likely bootcamp**, consistent with
+   `Bootcamp_Mission = 8` in `MISSION.INI`, not proven ALP1. Row 8 host
+   retail tests still target `DATA/ALP1.*` on disc; they do not prove bootcamp
+   play loaded those files. Owner file header for row 8 remains `//Alpine1
+   Mission1` in `ALP1.TXT`.
+7. Open: guest frame when in-mission view is stable, then the eight-frame
+   compare window (idle then Cross).
 
 Stop the note at the first unknown prompt. Do not guess a button.
 
@@ -196,6 +226,8 @@ Do not commit that tree.
   `frame-NNNNNN.ppm` every N vsyncs. It does not mark button edges.
 - Any visible position or heading readout. If the screen has none, write
   "no on-screen position".
+- On-screen mission title. If the HUD has none after load, write
+  "no on-screen mission title" (observed on USA NEW GAME path).
 - File reads only if a later run adds instrumentation. Until then, write
   "not instrumented".
 
@@ -220,3 +252,6 @@ source of truth stays under `build/coordination/alp1-movement-observation/`.
 - Reaching ALP1, or saving frames, does not show that retail movement matches
   the host `z` step.
 - Collision, camera, and mission gameplay remain open in the row 8 gaps.
+- Without a mission title or file-read trace, **Reach ALP1** on the checklist
+  stays **N** unless a later run proves `DATA/ALP1.*` loaded (instrumentation or
+  a documented in-game path to Alpine mission 1).

@@ -8,14 +8,18 @@ movement match is claimed until `checklist.tsv` rows are filled and
 
 | Field | Value |
 | --- | --- |
-| Run id | `20261121-022109` |
+| Run id | `20261121-022109` (scripted capture; may differ from live play) |
 | Path | `build/coordination/alp1-movement-observation/20261121-022109/` |
 | Procedure | [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md) |
 | Summarize | `python3 tools/alp1_observation_summarize.py` on that path |
 
-At handoff time the run had many `frames/frame-*.ppm` captures from the Lua
-helper. `pad-input.tsv` had no guest edges because host window keys do not feed
-the pad API. An operator must map **pad 1** in PCSX before the compare window.
+Operator report (same date, separate from scripted run): **NEW GAME** with
+**Cross**, ~5 s load, **no** difficulty/memory/mission-select prompts, straight
+into a mission. **ALP1 identity not confirmed.** See **Operator report** in
+the observation note.
+
+At handoff time the scripted run had many `frames/frame-*.ppm` captures. Map
+**pad 1** in PCSX so `pad-input.tsv` records edges during the compare window.
 
 ## Operator resume
 
