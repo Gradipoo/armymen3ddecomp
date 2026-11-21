@@ -172,6 +172,13 @@ Tasks 5 through 9 are milestones split into one-gap implementation changes,
 each with its own required research note. The table is not permission to
 bundle several gaps into one change or bypass note boundaries.
 
+### Rows 1 and 2 (observation tier)
+
+| Row | Tier status | Research note |
+| --- | --- | --- |
+| 1 | PCSX-Redux `1 PLAYER` menu, Down highlight transition, bounded CD/GPU traces | [first-screen-observation.md](research/re/first-screen-observation.md) |
+| 2 | Row 7 menu service inventory (files, SDK cites, callback order, open gaps) | [prototype-task-2.md](research/re/prototype-task-2.md) |
+
 ### Rows 5 and 6 (retail checkpoint tier)
 
 | Row | Tier status | Research note |
