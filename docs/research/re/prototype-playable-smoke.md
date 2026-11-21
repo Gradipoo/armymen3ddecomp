@@ -44,5 +44,6 @@ checkpoint line only. SDL FRONT presentation is manual or local CI with
 `AM3D_WITH_SDL2=ON`.
 
 Row 9 composition and headless gates: [prototype-task-9.md](prototype-task-9.md).
+CTest and SDL verification: [prototype-verification-runbook.md](prototype-verification-runbook.md).
 Menu submission cites: [menu-scan-submission.md](menu-scan-submission.md),
 [menu-selection-highlight.md](menu-selection-highlight.md).

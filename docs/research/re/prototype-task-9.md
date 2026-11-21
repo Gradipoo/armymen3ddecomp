@@ -93,3 +93,6 @@ fill-free; SDL smoke optionally paints FRONT when the owner file is present.
 | Gameplay | Fixed script; mission loop observation still open. ALP1 movement capture is procedure only: [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md). |
 
 Coordination state: `build/coordination/prototype-playable/state.md`.
+
+Tier map rows 1 through 9: [prototype-tier-index.md](prototype-tier-index.md).
+Verification checklist: [prototype-verification-runbook.md](prototype-verification-runbook.md).
