@@ -3,6 +3,8 @@
 Quick map from roadmap row to tier name and primary research note. CTest names
 and owner-file gates live in
 [prototype-verification-runbook.md](prototype-verification-runbook.md).
+Procedure claims we have not re-checked on an owner disc stay in
+[unverified.md](unverified.md).
 Roadmap table: [PROTOTYPE.md](../../PROTOTYPE.md).
 
 | Row | Tier | Primary note |
