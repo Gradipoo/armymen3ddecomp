@@ -38,6 +38,10 @@ A controller's D-pad moves the marker, its cross/A button changes the
 marker color, and Start ends the test. Closing the window also ends it.
 There are no keyboard game bindings. Keyboard play remains a future lane.
 
+PROTOTYPE rows 5 through 9 share a single CTest checklist, optional playable
+SDL capture with the dummy video driver, and owner-disc skip rules. See
+[prototype-verification-runbook.md](research/re/prototype-verification-runbook.md).
+
 `--capture` saves a local BMP under `build/platform/`. Captures from a
 future game renderer may contain assets and must stay local. `--hidden`
 is available for local automation. The CTest integration test uses SDL's
