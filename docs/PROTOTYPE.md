@@ -172,6 +172,9 @@ Tasks 5 through 9 are milestones split into one-gap implementation changes,
 each with its own required research note. The table is not permission to
 bundle several gaps into one change or bypass note boundaries.
 
+Row index: [prototype-tier-index.md](research/re/prototype-tier-index.md).
+Verification commands: [prototype-verification-runbook.md](research/re/prototype-verification-runbook.md).
+
 ### Rows 1 and 2 (observation tier)
 
 | Row | Tier status | Research note |
