@@ -14,6 +14,17 @@ owner files at `disc/DATA/` (for example `disc/DATA/FRONT.TIM` and
 `disc/DATA/ALP1.TXT`) after `python3 tools/disc.py` writes `build/disc/`.
 Exit code 0 on a `*_retail` test means the file was present and assertions ran.
 
+Owner machine one-shot (requires `build/disc/`):
+
+```text
+sh tools/prototype_retail_gate.sh
+```
+
+That runs `pr_guard`, disc-free prototype CTests, `*_retail` CTests, then
+`am3d_prototype_playable_smoke --hidden --capture --checkpoint` with
+`SDL_VIDEODRIVER=dummy`. The last field in `build/platform/task9-checkpoint.txt`
+is `1` when owner `ALP1.PAD` spawn loads; disc-free headless goldens keep `0`.
+
 ```text
 cmake -S . -B build/host-sdl -DAM3D_WITH_SDL2=ON -DCMAKE_BUILD_TYPE=Release
 cmake --build build/host-sdl --config Release

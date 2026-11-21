@@ -32,6 +32,14 @@ mkdir -p "$RUN_DIR/frames" "$RUN_DIR/pcsx-config"
 
 COMMIT=$(CDPATH= cd -- "$REPO_ROOT" && git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 UNAME_LINE=$(uname -a 2>/dev/null || uname)
+PCSX_VERSION=$("$PCSX" -version 2>/dev/null | python3 -c "
+import json, sys
+try:
+    data = json.load(sys.stdin)
+    print(data.get('version', 'unknown'), data.get('changeset', '')[:12])
+except Exception:
+    print('unknown')
+" 2>/dev/null || echo "unknown")
 
 SESSION="$RUN_DIR/session.txt"
 {
@@ -40,7 +48,7 @@ SESSION="$RUN_DIR/session.txt"
     echo "uname: $UNAME_LINE"
     echo "disc_cue: $CUE"
     echo "emulator_path: $PCSX"
-    echo "emulator_version:"
+    echo "emulator_version: $PCSX_VERSION"
     echo "disc_serial: SLUS-00491"
     echo "log_disc_id:"
     echo "log_bios_label:"

@@ -23,7 +23,8 @@ sh tools/pcsx/run_alp1_observation.sh
 
 The script creates
 `build/coordination/alp1-movement-observation/<run-id>/` with UTC
-`run-id` (`YYYYMMDD-HHMMSS`), writes `session.txt`, calls the checklist
+`run-id` (`YYYYMMDD-HHMMSS`), writes `session.txt` (including PCSX-Redux
+`-version` when the binary is present), calls the checklist
 `init` helper, sets `PCSX_ALP1_OUT` to `<run-id>/frames`, and launches
 PCSX-Redux with the framebuffer helper. If the app is not in
 `/Applications`, the script prints the install steps from
