@@ -74,8 +74,10 @@ cd "$REPO_ROOT"
 python3 "$REPO_ROOT/tools/alp1_observation_checklist.py" init "$RUN_DIR"
 
 export PCSX_ALP1_OUT="$RUN_DIR/frames"
+export PCSX_ALP1_PAD_LOG="$RUN_DIR/pad-input.tsv"
 
 echo "run_alp1_observation.sh: run directory $RUN_DIR"
+echo "run_alp1_observation.sh: pad log -> $PCSX_ALP1_PAD_LOG"
 echo "run_alp1_observation.sh: frames -> PCSX_ALP1_OUT=$PCSX_ALP1_OUT"
 echo "run_alp1_observation.sh: fill session.txt and checklist.tsv after the session."
 

@@ -25,7 +25,8 @@ The script creates
 `build/coordination/alp1-movement-observation/<run-id>/` with UTC
 `run-id` (`YYYYMMDD-HHMMSS`), writes `session.txt` (including PCSX-Redux
 `-version` when the binary is present), calls the checklist
-`init` helper, sets `PCSX_ALP1_OUT` to `<run-id>/frames`, and launches
+`init` helper, sets `PCSX_ALP1_OUT` to `<run-id>/frames`, writes pad edges to
+`<run-id>/pad-input.tsv` (guest frame, comma-separated button names), and launches
 PCSX-Redux with the framebuffer helper. If the app is not in
 `/Applications`, the script prints the install steps from
 [tools/pcsx/README.md](../../../tools/pcsx/README.md) and exits 2.
