@@ -9,6 +9,11 @@ retail gameplay compare or backend adoption.
 The default build stays disc-free. Owner extract files stay under `build/disc/`.
 Retail-named tests skip with exit code 77 when the required owner file is absent.
 
+Prototype retail binaries run with working directory `build/`. They resolve
+owner files at `disc/DATA/` (for example `disc/DATA/FRONT.TIM` and
+`disc/DATA/ALP1.TXT`) after `python3 tools/disc.py` writes `build/disc/`.
+Exit code 0 on a `*_retail` test means the file was present and assertions ran.
+
 ```text
 cmake -S . -B build/host-sdl -DAM3D_WITH_SDL2=ON -DCMAKE_BUILD_TYPE=Release
 cmake --build build/host-sdl --config Release

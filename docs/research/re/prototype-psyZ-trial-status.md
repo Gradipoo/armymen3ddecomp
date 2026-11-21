@@ -61,6 +61,9 @@ the full checklist or is parked with cited failure.
 
 Row 4 (adopt or stop) stays **open** until row 3 executes fully or is parked.
 
+Fill retry scope and stop rules:
+[prototype-psyZ-fill-retry-plan.md](prototype-psyZ-fill-retry-plan.md).
+
 ## Stop rules
 
 Stop the trial after **three failures at the same problem**. Record what was
