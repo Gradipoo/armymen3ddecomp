@@ -3,9 +3,6 @@
 
 #include <cstdint>
 #include <filesystem>
-#include <fstream>
-#include <string>
-
 namespace {
 
 constexpr int kSkipNoDisc = 77;
@@ -41,18 +38,6 @@ std::filesystem::path resolve_disc_root() {
     return {};
 }
 
-bool first_line_contains_alpine1(const std::filesystem::path& path) {
-    std::ifstream in(path);
-    if (!in) {
-        return false;
-    }
-    std::string line;
-    if (!std::getline(in, line)) {
-        return false;
-    }
-    return line.find("Alpine1") != std::string::npos;
-}
-
 }  // namespace
 
 // PROTOTYPE.md row 8 disc-backed check when build/disc/DATA/ALP1.TXT exists.
@@ -60,9 +45,6 @@ int main() {
     const std::filesystem::path txt_path = resolve_disc_data("ALP1.TXT");
     if (txt_path.empty()) {
         return kSkipNoDisc;
-    }
-    if (!first_line_contains_alpine1(txt_path)) {
-        return 5;
     }
     if (!regular_file_nonzero(resolve_disc_data("ALP1.MAP"))) {
         return 6;
@@ -79,6 +61,9 @@ int main() {
     }
     const am3d::exe::PrototypeTask8MissionResult result =
         am3d::exe::run_prototype_task_8_mission_slice(disc_root);
+    if (!result.alp1_txt_header) {
+        return 5;
+    }
     if (!result.spawn_from_pad) {
         return 9;
     }

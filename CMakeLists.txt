@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+add_library(am3d_disc_data STATIC components/platform/disc_data_file_read.cpp)
+target_include_directories(am3d_disc_data PUBLIC components/platform)
+
 add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.cpp
     components/exe/display_buffers.cpp components/exe/display_clear.cpp
     components/exe/after_display_clear.cpp components/exe/call_80010c90.cpp
@@ -771,6 +774,7 @@ add_library(am3d_exe STATIC components/exe/load.cpp components/exe/display_fill.
     components/exe/prototype_task_8_mission.cpp
     components/exe/mission_task8_checkpoint.cpp)
 target_include_directories(am3d_exe PUBLIC components/exe)
+target_link_libraries(am3d_exe PUBLIC am3d_disc_data)
 
 add_library(am3d_platform_core STATIC
     components/platform/fill_vram.cpp
@@ -3303,6 +3307,10 @@ if(BUILD_TESTING)
     target_link_libraries(test_prototype_task_5_retail PRIVATE am3d_platform_core)
     add_test(NAME prototype_task_5_retail COMMAND test_prototype_task_5_retail)
     set_tests_properties(prototype_task_5_retail PROPERTIES SKIP_RETURN_CODE 77)
+    add_executable(test_disc_data_file_read tests/test_disc_data_file_read.cpp)
+    target_link_libraries(test_disc_data_file_read PRIVATE am3d_exe)
+    add_test(NAME test_disc_data_file_read COMMAND test_disc_data_file_read)
+    add_test(NAME prototype_task_6 COMMAND test_disc_data_file_read)
     if(AM3D_WITH_SDL2)
         add_executable(test_sdl_platform tests/test_sdl_platform.cpp)
         target_link_libraries(test_sdl_platform PRIVATE am3d_platform_sdl2)

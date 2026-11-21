@@ -17,6 +17,7 @@ struct PrototypeTask8MissionResult {
     std::int32_t spawn_z = 0;
     std::int32_t spawn_heading = 0;
     bool spawn_from_pad = false;
+    bool alp1_txt_header = false;
     std::uint32_t frames_run = 0u;
     MissionMovementStartState final_state{};
     std::uint32_t mission_path_gpr = 0u;

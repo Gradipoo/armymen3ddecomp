@@ -177,7 +177,7 @@ bundle several gaps into one change or bypass note boundaries.
 | Row | Tier status | Research note |
 | --- | --- | --- |
 | 5 | FRONT.TIM measured layout, `upload_front_tim`, disc-free fallback | [prototype-task-5.md](research/re/prototype-task-5.md), [front-tim.md](research/re/front-tim.md) |
-| 6 | open | |
+| 6 | `read_disc_data_file` bounds; ALP1.TXT probe on row 8 slice | [prototype-task-6.md](research/re/prototype-task-6.md) |
 
 ### Rows 7 through 9 (retail checkpoint tier)
 
