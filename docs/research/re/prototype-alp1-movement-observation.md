@@ -1,9 +1,10 @@
 # ALP1 movement observation
 
-Status: procedure only. No operator run has filled
-`build/coordination/alp1-movement-observation/` yet. That directory is
-gitignored. This note does not claim a retail physics match, a measured
-spawn on screen, or agreement with the host movement script.
+Status: procedure only. A local run may exist under
+`build/coordination/alp1-movement-observation/`; see
+[prototype-alp1-run-handoff.md](prototype-alp1-run-handoff.md). That
+directory is gitignored. This note does not claim a retail physics match, a
+measured spawn on screen, or agreement with the host movement script.
 
 Row 8 gaps: [prototype-task-8.md](prototype-task-8.md). Golden pad index 1
 spawn `(x, z, heading) = (50, 1252, 50)` is recorded in

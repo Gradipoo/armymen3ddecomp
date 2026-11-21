@@ -45,6 +45,9 @@ yields virtual addresses `0x800afdcc` and `0x800afdd0`. `python3
 tools/sdk_match.py` names PSX BIOS pad APIs only; no mission `.pad` parser
 address is cited in this change.
 
+Disc bytes for spawn load use `read_disc_data_file` with a `0x2000` byte cap
+(same measured size as the table above). See [prototype-task-6.md](prototype-task-6.md).
+
 ## Host API
 
 | Piece | Path |

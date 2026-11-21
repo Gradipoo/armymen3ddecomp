@@ -44,7 +44,7 @@ FRONT retail load in `run_prototype_playable_pipeline` uses the same helper.
 | CdRead / CdReadSync | No async queue, no BIOS callbacks, no sector addressing |
 | Path policy | Callers must keep paths under owner `disc_root` |
 | Full ALP1.TXT parse | Header probe only; MAP, MDL, and mission ini loop stay later rows |
-| Other disc opens | `load_alp1_pad_spawn_from_disc_root` still uses local ifstream until a later gap |
+| Other disc opens | `load_alp1_pad_spawn_from_disc_root` reads `DATA/ALP1.PAD` through `read_disc_data_file` (8192-byte cap per [alp1-pad-spawn.md](alp1-pad-spawn.md)) |
 
 Rows 5 and 7 retail checkpoint tier: [prototype-task-5.md](prototype-task-5.md),
 [prototype-task-7.md](prototype-task-7.md).

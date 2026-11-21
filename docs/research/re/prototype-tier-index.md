@@ -16,5 +16,5 @@ Roadmap table: [PROTOTYPE.md](../../PROTOTYPE.md).
 | 5 | Retail checkpoint | [prototype-task-5.md](prototype-task-5.md), [front-tim.md](front-tim.md). Owner FRONT via `platform::load_front_tim_disc_bytes` (`disc_front_tim_load.hpp`). |
 | 6 | Retail checkpoint | [prototype-task-6.md](prototype-task-6.md) |
 | 7 | Retail checkpoint | [prototype-task-7.md](prototype-task-7.md). Disc-backed menu smoke uses the same `load_front_tim_disc_bytes` path as row 5. |
-| 8 | Retail checkpoint | [prototype-task-8.md](prototype-task-8.md), [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md) |
+| 8 | Retail checkpoint | [prototype-task-8.md](prototype-task-8.md), [prototype-alp1-movement-observation.md](prototype-alp1-movement-observation.md), [prototype-alp1-run-handoff.md](prototype-alp1-run-handoff.md) |
 | 9 | Retail checkpoint | [prototype-task-9.md](prototype-task-9.md), [prototype-playable-smoke.md](prototype-playable-smoke.md). Pipeline and SDL smoke load FRONT through `load_front_tim_disc_bytes` when the owner file is present. |
