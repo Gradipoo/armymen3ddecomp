@@ -172,6 +172,13 @@ Tasks 5 through 9 are milestones split into one-gap implementation changes,
 each with its own required research note. The table is not permission to
 bundle several gaps into one change or bypass note boundaries.
 
+### Rows 5 and 6 (retail checkpoint tier)
+
+| Row | Tier status | Research note |
+| --- | --- | --- |
+| 5 | FRONT.TIM measured layout, `upload_front_tim`, disc-free fallback | [prototype-task-5.md](research/re/prototype-task-5.md), [front-tim.md](research/re/front-tim.md) |
+| 6 | open | |
+
 ### Rows 7 through 9 (retail checkpoint tier)
 
 These rows have a documented **retail checkpoint tier** on native builds. It
