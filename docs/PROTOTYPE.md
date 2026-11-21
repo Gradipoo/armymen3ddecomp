@@ -176,7 +176,7 @@ bundle several gaps into one change or bypass note boundaries.
 
 | Row | Tier status | Research note |
 | --- | --- | --- |
-| 1 | PCSX-Redux `1 PLAYER` menu, Down highlight transition, bounded CD/GPU traces | [first-screen-observation.md](research/re/first-screen-observation.md) |
+| 1 | Partial: menu path and Down transition logged; row 1 checklist open | [prototype-task-1.md](research/re/prototype-task-1.md) (detail: [first-screen-observation.md](research/re/first-screen-observation.md)) |
 | 2 | Row 7 menu service inventory (files, SDK cites, callback order, open gaps) | [prototype-task-2.md](research/re/prototype-task-2.md) |
 
 ### Rows 3 and 4 (trial tier)

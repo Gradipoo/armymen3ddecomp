@@ -5,7 +5,7 @@ Status: **documented** at this change. This is an observation inventory for the
 selects. It lists only what **row 7** menu work needs. It does not claim a
 native running screen, retail equivalence, or a complete machine inventory.
 
-Row 1 observation record: [first-screen-observation.md](first-screen-observation.md).
+Row 1 observation record: [prototype-task-1.md](prototype-task-1.md).
 
 ## Screen scope
 
