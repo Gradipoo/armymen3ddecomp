@@ -21,6 +21,9 @@ ALP1_CAPTURE = ALP1_CAPTURE or {
     every = 60,
 }
 
+local PAD_LOG = nil
+local pad_snapshot_last = nil
+
 local function env_string(name)
     if not os or not os.getenv then
         return nil
@@ -44,6 +47,8 @@ local function apply_env()
 end
 
 apply_env()
+
+PAD_LOG = env_string("PCSX_ALP1_PAD_LOG")
 
 if not ALP1_CAPTURE.every or ALP1_CAPTURE.every < 1 then
     error("PCSX_ALP1_EVERY must be a positive integer")
@@ -92,8 +97,41 @@ end
 
 local frame = 0
 
+local function pad_button_names()
+    local pad = PCSX.SIO0 and PCSX.SIO0.slots[1] and PCSX.SIO0.slots[1].pads[1]
+    if not pad or not pad.getButton or not PCSX.CONSTS or not PCSX.CONSTS.PAD then
+        return ""
+    end
+    local names = {}
+    for label, button in pairs(PCSX.CONSTS.PAD.BUTTON) do
+        if type(button) == "number" and pad.getButton(button) then
+            names[#names + 1] = label
+        end
+    end
+    table.sort(names)
+    return table.concat(names, ",")
+end
+
+local function log_pad_edges()
+    if not PAD_LOG then
+        return
+    end
+    local snap = pad_button_names()
+    if snap == pad_snapshot_last then
+        return
+    end
+    pad_snapshot_last = snap
+    local file = io.open(PAD_LOG, "a")
+    if not file then
+        return
+    end
+    file:write(string.format("%d\t%s\n", frame, snap))
+    file:close()
+end
+
 local function on_vsync()
     frame = frame + 1
+    log_pad_edges()
     if frame % ALP1_CAPTURE.every ~= 0 then
         return
     end
