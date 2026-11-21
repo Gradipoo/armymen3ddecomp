@@ -53,6 +53,17 @@ python3 tools/alp1_observation_checklist.py validate \
 Fill `session.txt` and the row in `checklist.tsv`. Do not commit anything
 under `build/coordination/`.
 
+Progress helper (local only):
+
+```sh
+python3 tools/alp1_observation_summarize.py \
+  build/coordination/alp1-movement-observation/<run-id>
+```
+
+`pad-input.tsv` only records the guest pad API. Map keyboard or a physical
+controller to **pad 1** in PCSX-Redux before the compare window, or the log
+stays empty while frames still capture.
+
 ## Retail setup
 
 Use the same class of run as [first-screen-observation.md](first-screen-observation.md).
