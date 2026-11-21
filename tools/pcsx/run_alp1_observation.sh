@@ -79,7 +79,9 @@ export PCSX_ALP1_PAD_LOG="$RUN_DIR/pad-input.tsv"
 echo "run_alp1_observation.sh: run directory $RUN_DIR"
 echo "run_alp1_observation.sh: pad log -> $PCSX_ALP1_PAD_LOG"
 echo "run_alp1_observation.sh: frames -> PCSX_ALP1_OUT=$PCSX_ALP1_OUT"
+echo "run_alp1_observation.sh: map keyboard or a controller to pad 1 for pad-input.tsv."
 echo "run_alp1_observation.sh: fill session.txt and checklist.tsv after the session."
+echo "run_alp1_observation.sh: summarize: python3 tools/alp1_observation_summarize.py \"$RUN_DIR\""
 
 exec "$PCSX" \
     -portable "$RUN_DIR/pcsx-config" \
