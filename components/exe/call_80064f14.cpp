@@ -12,7 +12,7 @@ MenuTableBytesResult call_80064f14(const std::uint8_t* table, std::uint32_t& ind
     const std::uint8_t first = table[index];
     if (first != 0u) {
         result.first_byte_branch = true;
-        // gap: bne at 0x80064f1c taken target 0x80065144 is not entered.
+        index += 1u;
         return result;
     }
     index += 1u;

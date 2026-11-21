@@ -14,7 +14,7 @@ int main() {
     index = 0u;
     constexpr std::array<std::uint8_t, 2u> branch{1u, 0x41u};
     const auto taken = am3d::exe::call_80064f14(branch.data(), index, branch.size());
-    if (!taken.first_byte_branch || taken.compare_0x41 || index != 0u) {
+    if (!taken.first_byte_branch || taken.compare_0x41 || index != 1u) {
         return 2;
     }
     index = 0u;

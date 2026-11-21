@@ -10,7 +10,7 @@ same as **NEW GAME** first mission play (likely bootcamp).
 | --- | --- |
 | Goal | `1 PLAYER` menu, FRONT presentation, Down highlight, native update loop |
 | Observation | [first-screen-observation.md](first-screen-observation.md), [prototype-task-1.md](prototype-task-1.md) |
-| Next engineering | Input table at `0x80064f14` / compare `0x41` at `0x80064f34`; see [call-80064f14.md](call-80064f14.md), [call-80064f48.md](call-80064f48.md) |
+| Next engineering | First-byte branch [call-80065144.md](call-80065144.md) wired; fallthrough at `0x80064f34` and `0x80064f48` mask path remain; live first byte not captured |
 | Host tier | Rows 5–7 retail checkpoint ctests, menu smokes |
 
 Skip intro through the observed Return path when capturing menu work. See

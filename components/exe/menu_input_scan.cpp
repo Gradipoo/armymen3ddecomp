@@ -2,6 +2,9 @@
 #include "menu_input_scan.hpp"
 
 #include "call_80064f14.hpp"
+#include "call_800645a8.hpp"
+#include "call_80065144.hpp"
+#include "call_80065164.hpp"
 #include "call_80064f48.hpp"
 #include "call_8006508c.hpp"
 #include "call_80065098.hpp"
@@ -79,7 +82,23 @@ void run_menu_scan_dispatch_tail(
     }
     const MenuTableBytesResult bytes = call_80064f14(
         menu_table, menu_table_index, menu_table_bytes);
-    if (bytes.first_byte_branch || !bytes.compare_0x41) {
+    if (bytes.first_byte_branch) {
+        const MenuFirstByteBranchResult branch =
+            call_80065144(compare_word_dd730);
+        if (!branch.compare_eq_four) {
+            call_800645a8(scan.index);
+        }
+        step.tail_ran = true;
+        step.loop_again = call_80065164(
+            record, menu_table_index, scan, stack_word_1c, stack_word_28);
+        record_loop_exit_when_stopped(
+            step, scan, stack_word_18, stack_word_1c, pad_get_state, menu_table,
+            menu_table_index, menu_table_bytes, stack_word_20, fp,
+            compare_word_dd730, record, stack_word_58, stack_word_28,
+            test_inject_pad_dispatch, test_inject_s1_lbu);
+        return;
+    }
+    if (!bytes.compare_0x41) {
         return;
     }
     const MenuMaskPathResult mask = call_80064f48(
