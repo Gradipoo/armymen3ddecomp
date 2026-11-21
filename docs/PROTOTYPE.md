@@ -184,7 +184,7 @@ bundle several gaps into one change or bypass note boundaries.
 | Row | Tier status | Research note |
 | --- | --- | --- |
 | 3 | PsyZ adapter trial not started in-repo; fill sink stays reference | [prototype-psyZ-trial-status.md](research/re/prototype-psyZ-trial-status.md) |
-| 4 | open | |
+| 4 | SOTN-style replay not started; pad fixture and fixed script only | [prototype-replay-trial-status.md](research/re/prototype-replay-trial-status.md) |
 
 ### Rows 5 and 6 (retail checkpoint tier)
 
